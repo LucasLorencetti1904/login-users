@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { UserSchema, UserType } from "../domain/schemas/UserSchema";
+import userFetchApi from "../utils/userFetchApi";
 
 const StyledForm = styled.form`
 background-color: rgba(255, 255, 255, 0.1);
@@ -83,34 +85,40 @@ const StyledSpan = styled.span`
     }
 `;
 
-export default function SignUpFormControl() {
-    const [values, setValues] = useState({
+const StyledError = styled.span`
+    color: red;
+`;
+
+export default function SignUpFormControl(): JSX.Element {
+    const [values, setValues] = useState<UserType>({
         username: "",
         email: "",
         password: "",
         confirmPassword: ""
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setValues(prevValues => ({
             ...prevValues,
             [e.target.name]: e.target.value
         }));
     }
 
-    const [displayPassword, setDisplayPassword] = useState({
+    const [displayPassword, setDisplayPassword] = useState<{ password: boolean, confirmPassword: boolean }>({
         password: false,
         confirmPassword: false
     });
 
-    const handleDisplayPassword = (passwordType) => {
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+    const handleDisplayPassword = (passwordType): void => {
         setDisplayPassword(prev => ({
             ...prev,
             [passwordType]: !prev[passwordType]
         }));
     }
 
-    const DisplayPasswordIcon = ({ passwordType }) =>
+    const DisplayPasswordIcon = ({ passwordType }: { passwordType: string }): JSX.Element => 
         displayPassword[passwordType]
             ? <StyledVisibilityOffIcon
                 onClick={() => handleDisplayPassword(passwordType)}
@@ -121,6 +129,21 @@ export default function SignUpFormControl() {
                 onMouseDown={(e) => e.preventDefault()}
             />
     ;
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElememt>): void => {
+        e.preventDefault();
+        setErrors({});
+        if (values.password != values.confirmPassword) {
+            setErrors({ confirmPassword: ["Passwords don't match"] });
+            return;
+        }
+        const parsed = UserSchema.safeParse(values);
+        if (!parsed.success) {
+            setErrors(parsed.error.flatten().fieldErrors);
+            return;
+        }
+        userFetchApi(parsed.data);
+    }
 
     return (
         <StyledForm>
@@ -133,6 +156,9 @@ export default function SignUpFormControl() {
                     onChange={handleChange}
                     value={values.username}
                 />
+                {errors.username && (
+                    <StyledError>{errors.username[0]}</StyledError>
+                )}
             </StyledDiv>
             <StyledDiv>
                 <StyledInput
@@ -142,6 +168,9 @@ export default function SignUpFormControl() {
                     onChange={handleChange}
                     value={values.email}
                 />
+                {errors.email && (
+                    <StyledError>{errors.email[0]}</StyledError>
+                )}
             </StyledDiv>
             <StyledDiv>
                 <StyledInput
@@ -152,6 +181,9 @@ export default function SignUpFormControl() {
                     value={values.password}
                 />
                 <DisplayPasswordIcon passwordType="password" />
+                {errors.password && (
+                    <StyledError>{errors.password[0]}</StyledError>
+                )}
             </StyledDiv>
             <StyledDiv>
                 <StyledInput
@@ -162,11 +194,17 @@ export default function SignUpFormControl() {
                     value={values.confirmPassword}
                 />
                 <DisplayPasswordIcon passwordType="confirmPassword" />
+                {errors.confirmPassword && (
+                    <StyledError>{errors.confirmPassword[0]}</StyledError>
+                )}
             </StyledDiv>
-            <StyledButton>Submit</StyledButton>
+            <StyledButton
+                type="submit"
+                onClick={handleSubmit}
+            >Submit</StyledButton>
             <StyledSpan>
                 Already have an account? <a>Login now</a>
             </StyledSpan>
         </StyledForm>
-    )
+    );
 }
