@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import styled from "@emotion/styled";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import { UserSchema, UserType } from "../domain/schemas/UserSchema";
+import UserSchema from "../domain/schemas/UserSchema";
+import type { UserType } from "../domain/schemas/UserSchema";
 import userFetchApi from "../utils/userFetchApi";
 
 const StyledForm = styled.form`
@@ -111,14 +112,14 @@ export default function SignUpFormControl(): JSX.Element {
 
     const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-    const handleDisplayPassword = (passwordType): void => {
+    const handleDisplayPassword = (passwordType: "password" | "confirmPassword"): void => {
         setDisplayPassword(prev => ({
             ...prev,
             [passwordType]: !prev[passwordType]
         }));
     }
 
-    const DisplayPasswordIcon = ({ passwordType }: { passwordType: string }): JSX.Element => 
+    const DisplayPasswordIcon = ({ passwordType }: { passwordType: "password" | "confirmPassword" }): JSX.Element => 
         displayPassword[passwordType]
             ? <StyledVisibilityOffIcon
                 onClick={() => handleDisplayPassword(passwordType)}
@@ -130,7 +131,7 @@ export default function SignUpFormControl(): JSX.Element {
             />
     ;
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElememt>): void => {
+    const handleSubmit = (e: React.FormEvent<HTMLButtonElement>): void => {
         e.preventDefault();
         setErrors({});
         if (values.password != values.confirmPassword) {
@@ -139,7 +140,13 @@ export default function SignUpFormControl(): JSX.Element {
         }
         const parsed = UserSchema.safeParse(values);
         if (!parsed.success) {
-            setErrors(parsed.error.flatten().fieldErrors);
+            const flatenned = parsed.error.flatten()
+            const filteredFieldErrors: Record<string, string[]> = Object.fromEntries(
+                Object.entries(flatenned.fieldErrors).filter(
+                    ([_, value]) => value != undefined
+                ) as [string, string[]][]
+            )
+            setErrors(filteredFieldErrors);
             return;
         }
         userFetchApi(parsed.data);
@@ -191,7 +198,7 @@ export default function SignUpFormControl(): JSX.Element {
                     placeholder="Confirm Password"
                     name="confirmPassword"
                     onChange={handleChange}
-                    value={values.confirmPassword}
+                    value={values.confirmPassword as string}
                 />
                 <DisplayPasswordIcon passwordType="confirmPassword" />
                 {errors.confirmPassword && (

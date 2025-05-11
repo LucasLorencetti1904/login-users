@@ -25,7 +25,7 @@ const PasswordSchema = z
     .regex(/0-9/, { message: "Password must contain at least 1 number." })
     .regex(/\W_/, { message: "Password must contain at least 1 special character." })
     .regex(accentuationRegex, { message: "Password cannot contain accents." })
-    .regex(espaceRegex, { message: "Password cannot contain spaces." })
+    .regex(spaceRegex, { message: "Password cannot contain spaces." })
 ;
 
 export const UserSchema = z.object({
@@ -35,3 +35,5 @@ export const UserSchema = z.object({
 }).passthrough();
 
 export type UserType = z.infer<typeof UserSchema>;
+
+export default UserSchema;
