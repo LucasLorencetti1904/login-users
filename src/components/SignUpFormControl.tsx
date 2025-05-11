@@ -134,20 +134,17 @@ export default function SignUpFormControl(): JSX.Element {
     const handleSubmit = (e: React.FormEvent<HTMLButtonElement>): void => {
         e.preventDefault();
         setErrors({});
-        if (values.password != values.confirmPassword) {
-            setErrors({ confirmPassword: ["Passwords don't match"] });
-            return;
-        }
         const parsed = UserSchema.safeParse(values);
         if (!parsed.success) {
-            const flatenned = parsed.error.flatten()
             const filteredFieldErrors: Record<string, string[]> = Object.fromEntries(
-                Object.entries(flatenned.fieldErrors).filter(
+                Object.entries(parsed.error.flatten().fieldErrors).filter(
                     ([_, value]) => value != undefined
                 ) as [string, string[]][]
             )
-            setErrors(filteredFieldErrors);
-            return;
+            return setErrors(filteredFieldErrors);
+        }
+        if (values.password != values.confirmPassword) {
+            return setErrors({ confirmPassword: ["Passwords don't match"] });
         }
         userFetchApi(parsed.data);
     }
