@@ -11,7 +11,10 @@ const GlobalStyle = () => {
                 padding: 0;
             }
             body {
-                background-image: url(./background/stellar.jpg);               
+                background-image: url(./background/stellar.jpg);
+                @media (min-width: 700px) {
+                   background-image: url(./background/shinylight.png) 
+                }               
                 background-size: cover;
                 height: 100dvh;
                 display: flex;

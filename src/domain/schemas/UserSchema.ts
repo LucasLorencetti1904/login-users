@@ -21,9 +21,9 @@ const PasswordSchema = z
     .min(4, { message: "Password must contain at least 4 characters." })
     .max(12, { message: "Password must contain a maximum of 12 characters." })
     .regex(/[A-Z]/, { message: "Password must contain at least 1 uppercase letter." })
-    .regex(/a-z/, { message: "Password must contain at least 1 lowercase letter." })
-    .regex(/0-9/, { message: "Password must contain at least 1 number." })
-    .regex(/\W_/, { message: "Password must contain at least 1 special character." })
+    .regex(/[a-z]/, { message: "Password must contain at least 1 lowercase letter." })
+    .regex(/[0-9]/, { message: "Password must contain at least 1 number." })
+    .regex(/[^a-zA-Z0-9]/, { message: "Password must contain at least 1 special character." })
     .regex(accentuationRegex, { message: "Password cannot contain accents." })
     .regex(spaceRegex, { message: "Password cannot contain spaces." })
 ;

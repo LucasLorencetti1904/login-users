@@ -5,38 +5,39 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import UserSchema from "../domain/schemas/UserSchema";
 import type { UserType } from "../domain/schemas/UserSchema";
 import userFetchApi from "../utils/userFetchApi";
+import { css } from "@emotion/react";
 
 const StyledForm = styled.form`
-background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     height: 60dvh;
     width: 80dvw;
+    @media (min-width: 700px) {
+        width: 50dvh
+    }
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 `;
 
-const StyledH1 = styled.h1`
+const StyledTitle = styled.h1`
     margin-bottom: 6%;
     font-weight: bold;
     font-size: 3rem;
     color: #007bff;
 `;
 
-const StyledDiv = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    position: relative;
+const StyledField = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.16);
     margin-bottom: 4%;
     width: 80%;
     height: 10%;
 `;
-
-const StyledInput = styled.input`
+    
+    const StyledInput = styled.input`
+    border: none;
     height: 100%;
     width: 100%;
     box-sizing: border-box;
@@ -46,12 +47,37 @@ const StyledInput = styled.input`
         outline: none;
     }
     &::-moz-placeholder {
-        font-size: 1rem;
+            font-size: 1rem;
     }
     &:focus::-moz-placeholder {
-        opacity: 0;
+            opacity: 0;
     }
 `;
+
+const StyledInputPassword = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    width: 100%;
+    height: 100%;
+`;
+
+const VisibilityIcon = css`
+    position: absolute;
+    margin-right: 4%;
+    opacity: 40%;
+    cursor: pointer;
+`;
+
+const StyledVisibilityIcon = styled(VisibilityOutlinedIcon)`
+    ${VisibilityIcon}
+`;
+
+const StyledVisibilityOffIcon = styled(VisibilityOffOutlinedIcon)`
+    ${VisibilityIcon}
+`;
+
 
 const StyledButton = styled.button`
     margin: 4% 0;
@@ -64,19 +90,8 @@ const StyledButton = styled.button`
     font-weight: bold;
 `;
 
-const StyledVisibilityIcon = styled(VisibilityOutlinedIcon)`
-    position: absolute;
-    margin-right: 4%;
-    opacity: 40%;
-`;
 
-const StyledVisibilityOffIcon = styled(VisibilityOffOutlinedIcon)`
-    position: absolute;
-    margin-right: 4%;
-    opacity: 40%;
-`;
-
-const StyledSpan = styled.span`
+const StyledLink = styled.span`
     margin-top: 2%;
     font-size: 0.8rem;
     color: #fff;
@@ -87,6 +102,7 @@ const StyledSpan = styled.span`
 `;
 
 const StyledError = styled.span`
+    margin: 2rem 0;
     color: red;
 `;
 
@@ -151,8 +167,8 @@ export default function SignUpFormControl(): JSX.Element {
 
     return (
         <StyledForm>
-            <StyledH1>Sign Up</StyledH1>
-            <StyledDiv>
+            <StyledTitle>Sign Up</StyledTitle>
+            <StyledField>
                 <StyledInput
                     type="text"
                     placeholder="Username"
@@ -163,8 +179,8 @@ export default function SignUpFormControl(): JSX.Element {
                 {errors.username && (
                     <StyledError>{errors.username[0]}</StyledError>
                 )}
-            </StyledDiv>
-            <StyledDiv>
+            </StyledField>
+            <StyledField>
                 <StyledInput
                     type="email"
                     placeholder="Email"
@@ -175,40 +191,44 @@ export default function SignUpFormControl(): JSX.Element {
                 {errors.email && (
                     <StyledError>{errors.email[0]}</StyledError>
                 )}
-            </StyledDiv>
-            <StyledDiv>
-                <StyledInput
-                    type={displayPassword.password ? "text" : "password"}
-                    placeholder="Password"
-                    name="password"
-                    onChange={handleChange}
-                    value={values.password}
-                />
-                <DisplayPasswordIcon passwordType="password" />
+            </StyledField>
+            <StyledField>
+                <StyledInputPassword>
+                    <StyledInput
+                        type={displayPassword.password ? "text" : "password"}
+                        placeholder="Password"
+                        name="password"
+                        onChange={handleChange}
+                        value={values.password}
+                    />
+                    <DisplayPasswordIcon passwordType="password" />
+                </StyledInputPassword>
                 {errors.password && (
                     <StyledError>{errors.password[0]}</StyledError>
                 )}
-            </StyledDiv>
-            <StyledDiv>
-                <StyledInput
-                    type={displayPassword.confirmPassword ? "text" : "password"}
-                    placeholder="Confirm Password"
-                    name="confirmPassword"
-                    onChange={handleChange}
-                    value={values.confirmPassword as string}
-                />
-                <DisplayPasswordIcon passwordType="confirmPassword" />
+            </StyledField>
+            <StyledField>
+                <StyledInputPassword>
+                    <StyledInput
+                        type={displayPassword.confirmPassword ? "text" : "password"}
+                        placeholder="Confirm Password"
+                        name="confirmPassword"
+                        onChange={handleChange}
+                        value={values.confirmPassword as string}
+                    />
+                    <DisplayPasswordIcon passwordType="confirmPassword" />
+                </StyledInputPassword>
                 {errors.confirmPassword && (
                     <StyledError>{errors.confirmPassword[0]}</StyledError>
                 )}
-            </StyledDiv>
+            </StyledField>
             <StyledButton
                 type="submit"
                 onClick={handleSubmit}
             >Submit</StyledButton>
-            <StyledSpan>
+            <StyledLink>
                 Already have an account? <a>Login now</a>
-            </StyledSpan>
+            </StyledLink>
         </StyledForm>
     );
 }
