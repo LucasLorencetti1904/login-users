@@ -8,10 +8,11 @@ import userFetchApi from "../utils/userFetchApi";
 import { css } from "@emotion/react";
 
 const StyledForm = styled.form`
+    padding: 6% 0;
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    height: 60dvh;
+    height: 66dvh;
     width: 80dvw;
     @media (min-width: 700px) {
         width: 50dvh
@@ -29,20 +30,14 @@ const StyledTitle = styled.h1`
     color: #007bff;
 `;
 
-const StyledField = styled.div`
-    border: 1px solid rgba(0, 0, 0, 0.16);
-    margin-bottom: 4%;
-    width: 80%;
-    height: 10%;
-`;
-    
-    const StyledInput = styled.input`
-    border: none;
+const StyledInput = styled.input`
     height: 100%;
     width: 100%;
-    box-sizing: border-box;
-    padding-left: 4%;
+    padding: 0 4%; 
     font-size: 1.05rem;
+    &[type="password"] {
+        padding-right: 16%;
+    }
     &:focus {
         outline: none;
     }
@@ -54,13 +49,16 @@ const StyledField = styled.div`
     }
 `;
 
-const StyledInputPassword = styled.div`
+const StyledField = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 10%;
+    margin: 2% 0;
+    border: none;
+    box-sizing: border-box;
 `;
 
 const VisibilityIcon = css`
@@ -102,7 +100,9 @@ const StyledLink = styled.span`
 `;
 
 const StyledError = styled.span`
-    margin: 2rem 0;
+    font-size: 90%;
+    width: 80%;
+    text-align: center;
     color: red;
 `;
 
@@ -115,6 +115,10 @@ export default function SignUpFormControl(): JSX.Element {
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setErrors(prevValues => ({
+            ...prevValues,
+            [e.target.name]: []
+        }));
         setValues(prevValues => ({
             ...prevValues,
             [e.target.name]: e.target.value
@@ -163,6 +167,7 @@ export default function SignUpFormControl(): JSX.Element {
             return setErrors({ confirmPassword: ["Passwords don't match"] });
         }
         userFetchApi(parsed.data);
+        alert("Hello");
     }
 
     return (
@@ -176,10 +181,10 @@ export default function SignUpFormControl(): JSX.Element {
                     onChange={handleChange}
                     value={values.username}
                 />
-                {errors.username && (
-                    <StyledError>{errors.username[0]}</StyledError>
-                )}
             </StyledField>
+            {errors.username && (
+                <StyledError>{errors.username[0]}</StyledError>
+            )}
             <StyledField>
                 <StyledInput
                     type="email"
@@ -188,40 +193,36 @@ export default function SignUpFormControl(): JSX.Element {
                     onChange={handleChange}
                     value={values.email}
                 />
-                {errors.email && (
-                    <StyledError>{errors.email[0]}</StyledError>
-                )}
             </StyledField>
+            {errors.email && (
+                <StyledError>{errors.email[0]}</StyledError>
+            )}
             <StyledField>
-                <StyledInputPassword>
-                    <StyledInput
-                        type={displayPassword.password ? "text" : "password"}
-                        placeholder="Password"
-                        name="password"
-                        onChange={handleChange}
-                        value={values.password}
-                    />
-                    <DisplayPasswordIcon passwordType="password" />
-                </StyledInputPassword>
-                {errors.password && (
-                    <StyledError>{errors.password[0]}</StyledError>
-                )}
+                <StyledInput
+                    type={displayPassword.password ? "text" : "password"}
+                    placeholder="Password"
+                    name="password"
+                    onChange={handleChange}
+                    value={values.password}
+                />
+                <DisplayPasswordIcon passwordType="password" />
             </StyledField>
+            {errors.password && (
+                <StyledError>{errors.password[0]}</StyledError>
+            )}
             <StyledField>
-                <StyledInputPassword>
-                    <StyledInput
-                        type={displayPassword.confirmPassword ? "text" : "password"}
-                        placeholder="Confirm Password"
-                        name="confirmPassword"
-                        onChange={handleChange}
-                        value={values.confirmPassword as string}
-                    />
-                    <DisplayPasswordIcon passwordType="confirmPassword" />
-                </StyledInputPassword>
-                {errors.confirmPassword && (
-                    <StyledError>{errors.confirmPassword[0]}</StyledError>
-                )}
+                <StyledInput
+                    type={displayPassword.confirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    name="confirmPassword"
+                    onChange={handleChange}
+                    value={values.confirmPassword as string}
+                />
+                <DisplayPasswordIcon passwordType="confirmPassword" />
             </StyledField>
+            {errors.confirmPassword && (
+                <StyledError>{errors.confirmPassword[0]}</StyledError>
+            )}
             <StyledButton
                 type="submit"
                 onClick={handleSubmit}
