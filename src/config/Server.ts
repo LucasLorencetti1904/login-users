@@ -1,6 +1,8 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import env from "./env.ts";
 import Database from "./Database";
+import UserRouter from "../interfaces/routes/UserRoutes.ts";
+import getErrorMessage from "../shared/util/getErrorMessage.ts";
 
 export default class Server {
     private port: number;
@@ -18,7 +20,7 @@ export default class Server {
         this.userRouter = new UserRouter(userController);
     }
 
-    public async init(): void {
+    public async init(): Promise<void> {
         const database = new Database({ url: env.DATABASE_URL});
         try {
             await database.authenticate();
@@ -28,8 +30,8 @@ export default class Server {
                 console.log(`Server running in port ${this.port}`);
             });
         }
-        catch(error: Error) {
-            console.error(error.message);
+        catch(error: unknown) {
+            console.error(getErrorMessage(error));
         }
     }
 }

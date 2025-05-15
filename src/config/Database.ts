@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import getErrorMessage from "../shared/util/getErrorMessage";
 
 type DBPromise = Promise<void | never>;
 
@@ -6,7 +7,7 @@ export default class Database {
     private sequelize: Sequelize;
 
     constructor({ url }: { url: string }) {
-        this sequelize = new Sequelize({
+        this.sequelize = new Sequelize({
             dialect: 'sqlite',
             storage: url,
             logging: false
@@ -18,8 +19,8 @@ export default class Database {
             await this.sequelize.authenticate();
             console.log("Authentication success.");
         }
-        catch(error) {
-            throw new Error(error.message);
+        catch(error: any) {
+            console.error(getErrorMessage(error));
         }
     }
     
@@ -28,8 +29,8 @@ export default class Database {
             await this.sequelize.sync({ force: true });
             console.log("DB synchronized.");
         }
-        catch(error) {
-            throw new Error(error.message);
+        catch(error: any) {
+            console.error(getErrorMessage(error));
         }
     }
 }

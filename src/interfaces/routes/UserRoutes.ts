@@ -1,17 +1,17 @@
-import { Router, Response, Request } from "express";
+import { Router } from "express";
+import type UserController from "./UserController";
 
 export default class UserRouter {
+    private userController: UserController;
     public router: Router;
 
-    constructor(private userController: UserController) {
+    constructor(userController: UserController) {
+        this.userController = userController
         this.router = Router();
         this.userRoutes();
     }
 
     private userRoutes(): void {
         this.router.get("/:id?", this.userController.listUser);
-        this.router.post("/register", this.userController.saveUser);
-        this.router.put("/:id", this.userController.editUser);
-        this.router.delete("/:id", this.userController.removeUser);
     }
 }

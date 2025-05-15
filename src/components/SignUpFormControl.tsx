@@ -151,7 +151,7 @@ export default function SignUpFormControl(): JSX.Element {
             />
     ;
 
-    const handleSubmit = (e: React.FormEvent<HTMLButtonElement>): void => {
+    const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>): Promise<void> => {
         e.preventDefault();
         setErrors({});
         const parsed = UserSchema.safeParse(values);
@@ -168,7 +168,7 @@ export default function SignUpFormControl(): JSX.Element {
         }
         const result = await userFetchApi(parsed.data);
         if (!result.success) {
-            return setErrors({ username: [result.message] });
+            return setErrors({ username: [result.data] });
         }
         return alert ("Welcome.");
     }

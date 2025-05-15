@@ -1,11 +1,11 @@
 import type { UserType } from "../domain/schemas/UserSchema";
 
-interface ApiResults<T> {
+interface ApiResults {
     success: boolean;
-    data: T;
+    data: string;
 }
 
-export default async function userFetchApi(user: UserType): Promise<never | ApiResults<UserType[]>> {
+export default async function userFetchApi(user: UserType): Promise<never | ApiResults> {
     try {
         const response = await fetch(
             "http://localhost:8000/users/submit", {
@@ -22,13 +22,13 @@ export default async function userFetchApi(user: UserType): Promise<never | ApiR
         const data = await response.json();
         return {
             success: true,
-            message: data.message
+            data: data.message
         };
     }
-    catch(error) {
+    catch(error: any) {
         return {
             success: false,
-            message: error.message
+            data: error.message
         }
     }
 }
