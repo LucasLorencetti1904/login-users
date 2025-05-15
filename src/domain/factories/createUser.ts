@@ -3,7 +3,7 @@ import User from "./User";
 
 export default function CreateUser(userProporties: UserType): User | never {
     const parsed = UserSchema.safeParse(userProperties);
-    if (!parsed.sucsess) {
+    if (!parsed.success) {
         throw parsed.error;
     }
     return new User(

@@ -1,10 +1,10 @@
-import { useState, type JSX } from "react";
+import { type JSX, useState } from "react";
 import styled from "@emotion/styled";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";;
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";;
 import UserSchema from "../domain/schemas/UserSchema";
 import type { UserType } from "../domain/schemas/UserSchema";
-import userFetchApi from "../utils/userFetchApi";
+import userFetchApi from "../api/userFetchApi";
 import { css } from "@emotion/react";
 
 const StyledForm = styled.form`
@@ -55,8 +55,8 @@ const StyledField = styled.div`
     justify-content: flex-end;
     position: relative;
     width: 80%;
-    height: 10%;
-    margin: 2% 0;
+    height: 9%;
+    margin: 3.2% 0;
     border: none;
     box-sizing: border-box;
 `;
@@ -81,7 +81,7 @@ const StyledButton = styled.button`
     margin: 4% 0;
     border: none;
     width: 80%;
-    height: 10%;
+    height: 9%;
     background-color: #007bff;
     color: #fff;
     font-size: 1rem;
@@ -166,8 +166,11 @@ export default function SignUpFormControl(): JSX.Element {
         if (values.password != values.confirmPassword) {
             return setErrors({ confirmPassword: ["Passwords don't match"] });
         }
-        userFetchApi(parsed.data);
-        alert("Hello");
+        const result = await userFetchApi(parsed.data);
+        if (!result.success) {
+            return setErrors({ username: [result.message] });
+        }
+        return alert ("Welcome.");
     }
 
     return (
