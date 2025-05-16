@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";;
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";;
 import UserSchema from "../domain/schemas/UserSchema";
-import type { UserType } from "../domain/schemas/UserSchema";
+import type { User } from "../domain/schemas/UserSchema";
 import userFetchApi from "../api/userFetchApi";
 import { css } from "@emotion/react";
 
@@ -107,7 +107,7 @@ const StyledError = styled.span`
 `;
 
 export default function SignUpFormControl(): JSX.Element {
-    const [values, setValues] = useState<UserType>({
+    const [values, setValues] = useState<User>({
         username: "",
         email: "",
         password: "",

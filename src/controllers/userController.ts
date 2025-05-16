@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
-import getErrorMessage from "../../shared/util/getErrorMessage";
-import type User from "../../domain/entities/User";
+import getErrorMessage from "../shared/util/getErrorMessage";
+import type { IUserModel } from "../interfaces/IUserModel";
 
 export default class UserController {
     private userService: UserService;
@@ -11,7 +11,7 @@ export default class UserController {
 
     public async listUser(req: Request, res: Response): Promise<Response> {
         try {
-            const user: User[] | null = await this.userService.getUser(req.params.id);
+            const user: IUserModel[] | null = await this.userService.getUser(req.params.id);
             if (!user || user.length < 1) {
                 return res.status(404).json({ message: "User not found."});
             }

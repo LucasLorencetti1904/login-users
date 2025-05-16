@@ -4,7 +4,7 @@ import getErrorMessage from "../shared/util/getErrorMessage";
 type DBPromise = Promise<void | never>;
 
 export default class Database {
-    private sequelize: Sequelize;
+    public sequelize: Sequelize;
 
     constructor({ url }: { url: string }) {
         this.sequelize = new Sequelize({

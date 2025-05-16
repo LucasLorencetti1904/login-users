@@ -34,6 +34,6 @@ export const UserSchema = z.object({
     password: PasswordSchema
 }).passthrough();
 
-export type UserType = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof UserSchema>;
 
 export default UserSchema;

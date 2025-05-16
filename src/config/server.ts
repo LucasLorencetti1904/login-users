@@ -1,8 +1,9 @@
 import express from "express";
 import env from "./env.ts";
-import Database from "./Database";
-import UserRouter from "../interfaces/routes/UserRoutes.ts";
+import Database from "./database.ts";
+import UserRouter from "../routes/userRoutes.ts";
 import getErrorMessage from "../shared/util/getErrorMessage.ts";
+import UserController from "../controllers/userController.ts";
 
 export default class Server {
     private port: number;
@@ -12,16 +13,19 @@ export default class Server {
     private userRouter: UserRouter;
 
     constructor() {
-        this.port = env.PORT;
+        this.userController = new UserController();
+        this.userRouter = new UserRouter(this.userController);
+        
+        this.port = Number(env.PORT);
         this.app = express();
         this.app.use(express.json());
-
-        this.userController = new UserController();
-        this.userRouter = new UserRouter(userController);
+        
+        
+        this.app.use("/users", this.userRouter.router)
     }
-
+    
     public async init(): Promise<void> {
-        const database = new Database({ url: env.DATABASE_URL});
+        const database = new Database({ url: String(env.DATABASE_URL) });
         try {
             await database.authenticate();
             await database.sync();

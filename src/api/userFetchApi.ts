@@ -1,11 +1,11 @@
-import type { UserType } from "../domain/schemas/UserSchema";
+import type { User } from "../domain/schemas/UserSchema";
 
 interface ApiResults {
     success: boolean;
     data: string;
 }
 
-export default async function userFetchApi(user: UserType): Promise<never | ApiResults> {
+export default async function userFetchApi(user: User): Promise<never | ApiResults> {
     try {
         const response = await fetch(
             "http://localhost:8000/users/submit", {
