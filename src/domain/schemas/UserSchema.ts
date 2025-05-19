@@ -1,7 +1,14 @@
-import { z } from "zod";
+import { number, string, z } from "zod";
 
 const accentuationRegex = /^[^\u00C0-\u017F]+$/;
 const spaceRegex = /^\S*$/;
+
+const FullNameSchema = z
+    .string()
+    .min(5, { message: "Name must contain at 5 characters." })
+    .max(100, { message: "Name must contain a maximum of 100 characters." })
+    .regex(/[^\p{L} ]+/gu, { message: "Name must contain only letters." })
+;    
 
 const UsernameSchema = z
     .string()
@@ -34,6 +41,13 @@ export const UserSchema = z.object({
     password: PasswordSchema
 }).passthrough();
 
+export const UserModelSchema = UserSchema.extend({
+    id: number().int(),
+    createdAt: string().datetime()
+})
+
 export type User = z.infer<typeof UserSchema>;
+
+export type UserModel = z.infer<typeof UserModelSchema>;
 
 export default UserSchema;
