@@ -1,4 +1,4 @@
-import { number, string, z } from "zod";
+import { z } from "zod";
 
 const accentuationRegex = /^[^\u00C0-\u017F]+$/;
 const spaceRegex = /^\S*$/;
@@ -36,14 +36,15 @@ const PasswordSchema = z
 ;
 
 export const UserSchema = z.object({
+    fullName: FullNameSchema,
     username: UsernameSchema,
     email: EmailSchema,
     password: PasswordSchema
 }).passthrough();
 
 export const UserModelSchema = UserSchema.extend({
-    id: number().int(),
-    createdAt: string().datetime()
+    id: z.number().int(),
+    createdAt: z.date()
 })
 
 export type User = z.infer<typeof UserSchema>;
