@@ -7,7 +7,7 @@ const FullNameSchema = z
     .string()
     .min(5, { message: "Name must contain at 5 characters." })
     .max(100, { message: "Name must contain a maximum of 100 characters." })
-    .regex(/[^\p{L} ]+/gu, { message: "Name must contain only letters." })
+    .regex(/[^\p{L}]+/gu, { message: "Name must contain only letters." })
 ;    
 
 const UsernameSchema = z

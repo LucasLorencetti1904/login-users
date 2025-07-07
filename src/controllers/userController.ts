@@ -1,7 +1,6 @@
 import { type Request, type Response } from "express";
-import getErrorMessage from "../shared/util/getErrorMessage";
-import type { UserModel } from "../domain/schemas/UserSchema";
-import type UserService from "../services/userService";
+import type { UserModel } from "../shared/schemas/UserSchema";
+import type UserService from "../services/userServiceImpl";
 
 export default class UserController {
     private userService: UserService;
@@ -10,16 +9,16 @@ export default class UserController {
         this.userService = userService;
     }
 
-    public async listUser(req: Request, res: Response): Promise<Response> {
-        try {
-            const user: UserModel[] | UserModel | null = await this.userService.getUser(Number(req.params.id));
-            if (!user || (Array.isArray(user) && user.length < 1)) {
-                return res.status(404).json({ message: "User not found."});
-            }
-            return res.status(200).json({ message: user });
+    async getUser(req: Request, res: Response): Promise<void> {
+        const usersFound: UserModel = await this.userService.getUser(req.params.id);
+        if (!usersFound) {
+            res.status(404).json({ message: "User not found." });
+            return;
         }
-        catch(error: unknown) {
-            return res.status(500).json({ message: getErrorMessage(error) })
+        if (Array.isArray(usersFound)) {
+            res.status(200).json({ message: "Users found.", data: usersFound });
+            return;
         }
+        res.status(200).json({ message: "User found.", data: usersFound });
     }
 }

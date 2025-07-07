@@ -2,8 +2,8 @@ import express, { Router, type Express } from "express";
 import env from "./env.ts";
 import UserRouter from "../routes/userRoutes.ts";
 import UserController from "../controllers/userController.ts";
-import UserRepository from "../repositories/userRepository.ts";
-import UserService from "../services/userService.ts";
+import UserRepository from "../repositories/userPrismaRepository.ts";
+import UserService from "../services/userServiceImpl.ts";
 
 export default class Server {
     private port: number = Number(env.PORT);
