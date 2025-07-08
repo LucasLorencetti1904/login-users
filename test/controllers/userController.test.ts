@@ -17,21 +17,21 @@ const mockUser2: User = {
     password: "fla74Ba"
 }
 
-const mockUserModel1: UserModel = {
+const returnedUser: UserModel = {
     id: 1,
     ...mockUser1,
     createdAt: new Date("2025-09-03")
 };
 
-const mockUserModel2: UserModel = {
+const otherReturnedUser: UserModel = {
     id: 2,
     ...mockUser2,
     createdAt: new Date("2023-02-19")
 };
 
-const allMockUserModels: UserModel[] = [
-    mockUserModel1,
-    mockUserModel2
+const arrayWithAllUsersReturned: UserModel[] = [
+    returnedUser,
+    otherReturnedUser
 ];
 
 const mockUserService: any = {
@@ -45,58 +45,96 @@ const mockRes = {
 
 const mockReq = {
     params: {},
-    body: {
-        user: {
-            fullName: "Arnold Soneguade",
-            username: "arnoldSoneguade023r",
-            email: "arnoldsoneguade@gmail.com",
-            password: "arnold12345"
-        }
-    }
-} as unknown as Request;
+    body: {}
+} as unknown as Request<{ id?: string | undefined }>;
 
 let userController: UserController;
 
-describe ('getUser method', () => {
+describe ("User Controller", () => {
     beforeEach(async () => {
+        vi.clearAllMocks();
         userController = new UserController(mockUserService);
-    })
+    });
+    
+    describe ("GET Method", () => {
+        function paramsIdWillBe(id: string | undefined = undefined) {
+            mockReq.params.id = id;
+        }
 
-    it ("return all users and status 200 when id is not passed", async () => {
-        mockUserService.getUser.mockResolvedValue(allMockUserModels);
+        async function initMockedServerWithGetUserServiceReturning(data: UserModel | UserModel[] | null): Promise<void> {
+            getUserServiceReturns(data)
+            await initMockedService();
+        }
         
-        await userController.getUser(mockReq, mockRes);
+        async function initMockedServerWithGetUserServiceThrowing(error: Error): Promise<void> {
+            getUserServiceThrows(error);
+            await initMockedService();
+        }
+
+        function getUserServiceReturns(data: UserModel | UserModel[] | null): void {
+            mockUserService.getUser.mockResolvedValue(data);
+        }
         
-        expect (mockUserService.getUser).toHaveBeenCalledWith(mockReq.params.id);
+        function getUserServiceThrows(error: Error): void {
+            mockUserService.getUser.mockRejectedValue(error);
+        }
 
-        expect (mockRes.status).toHaveBeenCalledWith(200);
+        async function initMockedService(): Promise<void> {
+            await userController.getUser(mockReq, mockRes);
+        }
 
-        expect (mockRes.json).toHaveBeenCalledWith({ message: "Users found.", data: allMockUserModels });
-    })
+        function callGetUserServiceOnceWithParamsId(): void {
+            expect (mockUserService.getUser).toHaveBeenCalledExactlyOnceWith(mockReq.params.id);
+        }
 
-    it ("return a user and status 200 when id is passed", async () => {
-        mockReq.params.id = "1";
+        function callGetUserServiceOnceWithoutParams(): void {
+            expect (mockUserService.getUser).toHaveBeenCalledExactlyOnceWith(undefined);
+        }
 
-        mockUserService.getUser.mockResolvedValue(mockUserModel1);
+        function callResponseStatusOnceWith(status: number): void {
+            expect (mockRes.status).toHaveBeenCalledExactlyOnceWith(status);
+        }
 
-        await userController.getUser(mockReq, mockRes);
+        type ObjectResponseFormat = { message: string, data?: UserModel | UserModel[] }
+        function callResponseJsonOnceWith(data: ObjectResponseFormat): void {
+            expect (mockRes.json).toHaveBeenCalledExactlyOnceWith(data);
+        }
 
-        expect (mockUserService.getUser).toHaveBeenCalledWith(mockReq.params.id);
 
-        expect (mockRes.status).toHaveBeenCalledWith(200);
+        it ("returns all users and status 200 when id is not provided", async () => {
+            paramsIdWillBe(undefined);
 
-        expect (mockRes.json).toHaveBeenCalledWith({ message: "User found.", data: mockUserModel1});
-    })
+            await initMockedServerWithGetUserServiceReturning(arrayWithAllUsersReturned);
+            
+            callGetUserServiceOnceWithoutParams();
+    
+            callResponseStatusOnceWith(200);
+    
+            callResponseJsonOnceWith({ message: "Users found.", data: arrayWithAllUsersReturned });
+        });
+    
+        it ("returns a user and status 200 when id is provided", async () => {
+            paramsIdWillBe("1");
+    
+            await initMockedServerWithGetUserServiceReturning(returnedUser);
 
-    it ("return a message when user is not found", async () => {
-        mockUserService.getUser.mockResolvedValue(null);
-        
-        await userController.getUser(mockReq, mockRes);
-        
-        expect (mockUserService.getUser).toHaveBeenCalledWith(mockReq.params.id);
+            callGetUserServiceOnceWithParamsId();
 
-        expect (mockRes.status).toHaveBeenCalledWith(404);
+            callResponseStatusOnceWith(200);
+    
+            callResponseJsonOnceWith({ message: "User found.", data: returnedUser });
+        });
+    
+        it ("returns a message when user is not found", async () => {
+            paramsIdWillBe("999")
 
-        expect (mockRes.json).toHaveBeenCalledWith({ message: "User not found." });
+            await initMockedServerWithGetUserServiceReturning(null);
+
+            callGetUserServiceOnceWithParamsId();
+    
+            callResponseStatusOnceWith(404);
+    
+            callResponseJsonOnceWith({ message: "User not found." });
+        });
     });
 });
