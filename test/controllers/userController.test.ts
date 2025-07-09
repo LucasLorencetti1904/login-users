@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, vi, it } from "vitest";
 import UserController from "../../src/controllers/userController";
 import { User, UserModel } from "../../src/shared/schemas/UserSchema";
 import { Request, Response } from "express";
+import { InternalError, NotFoundError } from "../../src/shared/util/errors/Error";
 
 const mockUser1: User = {
     fullName: "Arnold Soneguade",
@@ -40,7 +41,8 @@ const mockUserService: any = {
 
 const mockRes = {
     status: vi.fn().mockReturnThis(),
-    json: vi.fn()
+    json: vi.fn(),
+    send: vi.fn()
 } as unknown as Response;
 
 const mockReq = {
@@ -57,10 +59,6 @@ describe ("User Controller", () => {
     });
     
     describe ("GET Method", () => {
-        function paramsIdWillBe(id: string | undefined = undefined) {
-            mockReq.params.id = id;
-        }
-
         async function initMockedServerWithGetUserServiceReturning(data: UserModel | UserModel[] | null): Promise<void> {
             getUserServiceReturns(data)
             await initMockedService();
@@ -78,63 +76,106 @@ describe ("User Controller", () => {
         function getUserServiceThrows(error: Error): void {
             mockUserService.getUser.mockRejectedValue(error);
         }
-
+        
         async function initMockedService(): Promise<void> {
             await userController.getUser(mockReq, mockRes);
         }
-
-        function callGetUserServiceOnceWithParamsId(): void {
-            expect (mockUserService.getUser).toHaveBeenCalledExactlyOnceWith(mockReq.params.id);
+        
+        function paramsIdWillBe(id: string | undefined): void {
+            mockReq.params.id = id;
         }
 
-        function callGetUserServiceOnceWithoutParams(): void {
-            expect (mockUserService.getUser).toHaveBeenCalledExactlyOnceWith(undefined);
+        function callGetUserServiceOnceWithCurrentParamsId(): void {
+            expect (mockUserService.getUser).toHaveBeenCalledExactlyOnceWith(mockReq.params.id);
         }
 
         function callResponseStatusOnceWith(status: number): void {
             expect (mockRes.status).toHaveBeenCalledExactlyOnceWith(status);
         }
 
-        type ObjectResponseFormat = { message: string, data?: UserModel | UserModel[] }
+        function callResponseEmptyOnce(): void {
+            expect (mockRes.send).toHaveBeenCalledExactlyOnceWith();
+        }
+        
+        type ObjectResponseFormat = { message: string, data?: UserModel | UserModel[] };
         function callResponseJsonOnceWith(data: ObjectResponseFormat): void {
             expect (mockRes.json).toHaveBeenCalledExactlyOnceWith(data);
         }
 
+        it ("returns a found user and status 200 when id is provided", async () => {
+            paramsIdWillBe("1");
 
-        it ("returns all users and status 200 when id is not provided", async () => {
+            await initMockedServerWithGetUserServiceReturning(returnedUser);
+            
+            callGetUserServiceOnceWithCurrentParamsId();
+            
+            callResponseStatusOnceWith(200);
+            
+            callResponseJsonOnceWith({ message: "User found.", data: returnedUser });
+        });
+        
+        it ("returns a array of found users and status 200 when id is not provided", async () => {
             paramsIdWillBe(undefined);
 
             await initMockedServerWithGetUserServiceReturning(arrayWithAllUsersReturned);
             
-            callGetUserServiceOnceWithoutParams();
+            callGetUserServiceOnceWithCurrentParamsId();
     
             callResponseStatusOnceWith(200);
     
             callResponseJsonOnceWith({ message: "Users found.", data: arrayWithAllUsersReturned });
         });
     
-        it ("returns a user and status 200 when id is provided", async () => {
-            paramsIdWillBe("1");
-    
-            await initMockedServerWithGetUserServiceReturning(returnedUser);
-
-            callGetUserServiceOnceWithParamsId();
-
-            callResponseStatusOnceWith(200);
-    
-            callResponseJsonOnceWith({ message: "User found.", data: returnedUser });
-        });
-    
-        it ("returns a message when user is not found", async () => {
-            paramsIdWillBe("999")
+        it ("returns status 204 if there are no users when id is provided.", async () => {
+            paramsIdWillBe("3");
 
             await initMockedServerWithGetUserServiceReturning(null);
 
-            callGetUserServiceOnceWithParamsId();
+            callGetUserServiceOnceWithCurrentParamsId();
+
+            callResponseStatusOnceWith(204);
+
+            callResponseEmptyOnce();
+        })
+
+        it ("returns status 204 if there are no users when id is not provided.", async () => {
+            paramsIdWillBe(undefined);
+
+            await initMockedServerWithGetUserServiceReturning(null);
+
+            callGetUserServiceOnceWithCurrentParamsId();
+
+            callResponseStatusOnceWith(204);
+
+            callResponseEmptyOnce();
+        })
     
-            callResponseStatusOnceWith(404);
+        it ("throws a exception and status 404 when user is not found", async () => {
+            var notFoundError: NotFoundError = new NotFoundError("User not found.");
+
+            paramsIdWillBe("999");
+            
+            await initMockedServerWithGetUserServiceThrowing(notFoundError);
+
+            callGetUserServiceOnceWithCurrentParamsId();
     
-            callResponseJsonOnceWith({ message: "User not found." });
+            callResponseStatusOnceWith(notFoundError.status);
+    
+            callResponseJsonOnceWith({ message: notFoundError.message});
         });
+
+        it ("throws a exception and status 500 when server internal error occurs.", async () => {
+            var internalServerError: InternalError = new InternalError("Internal Server Error.");
+
+            paramsIdWillBe("1");
+
+            await initMockedServerWithGetUserServiceThrowing(internalServerError);
+
+            callGetUserServiceOnceWithCurrentParamsId();
+
+            callResponseStatusOnceWith(internalServerError.status);
+
+            callResponseJsonOnceWith({ message: internalServerError.message });
+        })
     });
 });
