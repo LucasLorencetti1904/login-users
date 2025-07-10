@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, vi, it } from "vitest";
 import UserController from "../../src/controllers/userController";
 import { User, UserModel } from "../../src/shared/schemas/UserSchema";
 import { Request, Response } from "express";
-import { InternalError, NotFoundError } from "../../src/shared/util/errors/Error";
+import { BadRequestError, ConflictError, InternalError, NotFoundError } from "../../src/shared/util/errors/Error";
 
 const mockUser1: User = {
     fullName: "Arnold Soneguade",
@@ -16,6 +16,13 @@ const mockUser2: User = {
     username: "flanelaland329_",
     email: "flanelaharginton@gmail.com",
     password: "fla74Ba"
+}
+
+const invalidMockUser: User = {
+    fullName: "32121",
+    username: "Lets Jango 043",
+    email: "jangogmail.com",
+    password: "1"
 }
 
 const returnedUser: UserModel = {
@@ -36,7 +43,8 @@ const arrayWithAllUsersReturned: UserModel[] = [
 ];
 
 const mockUserService: any = {
-    getUser: vi.fn() 
+    getUser: vi.fn(),
+    createUser: vi.fn()
 };
 
 const mockRes = {
@@ -53,59 +61,52 @@ const mockReq = {
 let userController: UserController;
 
 describe ("User Controller", () => {
+    function callResponseStatusOnceWith(status: number): void {
+        expect (mockRes.status).toHaveBeenCalledExactlyOnceWith(status);
+    }
+
+    function callResponseEmptyOnce(): void {
+        expect (mockRes.send).toHaveBeenCalledExactlyOnceWith();
+    }
+    
+    type ObjectResponseFormat = { message: string, data?: UserModel | UserModel[] };
+    function callResponseJsonOnceWith(data: ObjectResponseFormat): void {
+        expect (mockRes.json).toHaveBeenCalledExactlyOnceWith(data);
+    }
+
     beforeEach(async () => {
         vi.clearAllMocks();
         userController = new UserController(mockUserService);
     });
     
     describe ("GET Method", () => {
-        async function initMockedServerWithGetUserServiceReturning(data: UserModel | UserModel[] | null): Promise<void> {
-            getUserServiceReturns(data)
-            await initMockedService();
-        }
-        
-        async function initMockedServerWithGetUserServiceThrowing(error: Error): Promise<void> {
-            getUserServiceThrows(error);
-            await initMockedService();
-        }
-
-        function getUserServiceReturns(data: UserModel | UserModel[] | null): void {
-            mockUserService.getUser.mockResolvedValue(data);
-        }
-        
-        function getUserServiceThrows(error: Error): void {
-            mockUserService.getUser.mockRejectedValue(error);
-        }
-        
-        async function initMockedService(): Promise<void> {
-            await userController.getUser(mockReq, mockRes);
-        }
-        
         function paramsIdWillBe(id: string | undefined): void {
             mockReq.params.id = id;
         }
 
-        function callGetUserServiceOnceWithCurrentParamsId(): void {
-            expect (mockUserService.getUser).toHaveBeenCalledExactlyOnceWith(mockReq.params.id);
-        }
-
-        function callResponseStatusOnceWith(status: number): void {
-            expect (mockRes.status).toHaveBeenCalledExactlyOnceWith(status);
-        }
-
-        function callResponseEmptyOnce(): void {
-            expect (mockRes.send).toHaveBeenCalledExactlyOnceWith();
+        function getUserServiceWillBeReturns(data: UserModel | UserModel[] | null): void {
+            mockUserService.getUser.mockResolvedValue(data);
         }
         
-        type ObjectResponseFormat = { message: string, data?: UserModel | UserModel[] };
-        function callResponseJsonOnceWith(data: ObjectResponseFormat): void {
-            expect (mockRes.json).toHaveBeenCalledExactlyOnceWith(data);
+        function getUserServiceWillBeThrows(error: Error): void {
+
+            mockUserService.getUser.mockRejectedValue(error);
+        }
+
+        async function initGetController() {
+            await userController.getUser(mockReq, mockRes);
+        }
+        
+        function callGetUserServiceOnceWithCurrentParamsId(): void {
+            expect (mockUserService.getUser).toHaveBeenCalledExactlyOnceWith(mockReq.params.id);
         }
 
         it ("returns a found user and status 200 when id is provided", async () => {
             paramsIdWillBe("1");
 
-            await initMockedServerWithGetUserServiceReturning(returnedUser);
+            getUserServiceWillBeReturns(returnedUser);
+
+            await initGetController();
             
             callGetUserServiceOnceWithCurrentParamsId();
             
@@ -117,7 +118,9 @@ describe ("User Controller", () => {
         it ("returns a array of found users and status 200 when id is not provided", async () => {
             paramsIdWillBe(undefined);
 
-            await initMockedServerWithGetUserServiceReturning(arrayWithAllUsersReturned);
+            getUserServiceWillBeReturns(arrayWithAllUsersReturned);
+
+            await initGetController();
             
             callGetUserServiceOnceWithCurrentParamsId();
     
@@ -129,7 +132,9 @@ describe ("User Controller", () => {
         it ("returns status 204 if there are no users when id is provided.", async () => {
             paramsIdWillBe("3");
 
-            await initMockedServerWithGetUserServiceReturning(null);
+            getUserServiceWillBeReturns(null);
+
+            await initGetController();
 
             callGetUserServiceOnceWithCurrentParamsId();
 
@@ -141,7 +146,9 @@ describe ("User Controller", () => {
         it ("returns status 204 if there are no users when id is not provided.", async () => {
             paramsIdWillBe(undefined);
 
-            await initMockedServerWithGetUserServiceReturning(null);
+            getUserServiceWillBeReturns(null);
+
+            await initGetController();
 
             callGetUserServiceOnceWithCurrentParamsId();
 
@@ -155,13 +162,15 @@ describe ("User Controller", () => {
 
             paramsIdWillBe("999");
             
-            await initMockedServerWithGetUserServiceThrowing(notFoundError);
+            getUserServiceWillBeThrows(notFoundError);
+
+            await initGetController();
 
             callGetUserServiceOnceWithCurrentParamsId();
     
             callResponseStatusOnceWith(notFoundError.status);
     
-            callResponseJsonOnceWith({ message: notFoundError.message});
+            callResponseJsonOnceWith({ message: notFoundError.message });
         });
 
         it ("throws a exception and status 500 when server internal error occurs.", async () => {
@@ -169,7 +178,9 @@ describe ("User Controller", () => {
 
             paramsIdWillBe("1");
 
-            await initMockedServerWithGetUserServiceThrowing(internalServerError);
+            getUserServiceWillBeThrows(internalServerError);
+
+            await initGetController();
 
             callGetUserServiceOnceWithCurrentParamsId();
 
@@ -177,5 +188,73 @@ describe ("User Controller", () => {
 
             callResponseJsonOnceWith({ message: internalServerError.message });
         })
+    });
+
+    describe ("POST Method", () => {
+        function bodyDataWillBe(data: User): void {
+            mockReq.body = data;
+        }
+
+        function createUserServiceReturns(data: UserModel | UserModel[] | null): void {
+            mockUserService.createUser.mockResolvedValue(data);
+        }
+
+        function createUserServiceThrows(error: Error): void {
+            mockUserService.createUser.mockRejectedValue(error);
+        }
+
+        async function initPostController(): Promise<void> {
+            await userController.createUser(mockReq, mockRes);
+        }
+
+        function callCreateUserServiceOnceWithCurrentBodyData(): void {
+            expect (mockUserService.createUser).toHaveBeenCalledExactlyOnceWith(mockReq.body);
+        }
+
+        it ("returns user and status 201 when user is successfully created", async () => {
+            bodyDataWillBe(mockUser1);
+            
+            createUserServiceReturns(returnedUser);
+
+            await initPostController();
+
+            callCreateUserServiceOnceWithCurrentBodyData();
+
+            callResponseStatusOnceWith(201);
+
+            callResponseJsonOnceWith({ message: "User created.", data: returnedUser});
+        });
+
+        it ("throws a exception and status 400 when user data is invalid", async () => {
+            var badRequestError: BadRequestError = new BadRequestError("Invalid user data.");
+
+            bodyDataWillBe(invalidMockUser);
+
+            createUserServiceThrows(badRequestError);
+
+            await initPostController();
+
+            callCreateUserServiceOnceWithCurrentBodyData();
+
+            callResponseStatusOnceWith(badRequestError.status);
+
+            callResponseJsonOnceWith({ message: expect.any(String) });
+        });
+
+        it ("throws a exception and status 409 when user already exists.", async () => {
+            var conflictError: ConflictError = new ConflictError("User already exists.");
+
+            bodyDataWillBe(mockUser1);
+
+            createUserServiceThrows(conflictError);
+
+            await initPostController();
+
+            callCreateUserServiceOnceWithCurrentBodyData()
+
+            callResponseStatusOnceWith(conflictError.status);
+
+            callResponseJsonOnceWith({ message: conflictError.message });
+        });
     });
 });
