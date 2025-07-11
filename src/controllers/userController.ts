@@ -42,6 +42,24 @@ export default class UserController {
             return this.handleError(res, e);
         }
     }
+
+    public async updateUser(req: Request, res: Response): Promise<Response> {
+        try {
+            const updated: UserModel = await this.userService.updateUser(req.params.id, req.body);
+
+            const hasNotChanged: boolean = updated == null;
+
+            if (hasNotChanged) {
+                return res.status(204).send();
+            }
+
+            return res.status(200).json({ message: "User updated successfully.", data: updated });
+        }
+
+        catch(e: unknown) {
+            return this.handleError(res, e);
+        }
+    }
     
     private handleError(res: Response, e: unknown): Response {
         if (e instanceof ApplicationError) {
