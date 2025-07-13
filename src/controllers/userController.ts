@@ -4,9 +4,9 @@ import type UserService from "../services/userServiceImpl";
 import { ApplicationError } from "../shared/util/errors/Error";
 
 export default class UserController {
-    private readonly userService: UserService;
+    private readonly userService: any;
 
-    public constructor(userService: UserService) {
+    public constructor(userService: any) {
         this.userService = userService;
     }
 
