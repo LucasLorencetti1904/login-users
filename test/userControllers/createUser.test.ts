@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
 import UserController from "../../src/controllers/userController";
-import { User, UserModel } from "../../src/shared/schemas/UserSchema";
-import { BadRequestError, ConflictError } from "../../src/shared/util/errors/Error";
+import { User, UserModel } from "../../src/entities/User";
+import { BadRequestError, ConflictError, InternalError } from "../../src/shared/util/errors/Error";
 import MockUserService from "./MockUserService";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 
-const mockUser: User = {
+const userExample: User = {
     fullName: "User Example",
     username: "user_example",
     email: "userexample@gmail.com",
@@ -23,7 +23,7 @@ const invalidMockUser: User = {
 
 const returnedUser: UserModel = {
     id: 1,
-    ...mockUser,
+    ...userExample,
     createdAt: new Date("2025-09-03")
 };
 
@@ -46,7 +46,7 @@ describe (`${method} Method`, () => {
     });
 
     it ("returns user and status 201 when user is successfully created.", async () => {
-        mockRequest.bodyDataWillBe(mockUser);
+        mockRequest.bodyDataWillBe(userExample);
         
         mockUserService.methodWillBeReturns(method, returnedUser);
 
@@ -78,7 +78,7 @@ describe (`${method} Method`, () => {
     it ("throws a exception and status 409 when user already exists.", async () => {
         var conflictError: ConflictError = new ConflictError("User already exists.");
 
-        mockRequest.bodyDataWillBe(mockUser);
+        mockRequest.bodyDataWillBe(userExample);
 
         mockUserService.methodWillBeThrows(method, conflictError);
 
@@ -89,5 +89,21 @@ describe (`${method} Method`, () => {
         mockResponse.callResponseStatusWith(conflictError.status);
 
         mockResponse.callResponseJsonWith({ message: conflictError.message });
+    });
+
+    it ("throws a exception and status 500 when server internal error occurs.", async () => {
+        var internalServerError: InternalError = new InternalError("Internal Server Error.");
+
+        mockRequest.bodyDataWillBe(userExample);
+
+        mockUserService.methodWillBeThrows(method, internalServerError);
+
+        await mockServer.initUserControllerMethod(method);
+
+        mockUserService.callCurrentBodyDataWithMethod(method);
+
+        mockResponse.callResponseStatusWith(internalServerError.status);
+
+        mockResponse.callResponseJsonWith({ message: internalServerError.message });
     });
 });

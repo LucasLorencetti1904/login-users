@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { User } from "../../src/shared/schemas/UserSchema";
+import { User } from "../../src/entities/User";
 
 export default class MockRequest implements Partial<Request> {
     public params: Partial<{ id?: string }> = {};

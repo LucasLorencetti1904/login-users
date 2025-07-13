@@ -1,4 +1,4 @@
-import type { UserModel } from "../shared/schemas/UserSchema";
+import type { UserModel } from "../entities/User";
 
 export default interface UserRepository {
     getUserById(id: number): Promise<UserModel | null>;

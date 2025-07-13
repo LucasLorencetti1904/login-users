@@ -2,8 +2,8 @@ import { type JSX, useState } from "react";
 import styled from "@emotion/styled";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";;
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";;
-import UserSchema from "../shared/schemas/UserSchema";
-import type { User } from "../shared/schemas/UserSchema";
+import UserSchema from "../entities/User";
+import type { User } from "../entities/User";
 import userFetchApi from "../api/userFetchApi";
 import { css } from "@emotion/react";
 

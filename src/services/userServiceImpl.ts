@@ -1,4 +1,4 @@
-import type { UserModel } from "../shared/schemas/UserSchema";
+import type { UserModel } from "../entities/User";
 import type UserRepository from "../repositories/userPrismaRepository";
 
 export default class UserService {

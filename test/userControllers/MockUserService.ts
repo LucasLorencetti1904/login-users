@@ -1,5 +1,5 @@
 import { vi, expect, Mock } from "vitest";
-import { UserModel } from "../../src/shared/schemas/UserSchema";
+import { UserModel } from "../../src/entities/User";
 import MockRequest from "./MockRequest";
 
 type UserServiceMethod = keyof MockUserService;
@@ -9,6 +9,7 @@ export default class MockUserService {
     public readonly getUser = vi.fn();
     public readonly createUser = vi.fn();
     public readonly updateUser = vi.fn();
+    public readonly deleteUser = vi.fn();
 
     public constructor (private readonly req: MockRequest) {}
 

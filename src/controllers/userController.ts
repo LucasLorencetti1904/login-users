@@ -1,6 +1,5 @@
 import { type Request, type Response } from "express";
-import type { UserModel } from "../shared/schemas/UserSchema";
-import type UserService from "../services/userServiceImpl";
+import type { UserModel } from "../entities/User";
 import { ApplicationError } from "../shared/util/errors/Error";
 
 export default class UserController {
@@ -53,7 +52,19 @@ export default class UserController {
                 return res.status(204).send();
             }
 
-            return res.status(200).json({ message: "User updated successfully.", data: updated });
+            return res.status(200).json({ message: "User updated.", data: updated });
+        }
+
+        catch(e: unknown) {
+            return this.handleError(res, e);
+        }
+    }
+
+    public async deleteUser(req: Request, res: Response): Promise<Response> {
+        try {
+            const deleted: UserModel = await this.userService.deleteUser(req.params.id);
+
+            return res.status(200).json({ message: "User deleted.", data: deleted });
         }
 
         catch(e: unknown) {

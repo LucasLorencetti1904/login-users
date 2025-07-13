@@ -1,4 +1,4 @@
-import type { User } from "../shared/schemas/UserSchema";
+import type { User } from "../entities/User";
 
 interface ApiResults {
     success: boolean;

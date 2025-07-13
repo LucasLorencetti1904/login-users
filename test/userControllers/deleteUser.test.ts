@@ -1,42 +1,20 @@
 import { beforeEach, describe, vi, it } from "vitest";
 import UserController from "../../src/controllers/userController";
-import { User, UserModel } from "../../src/entities/User";
+import { UserModel } from "../../src/entities/User";
 import { InternalError, NotFoundError } from "../../src/shared/util/errors/Error";
 import MockUserService from "./MockUserService";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 
-const userExample1: User = {
+const deletedUser: UserModel = {
+    id: 1,
     fullName: "User Example 1",
     username: "user_example1",
     email: "userexample1@gmail.com",
-    password: "12345"
-};
-
-const userExample2: User = {
-    fullName: "User Example 2",
-    username: "user_example2",
-    email: "userexample2@gmail.com",
-    password: "54321"
-};
-
-const returnedUser: UserModel = {
-    id: 1,
-    ...userExample1,
+    password: "12345",
     createdAt: new Date("2025-09-03")
 };
-
-const otherReturnedUser: UserModel = {
-    id: 2,
-    ...userExample2,
-    createdAt: new Date("2023-02-19")
-};
-
-const arrayWithAllUsersReturned: UserModel[] = [
-    returnedUser,
-    otherReturnedUser
-];
 
 let mockRequest: MockRequest;
 let mockResponse: MockResponse;
@@ -44,7 +22,7 @@ let mockUserService: MockUserService;
 let userController: UserController;
 let mockServer: MockServer;   
 
-const method: keyof UserController = "getUser";
+const method: keyof UserController = "deleteUser";
 
 describe (`${method} Method`, () => {
     beforeEach(() => {
@@ -56,10 +34,10 @@ describe (`${method} Method`, () => {
         mockServer = new MockServer(userController, mockRequest, mockResponse);
     });
 
-    it ("returns a found user and status 200 when id is provided.", async () => {
+    it ("returns a user and status 200 when user is deleted successfully.", async () => {
         mockRequest.paramsIdWillBe("1");
 
-        mockUserService.methodWillBeReturns(method, returnedUser);
+        mockUserService.methodWillBeReturns(method, deletedUser);
 
         await mockServer.initUserControllerMethod(method);
         
@@ -67,46 +45,18 @@ describe (`${method} Method`, () => {
         
         mockResponse.callResponseStatusWith(200);
         
-        mockResponse.callResponseJsonWith({ message: "User found.", data: returnedUser });
+        mockResponse.callResponseJsonWith({ message: "User deleted.", data: deletedUser });
     });
     
-    it ("returns a array of found users and status 200 when id is not provided.", async () => {
-        mockRequest.paramsIdWillBe(undefined);
-
-        mockUserService.methodWillBeReturns(method, arrayWithAllUsersReturned);
-
-        await mockServer.initUserControllerMethod(method);
-        
-        mockUserService.callCurrentParamsIdWithMethod(method);
-
-        mockResponse.callResponseStatusWith(200);
-
-        mockResponse.callResponseJsonWith({ message: "Users found.", data: arrayWithAllUsersReturned });
-    });
-
-    it ("returns status 204 if there are no users.", async () => {
-        mockRequest.paramsIdWillBe(undefined);
-
-        mockUserService.methodWillBeReturns(method, null);
-
-        await mockServer.initUserControllerMethod(method);
-
-        mockUserService.callCurrentParamsIdWithMethod(method);
-
-        mockResponse.callResponseStatusWith(204);
-
-        mockResponse.callResponseEmpty();
-    });
-
     it ("throws a exception and status 404 when user is not found.", async () => {
         var notFoundError: NotFoundError = new NotFoundError("User not found.");
 
         mockRequest.paramsIdWillBe("999");
-        
+
         mockUserService.methodWillBeThrows(method, notFoundError);
 
         await mockServer.initUserControllerMethod(method);
-
+        
         mockUserService.callCurrentParamsIdWithMethod(method);
 
         mockResponse.callResponseStatusWith(notFoundError.status);
