@@ -1,4 +1,4 @@
-export abstract class ApplicationError extends Error {
+abstract class ResponseError extends Error {
     public abstract readonly status: number;
 
     constructor(message: string) {
@@ -7,7 +7,7 @@ export abstract class ApplicationError extends Error {
     }
 }
 
-export class InternalError extends ApplicationError {
+export class InternalError extends ResponseError {
     public readonly status: number = 500;
 
     constructor(message: string = "Internal Server Error") {
@@ -15,7 +15,7 @@ export class InternalError extends ApplicationError {
     }
 }
 
-export class BadRequestError extends ApplicationError {
+export class BadRequestError extends ResponseError {
     public readonly status: number = 400;
 
     constructor(message: string = "Bad Request Error") {
@@ -23,7 +23,7 @@ export class BadRequestError extends ApplicationError {
     }
 }
 
-export class NotFoundError extends ApplicationError {
+export class NotFoundError extends ResponseError {
     public readonly status: number = 404;
 
     constructor(message: string = "Not Found Error") {
@@ -31,7 +31,7 @@ export class NotFoundError extends ApplicationError {
     }
 }
 
-export class ConflictError extends ApplicationError {
+export class ConflictError extends ResponseError {
     public readonly status: number = 409;
 
     constructor(message: string = "Conflict Error") {

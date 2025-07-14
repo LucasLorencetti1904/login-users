@@ -1,19 +1,21 @@
 import { beforeEach, describe, vi, it } from "vitest";
 import UserController from "../../src/controllers/userController";
-import { UserModel } from "../../src/entities/User";
-import { InternalError, NotFoundError } from "../../src/shared/util/errors/Error";
+import { UserModel } from "../../src/models/User";
 import MockUserService from "./MockUserService";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
+import { InternalError, NotFoundError } from "../../src/shared/util/errors/ResponseError";
 
 const deletedUser: UserModel = {
     id: 1,
-    fullName: "User Example 1",
     username: "user_example1",
+    firstName: "User",
+    lastName: "Example",
     email: "userexample1@gmail.com",
     password: "12345",
-    createdAt: new Date("2025-09-03")
+    createdAt: new Date("2025-09-03"),
+    updatedAt: new Date("2025-09-05")
 };
 
 let mockRequest: MockRequest;

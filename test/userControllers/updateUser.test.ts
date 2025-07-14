@@ -1,30 +1,33 @@
+import { User, UserModel } from "../../src/models/User";
 import { beforeEach, describe, expect, vi, it } from "vitest";
 import UserController from "../../src/controllers/userController";
-import { User, UserModel } from "../../src/entities/User";
-import { BadRequestError, InternalError, NotFoundError } from "../../src/shared/util/errors/Error";
 import MockUserService from "./MockUserService";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
+import { BadRequestError, InternalError, NotFoundError } from "../../src/shared/util/errors/ResponseError";
 
 const userExample: User = {
-    fullName: "User Example",
-    username: "user_example",
-    email: "userexample@gmail.com",
+    username: "user_example1",
+    firstName: "User",
+    lastName: "Example",
+    email: "userexample1@gmail.com",
     password: "12345"
 };
 
 const invalidMockUser: User = {
-    fullName: "12345",
     username: "User Example",
-    email: "userexampleemail.com",
+    firstName: "32121",
+    lastName: "*$%!",
+    email: "userexamplegmail.com",
     password: "1"
 };
 
 const returnedUser: UserModel = {
     id: 1,
     ...userExample,
-    createdAt: new Date("2025-09-03")
+    createdAt: new Date("2025-09-03"),
+    updatedAt: new Date("2025-09-05")
 };
 
 const updatedUser: UserModel = {

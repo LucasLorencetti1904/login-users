@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
 import type { UserModel } from "../entities/User";
-import { ApplicationError } from "../shared/util/errors/Error";
+import { ApplicationError } from "../shared/util/errors/ResponseError";
 
 export default class UserController {
     private readonly userService: any;

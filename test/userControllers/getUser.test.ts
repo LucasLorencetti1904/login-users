@@ -1,22 +1,24 @@
+import { User, UserModel } from "../../src/models/User";
 import { beforeEach, describe, vi, it } from "vitest";
 import UserController from "../../src/controllers/userController";
-import { User, UserModel } from "../../src/entities/User";
-import { InternalError, NotFoundError } from "../../src/shared/util/errors/Error";
 import MockUserService from "./MockUserService";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
+import { InternalError, NotFoundError } from "../../src/shared/util/errors/ResponseError";
 
 const userExample1: User = {
-    fullName: "User Example 1",
     username: "user_example1",
+    firstName: "Example",
+    lastName: "One",
     email: "userexample1@gmail.com",
     password: "12345"
 };
 
 const userExample2: User = {
-    fullName: "User Example 2",
     username: "user_example2",
+    firstName: "Example",
+    lastName: "Two",
     email: "userexample2@gmail.com",
     password: "54321"
 };
@@ -24,13 +26,15 @@ const userExample2: User = {
 const returnedUser: UserModel = {
     id: 1,
     ...userExample1,
-    createdAt: new Date("2025-09-03")
+    createdAt: new Date("2025-09-03"),
+    updatedAt: new Date("2025-09-04")
 };
 
 const otherReturnedUser: UserModel = {
     id: 2,
     ...userExample2,
-    createdAt: new Date("2023-02-19")
+    createdAt: new Date("2023-02-19"),
+    updatedAt: new Date("2023-02-21")
 };
 
 const arrayWithAllUsersReturned: UserModel[] = [
@@ -42,7 +46,7 @@ let mockRequest: MockRequest;
 let mockResponse: MockResponse;
 let mockUserService: MockUserService;
 let userController: UserController;
-let mockServer: MockServer;   
+let mockServer: MockServer;
 
 const method: keyof UserController = "getUser";
 

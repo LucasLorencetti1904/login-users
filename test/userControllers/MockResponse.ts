@@ -1,6 +1,6 @@
+import { UserModel } from "../../src/models/User";
 import { expect, vi } from "vitest";
 import { Response } from "express";
-import { UserModel } from "../../src/entities/User";
 
 type ResponseJson = {
     message: string,
