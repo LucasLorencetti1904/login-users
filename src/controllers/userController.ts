@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
-import type { UserModel } from "../entities/User";
-import { ApplicationError } from "../shared/util/errors/ResponseError";
+import type { UserModel } from "../models/User";
+import { ResponseError } from "../shared/util/errors/ResponseError";
 
 export default class UserController {
     private readonly userService: any;
@@ -73,7 +73,7 @@ export default class UserController {
     }
     
     private handleError(res: Response, e: unknown): Response {
-        if (e instanceof ApplicationError) {
+        if (e instanceof ResponseError) {
             return res.status(e.status).json({ message: e.message });
         }
     
