@@ -1,8 +1,7 @@
-import errorMessage from "../../constants/errorMessage";
-import { NameValidationError } from "../errors/DataValidationError";
-import type DataValidator from "./DataValidator";
+import errorMessage from "../../../constants/errorMessage";
+import { NameValidationError } from "../../errors/DataValidationError";
 
-export default class NameValidator implements DataValidator {
+export default class NameValidator {
     private value: string;
 
     constructor(value: string) {
@@ -13,7 +12,7 @@ export default class NameValidator implements DataValidator {
 
     public validate(): void {
         this.isEmpty(),
-        this.hasNumber(),
+        this.containsNumber(),
         this.tooSmall(),
         this.tooBig(),
         this.containsSpace(),
@@ -26,7 +25,7 @@ export default class NameValidator implements DataValidator {
             throw new NameValidationError("Name " + errorMessage.EMPTY);
     }
 
-    private hasNumber(): void {
+    private containsNumber(): void {
         const containsNumber: boolean = /[0-9]/.test(this.value);
         if (containsNumber)
             throw new NameValidationError("Name " + errorMessage.CONTAINS_NUMBER);

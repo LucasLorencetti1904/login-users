@@ -22,3 +22,11 @@ export class NameValidationError extends DataValidationError {
         super(message);
     }
 }
+
+export class EmailValidationError extends DataValidationError {
+    public invalidPropertyName: string = "email";
+
+    constructor(message: string) {
+        super(message);
+    }
+}

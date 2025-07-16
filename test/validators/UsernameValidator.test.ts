@@ -1,5 +1,5 @@
-import errorMessage from "../../src/shared/constants/errorMessage";
-import UsernameValidator from "../../src/shared/util/validators/UsernameValidator";
+import UsernameValidator from "../../src/shared/util/validators/vanilla/UsernameValidator";
+import errorMessage from "../../src/shared/constants/errorMessage";;
 import { vi, describe, beforeEach, it, expect } from "vitest";
 
 const propertyName: string = "Username";
@@ -15,7 +15,7 @@ describe (propertyName + " validator test", () => {
 
     it (`throws a error message when ${propertyName} is or empty.`, () => {
         expect (() => new UsernameValidator("")).toThrow(
-            propertyName + " " + errorMessage.EMPTY
+        propertyName + " " + errorMessage.EMPTY
         );
     });
 

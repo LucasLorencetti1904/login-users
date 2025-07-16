@@ -1,8 +1,7 @@
-import errorMessage from "../../constants/errorMessage";
-import { UsernameValidationError } from "../errors/DataValidationError";
-import type DataValidator from "./DataValidator";
+import errorMessage from "../../../constants/errorMessage";
+import { UsernameValidationError } from "../../errors/DataValidationError";
 
-export default class UsernameValidator implements DataValidator {
+export default class UsernameValidator {
     private value: string;
 
     constructor(value: string) {

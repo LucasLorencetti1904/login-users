@@ -1,5 +1,5 @@
 import errorMessage from "../../src/shared/constants/errorMessage";
-import NameValidator from "../../src/shared/util/validators/NameValidator";
+import NameValidator from "../../src/shared/util/validators/vanilla/NameValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 
 const propertyName: string = "Name";
