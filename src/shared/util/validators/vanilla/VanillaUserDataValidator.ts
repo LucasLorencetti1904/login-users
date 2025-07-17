@@ -1,23 +1,21 @@
-import type { User } from "../../../../models/User";
-import type { DataValidationError } from "../../errors/DataValidationError";
-import NameValidator from "./NameValidator";
-import UserDataValidator from "../UserDataValidator";
-import UsernameValidator from "./UsernameValidator";
+import type Validator from "../Validator";
+import type ErrorMessageGenerator from "../../../helpers/ErrorMessageGenerator";
 
-export default class VanillaUserDataValidator extends UserDataValidator {
-    constructor(protected userData: User) {
-        super(userData);
+export default abstract class VanillaDataValidator<TDataValidationError extends Error> implements Validator {
+    protected data: string;
+
+    constructor(data: string) {
+        this.data = data.trim();
     }
 
-    public validate(): void {
-        try {
-            new UsernameValidator(this.userData.username);
-            new NameValidator(this.userData.firstName);
-            new NameValidator(this.userData.lastName);
-        }
+    protected abstract errorMessage: ErrorMessageGenerator;
 
-        catch(e: unknown) {
-            throw e as DataValidationError;
-        }
+    protected abstract createError(message: string): TDataValidationError;
+
+    public abstract validate(): void;
+    
+    protected failsIf(condition: boolean, message: string): void {
+        if (condition)
+            throw this.createError(message);
     }
 }

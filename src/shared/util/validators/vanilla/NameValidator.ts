@@ -1,57 +1,62 @@
-import errorMessage from "../../../constants/errorMessage";
+import ErrorMessageGenerator from "../../../helpers/ErrorMessageGenerator";
 import { NameValidationError } from "../../errors/DataValidationError";
+import VanillaDataValidator from "./VanillaUserDataValidator";
 
-export default class NameValidator {
-    private value: string;
+export default class NameValidator extends VanillaDataValidator<NameValidationError> {
+    protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Name");
 
-    constructor(value: string) {
-        this.value = value.trim();
+    constructor(private name: string) {
+        super(name);
 
         this.validate();
     }
 
+    protected createError(message: string): NameValidationError {
+        return new NameValidationError(message);
+    }
+
     public validate(): void {
-        this.isEmpty(),
-        this.containsNumber(),
-        this.tooSmall(),
-        this.tooBig(),
-        this.containsSpace(),
-        this.containsSpecialCharacters()
+        this.failsIf (
+            this.isEmpty(), this.errorMessage.isEmpty
+        );
+        this.failsIf (
+            this.containsNumber(), this.errorMessage.contains("numbers")
+        );
+        this.failsIf (
+            this.tooShort(), this.errorMessage.minLength(4)
+        );
+        this.failsIf (
+            this.tooLong(), this.errorMessage.maxLength(14)
+        );
+        this.failsIf (
+            this.containsSpaces(), this.errorMessage.contains("spaces")
+    );
+        this.failsIf (
+            this.containsSpecialCharacters(), this.errorMessage.contains("special characters")
+    );
     }
 
-    private isEmpty(): void {
-        const valueIsEmpty: boolean = !this.value;
-        if (valueIsEmpty)
-            throw new NameValidationError("Name " + errorMessage.EMPTY);
+    private isEmpty(): boolean {
+        return !this.name;
     }
 
-    private containsNumber(): void {
-        const containsNumber: boolean = /[0-9]/.test(this.value);
-        if (containsNumber)
-            throw new NameValidationError("Name " + errorMessage.CONTAINS_NUMBER);
+    private containsNumber(): boolean {
+        return /[0-9]/.test(this.name);
     }
 
-    private tooSmall(): void {
-        const lessThen4Characters: boolean = this.value.length < 4;
-        if (lessThen4Characters)
-            throw new NameValidationError("Name " + errorMessage.CONTAINS_LESS_THEN_4_CHARACTERS);
+    private tooShort(): boolean {
+        return this.name.length < 4;
     }
 
-    private tooBig(): void {
-        const greaterThen14Characters: boolean = this.value.length > 14;
-        if (greaterThen14Characters)
-            throw new NameValidationError("Name " + errorMessage.CONTAINS_MORE_THAN_14_CHARACTERS);
+    private tooLong(): boolean {
+        return this.name.length > 14;
     }
 
-    private containsSpace(): void {
-        const hasSpace: boolean = this.value.includes(" ");
-        if (hasSpace)
-            throw new NameValidationError("Name " + errorMessage.CONTAINS_SPACE);
+    private containsSpaces(): boolean {
+        return this.name.includes(" ");
     }
 
-    private containsSpecialCharacters(): void {
-        const hasSpecialCharacters: boolean = /[^a-zA-Z]/.test(this.value);
-        if (hasSpecialCharacters)
-            throw new NameValidationError("Name " + errorMessage.CONTAINS_SPECIAL_CHARACTERS);
+    private containsSpecialCharacters(): boolean {
+        return /[^a-zA-Z]/.test(this.name);
     }
 }
