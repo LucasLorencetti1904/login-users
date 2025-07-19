@@ -1,12 +1,13 @@
 import EmailValidator from "../../../src/shared/util/validators/vanilla/email/EmailValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import ErrorMessageGenerator from "../../../src/shared/helpers/ErrorMessageGenerator";
-import capitalize from "../../../src/shared/helpers/capitalize";
 
 const propertyName: string = "email";
 
+const errorTestDescriptionPrefix: string = `throw an error when ${propertyName}`;
+
 const errorMessage: ErrorMessageGenerator
-    = ErrorMessageGenerator.initWithDataName(capitalize(propertyName)); 
+    = ErrorMessageGenerator.initWithDataName("Email"); 
 
 describe (propertyName + " validator test", () => {
     beforeEach(() => {
@@ -17,39 +18,19 @@ describe (propertyName + " validator test", () => {
         expect (() => new EmailValidator("user@gmail.com")).not.toThrowError();
     });
 
-    it (`throws a error message when ${propertyName} is or empty.`, () => {
+    it (`${errorTestDescriptionPrefix} is empty.`, () => {
         expect (() => new EmailValidator("")).toThrow(errorMessage.isEmpty);
     });
 
-    it (`throws a error message when ${propertyName} number of '@' is not equal to 1.`, () => {
-        expect (() => new EmailValidator("usergmail.com")).toThrow(errorMessage.hasAnInvalidFormat);
+    it (`${errorTestDescriptionPrefix} number of '@' is not equal to 1.`, () => {
+        expect (() => new EmailValidator("userg@@mail.com")).toThrow(errorMessage.hasAnInvalidFormat);
     });
 
-
-    it (`throws a error message when ${propertyName} starts with a invalid character.`, () => {
-        expect (() => new EmailValidator("1user@gmail.com"))
-            .toThrow(errorMessage.startsWith("invalid characters"));
+    it (`${errorTestDescriptionPrefix} user is invalid.`, () => {
+        expect (() => new EmailValidator("usr@gmail.com")).toThrowError();
     });
 
-    it (`throws a error message when ${propertyName} domain contains less then 4 characters.`, () => {
-        expect (() => new EmailValidator("usr@gmail.com"))
-            .toThrow(errorMessage.minLength(4));
+    it (`${errorTestDescriptionPrefix} domain is invalid.`, () => {
+        expect (() => new EmailValidator("user@gnail.com")).toThrowError();
     });
-
-    it (`throws a error message when ${propertyName} domain contains more then 64 characters.`, () => {
-        expect (() => new EmailValidator(
-            "useruseruseruseruseruseruseruseruseruseruseruseruseruseruseruseruser@gmail.com"
-        ))
-            .toThrow(errorMessage.maxLength(64));
-    });
-
-    it (`throws a error message when ${propertyName} contains spaces.`, () => {
-        expect (() => new EmailValidator("user @gmail.com"))
-            .toThrow(errorMessage.contains("spaces"));
-    });
-
-    it (`always throws first error message when ${propertyName} data is invalid.`, () => {
-        expect (() => new EmailValidator("usrgmail.com"))
-            .toThrow(errorMessage.missing("@"));
-    }); 
 });

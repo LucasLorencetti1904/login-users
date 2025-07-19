@@ -1,11 +1,12 @@
 import type Validator from "../Validator";
 import type ErrorMessageGenerator from "../../../helpers/ErrorMessageGenerator";
+import type { Maybe } from "../../../types/optionalTypes";
 
 export default abstract class VanillaDataValidator<TDataValidationError extends Error> implements Validator {
-    protected data: string;
+    protected data: Maybe<string>;
 
-    constructor(data: string) {
-        this.data = data.trim();
+    constructor(data: Maybe<string>) {
+        this.data = data && data.trim();
     }
 
     protected abstract errorMessage: ErrorMessageGenerator;

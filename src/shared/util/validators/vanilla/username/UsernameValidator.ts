@@ -1,6 +1,6 @@
-import ErrorMessageGenerator from "../../../helpers/ErrorMessageGenerator";
-import { UsernameValidationError } from "../../errors/DataValidationError";
-import VanillaDataValidator from "./VanillaUserDataValidator";
+import ErrorMessageGenerator from "../../../../helpers/ErrorMessageGenerator";
+import { UsernameValidationError } from "../../../errors/DataValidationError";
+import VanillaDataValidator from "../VanillaDataValidator";
 
 export default class UsernameValidator extends VanillaDataValidator<UsernameValidationError> {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Username");
