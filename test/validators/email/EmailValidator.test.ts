@@ -1,10 +1,12 @@
-import EmailValidator from "../../src/shared/util/validators/vanilla/EmailValidator";
+import EmailValidator from "../../../src/shared/util/validators/vanilla/email/EmailValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import ErrorMessageGenerator from "../../src/shared/helpers/ErrorMessageGenerator";
+import ErrorMessageGenerator from "../../../src/shared/helpers/ErrorMessageGenerator";
+import capitalize from "../../../src/shared/helpers/capitalize";
 
-const propertyName: string = "Email";
+const propertyName: string = "email";
 
-const errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName(propertyName); 
+const errorMessage: ErrorMessageGenerator
+    = ErrorMessageGenerator.initWithDataName(capitalize(propertyName)); 
 
 describe (propertyName + " validator test", () => {
     beforeEach(() => {
@@ -19,8 +21,8 @@ describe (propertyName + " validator test", () => {
         expect (() => new EmailValidator("")).toThrow(errorMessage.isEmpty);
     });
 
-    it (`throws a error message when ${propertyName} not includes '@'.`, () => {
-        expect (() => new EmailValidator("usergmail.com")).toThrow(errorMessage.missing("@"));
+    it (`throws a error message when ${propertyName} number of '@' is not equal to 1.`, () => {
+        expect (() => new EmailValidator("usergmail.com")).toThrow(errorMessage.hasAnInvalidFormat);
     });
 
 
