@@ -2,12 +2,13 @@ import { EMAIL_SECOND_LEVEL_DOMAIN } from "../../../../../constants/emailDomains
 import ErrorMessageGenerator from "../../../../../helpers/ErrorMessageGenerator";
 import type { EmailSecondLevelDomain } from "../../../../../types/emailDomainTypes";
 import type { Maybe } from "../../../../../types/optionalTypes";
-import { EmailValidationError } from "../../../../errors/DataValidationError";
-import VanillaDataValidator from "../../VanillaDataValidator";
+import EmailDomainPartValidator from "./EmailDomainPartValidator";
 
-export default class EmailDomainSLDValidator extends VanillaDataValidator<EmailValidationError> {
+export default class EmailDomainSLDValidator extends EmailDomainPartValidator {
     protected errorMessage: ErrorMessageGenerator =
         ErrorMessageGenerator.initWithDataName("Email second level domain");
+
+    protected isRequired: boolean = true;
 
     constructor(private SLD: Maybe<EmailSecondLevelDomain>) {
         super(SLD);
@@ -15,21 +16,7 @@ export default class EmailDomainSLDValidator extends VanillaDataValidator<EmailV
         this.validate();
     }
 
-    protected createError(message: string): EmailValidationError {
-        return new EmailValidationError(message);
-    }
-
-    public validate(): void {
-        this.failsIf (
-            this.secondLevelHasAnInvalidFormat(), this.errorMessage.hasAnInvalidFormat 
-        );
-    }
-
-    private secondLevelHasAnInvalidFormat(): boolean {
-        const isInvalidFormat: boolean = this.SLD
-        ? !EMAIL_SECOND_LEVEL_DOMAIN.includes(this.SLD)
-        : true;
-
-        return isInvalidFormat;
+    protected hasAnInvalidFormat(): boolean {
+        return !EMAIL_SECOND_LEVEL_DOMAIN.includes(this.SLD as string);
     }
 }

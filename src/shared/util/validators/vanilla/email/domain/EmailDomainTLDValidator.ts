@@ -2,12 +2,13 @@ import { EMAIL_TOP_LEVEL_DOMAIN } from "../../../../../constants/emailDomains";
 import ErrorMessageGenerator from "../../../../../helpers/ErrorMessageGenerator";
 import type { EmailTopLevelDomain } from "../../../../../types/emailDomainTypes";
 import type { Maybe } from "../../../../../types/optionalTypes";
-import { EmailValidationError } from "../../../../errors/DataValidationError";
-import VanillaDataValidator from "../../VanillaDataValidator";
+import EmailDomainPartValidator from "./EmailDomainPartValidator";
 
-export default class EmailDomainTLDValidator extends VanillaDataValidator<EmailValidationError> {
+export default class EmailDomainTLDValidator extends EmailDomainPartValidator {
     protected errorMessage: ErrorMessageGenerator =
         ErrorMessageGenerator.initWithDataName("Email top level domain");
+
+    protected isRequired: boolean = true;
 
     constructor(private TLD: Maybe<EmailTopLevelDomain>) {
         super(TLD);
@@ -15,21 +16,7 @@ export default class EmailDomainTLDValidator extends VanillaDataValidator<EmailV
         this.validate();
     }
 
-    protected createError(message: string): EmailValidationError {
-        return new EmailValidationError(message);
-    }
-
-    public validate(): void {
-        this.failsIf (
-            this.hasAnInvalidFormat(), this.errorMessage.hasAnInvalidFormat
-        );
-    }
-
-    private hasAnInvalidFormat(): boolean {
-        const isInvalidFormat: boolean = this.TLD
-            ? !EMAIL_TOP_LEVEL_DOMAIN.includes(this.TLD)
-            : true;
-
-        return isInvalidFormat;
+    protected hasAnInvalidFormat(): boolean {
+        return !EMAIL_TOP_LEVEL_DOMAIN.includes(this.TLD as string);
     }
 }

@@ -1,13 +1,14 @@
 import { EMAIL_TOP_LEVEL_DOMAIN_COUNTRY_CODE } from "../../../../../constants/emailDomains";
-import ErrorMessageGenerator from "../../../../../helpers/ErrorMessageGenerator"
+import ErrorMessageGenerator from "../../../../../helpers/ErrorMessageGenerator";
 import type { EmailTopLevelDomainCountryCode } from "../../../../../types/emailDomainTypes";
 import type { Maybe } from "../../../../../types/optionalTypes";
-import { EmailValidationError } from "../../../../errors/DataValidationError"
-import VanillaDataValidator from "../../VanillaDataValidator"
+import EmailDomainPartValidator from "./EmailDomainPartValidator";
 
-export default class EmailDomainCountryCodeValidator extends VanillaDataValidator<EmailValidationError> {
+export default class EmailDomainCountryCodeValidator extends EmailDomainPartValidator {
     protected errorMessage: ErrorMessageGenerator =
         ErrorMessageGenerator.initWithDataName("Email domain country code");
+
+    protected isRequired: boolean = false;
 
     constructor(private countryCode: Maybe<EmailTopLevelDomainCountryCode>) {
         super(countryCode);
@@ -15,21 +16,10 @@ export default class EmailDomainCountryCodeValidator extends VanillaDataValidato
         this.validate();
     }
 
-    protected createError(message: string): EmailValidationError {
-        return new EmailValidationError(message);
-    }
+    protected hasAnInvalidFormat(): boolean {
+        if (this.countryCode)
+            return !EMAIL_TOP_LEVEL_DOMAIN_COUNTRY_CODE.includes(this.countryCode);
 
-    public validate(): void {
-        this.failsIf (
-            this.topLevelCountryCodeHasAnInvalidFormat(), this.errorMessage.hasAnInvalidFormat
-        );
-    }
-
-    private topLevelCountryCodeHasAnInvalidFormat(): boolean {
-        const isInvalidFormat: boolean = this.countryCode
-            ? !EMAIL_TOP_LEVEL_DOMAIN_COUNTRY_CODE.includes(this.countryCode)
-            : false;
-        
-        return isInvalidFormat;
+        return false;
     }
 }
