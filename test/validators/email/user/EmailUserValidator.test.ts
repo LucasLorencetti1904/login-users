@@ -38,4 +38,9 @@ describe (propertyName + " validator test", () => {
         expect (() => new EmailUserValidator("us er"))
             .toThrow(errorMessage.contains("spaces"));
     });
+
+    it (`always throws first error message when ${propertyName} data is invalid.`, () => {
+        expect (() => new EmailUserValidator("4u s"))
+            .toThrow(errorMessage.startsWith("invalid characters"));
+    });
 });

@@ -18,7 +18,11 @@ export default class ErrorMessageGenerator {
     }
 
     public missing(element: string): string {
-        return `${this.fieldName} must contain "${element}".`;
+        return `${this.fieldName} must contain ${element}.`;
+    }
+
+    public missingAtLeast(element: string): string {
+        return `${this.fieldName} must contain at least ${element}.`;
     }
 
     public startsWith(element: string): string {
