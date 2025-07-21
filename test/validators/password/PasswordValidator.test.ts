@@ -1,4 +1,5 @@
 import ErrorMessageGenerator from "../../../src/shared/helpers/ErrorMessageGenerator";
+import PasswordValidator from "../../../src/shared/util/validators/vanilla/password/PasswordValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 
 const propertyName: string = "password";
@@ -27,27 +28,27 @@ describe (propertyName + " validator test", () => {
     });
 
     it (`${errorTestDescriptionPrefix} contains more then 20 characters.`, () => {
-        expect (() => new PasswordValidator("XxL3M4OXxxx"))
+        expect (() => new PasswordValidator("PasswordExample235689!&$*@$@("))
             .toThrow(errorMessage.maxLength(20));
     });
 
     it (`${errorTestDescriptionPrefix} is missing letter.`, () => {
-        expect (() => new PasswordValidator("PasswordExample1"))
+        expect (() => new PasswordValidator("12359*&¨%#2"))
             .toThrow(errorMessage.missingAtLeast("one letter"));
     });
         
     it (`${errorTestDescriptionPrefix} is missing number.`, () => {
-        expect (() => new PasswordValidator("PasswordExample1"))
+        expect (() => new PasswordValidator("PasswordExample!"))
             .toThrow(errorMessage.missingAtLeast("one number"));
     });
     
     it (`${errorTestDescriptionPrefix} is missing lowercase letter.`, () => {
-        expect (() => new PasswordValidator("PasswordExample1"))
+        expect (() => new PasswordValidator("PASSWORDEXAMPLE1!"))
             .toThrow(errorMessage.missingAtLeast("one lowercase letter"));
     });
 
     it (`${errorTestDescriptionPrefix} is missing uppercase letter.`, () => {
-        expect (() => new PasswordValidator("PasswordExample1"))
+        expect (() => new PasswordValidator("passwordexample1!"))
             .toThrow(errorMessage.missingAtLeast("one uppercase letter"));
     });
 

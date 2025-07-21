@@ -23,10 +23,10 @@ export default class UsernameValidator extends VanillaDataValidator<UsernameVali
             this.startsWithNumber(), this.errorMessage.startsWith("numbers")
         );
         this.failsIf (
-            this.tooSmall(), this.errorMessage.minLength(4)
+            this.isTooShort(), this.errorMessage.minLength(4)
         );
         this.failsIf (
-            this.tooBig(), this.errorMessage.maxLength(10)
+            this.isTooLong(), this.errorMessage.maxLength(10)
         );
         this.failsIf (
             this.containsSpaces(), this.errorMessage.contains("spaces")
@@ -45,11 +45,11 @@ export default class UsernameValidator extends VanillaDataValidator<UsernameVali
         return /[0-9]/.test(firstChar);
     }
 
-    private tooSmall(): boolean {
+    private isTooShort(): boolean {
         return this.username.length < 4;
     }
 
-    private tooBig(): boolean {
+    private isTooLong(): boolean {
         return this.username.length > 10;
     }
 

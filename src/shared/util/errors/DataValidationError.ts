@@ -30,3 +30,11 @@ export class EmailValidationError extends DataValidationError {
         super(message);
     }
 }
+
+export class PasswordValidationError extends DataValidationError {
+    public invalidPropertyName: string = "password";
+
+    constructor(message: string) {
+        super(message);
+    }
+}

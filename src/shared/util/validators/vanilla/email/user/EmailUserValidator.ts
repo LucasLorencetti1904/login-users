@@ -30,11 +30,11 @@ export default class EmailUserValidator extends VanillaDataValidator<EmailValida
         );
         
         this.failsIf (
-            this.tooShort(), this.errorMessage.minLength(EmailUserValidator.MIN_LENGTH)
+            this.isTooShort(), this.errorMessage.minLength(EmailUserValidator.MIN_LENGTH)
         );
         
         this.failsIf (
-            this.tooLong(), this.errorMessage.maxLength(EmailUserValidator.MAX_LENGTH)
+            this.isTooLong(), this.errorMessage.maxLength(EmailUserValidator.MAX_LENGTH)
         );
     }
 
@@ -55,11 +55,11 @@ export default class EmailUserValidator extends VanillaDataValidator<EmailValida
         return EmailUserValidator.CHARACTERS_REGEX.test(this.user);
     }
 
-    private tooShort(): boolean {
+    private isTooShort(): boolean {
         return this.user.length < EmailUserValidator.MIN_LENGTH;
     }
 
-    private tooLong(): boolean {
+    private isTooLong(): boolean {
         return this.user.length > EmailUserValidator.MAX_LENGTH;
     }
 }

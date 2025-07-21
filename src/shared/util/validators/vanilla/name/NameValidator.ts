@@ -23,10 +23,10 @@ export default class NameValidator extends VanillaDataValidator<NameValidationEr
             this.containsNumber(), this.errorMessage.contains("numbers")
         );
         this.failsIf (
-            this.tooShort(), this.errorMessage.minLength(4)
+            this.isTooShort(), this.errorMessage.minLength(4)
         );
         this.failsIf (
-            this.tooLong(), this.errorMessage.maxLength(14)
+            this.isTooLong(), this.errorMessage.maxLength(14)
         );
         this.failsIf (
             this.containsSpaces(), this.errorMessage.contains("spaces")
@@ -44,11 +44,11 @@ export default class NameValidator extends VanillaDataValidator<NameValidationEr
         return /[0-9]/.test(this.name);
     }
 
-    private tooShort(): boolean {
+    private isTooShort(): boolean {
         return this.name.length < 4;
     }
 
-    private tooLong(): boolean {
+    private isTooLong(): boolean {
         return this.name.length > 14;
     }
 
