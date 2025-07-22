@@ -1,0 +1,39 @@
+import ErrorMessageGenerator from "../../../src/shared/helpers/ErrorMessageGenerator";
+import BirthDateValidator from "../../../src/shared/util/validators/vanilla/birthDate/BirthDateValidator";
+import { vi, describe, beforeEach, it, expect } from "vitest";
+
+const propertyName: string = "birthDate";
+
+const errorTestDescriptionPrefix: string = `throw an error when ${propertyName}`; 
+
+const errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("BirthDate");
+
+describe (propertyName + " validator test", () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    it (`passes without error when ${propertyName} is valid.`, () => {
+        expect (() => new BirthDateValidator(new Date("2003-02-28"))).not.toThrowError();
+    });
+
+    it (`${errorTestDescriptionPrefix} is empty.`, () => {
+        expect (() => new BirthDateValidator(new Date(""))).toThrow(errorMessage.isEmpty);
+    });
+
+    it (`${errorTestDescriptionPrefix} day is invalid.`, () => {
+        expect (() => new BirthDateValidator(new Date("2003-02-29"))).toThrow(errorMessage.hasInvalid("day"));
+    });
+
+    it (`${errorTestDescriptionPrefix} month is invalid.`, () => {
+        expect (() => new BirthDateValidator(new Date("2003-13-28"))).toThrow(errorMessage.hasInvalid("month"));
+    });
+
+    it (`${errorTestDescriptionPrefix} year is invalid.`, () => {
+        expect (() => new BirthDateValidator(new Date("4048-02-28"))).toThrow(errorMessage.hasInvalid("year"));
+    });
+
+    it (`${errorTestDescriptionPrefix} has an invalid.`, () => {
+        expect (() => new BirthDateValidator(new Date("Febuary 2nd"))).toThrow(errorMessage.hasAnInvalidFormat);
+    });
+});

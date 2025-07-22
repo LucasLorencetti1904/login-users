@@ -38,3 +38,11 @@ export class PasswordValidationError extends DataValidationError {
         super(message);
     }
 }
+
+export class BirthDateValidationError extends DataValidationError {
+    public invalidPropertyName: string = "birthDate";
+
+    constructor(message: string) {
+        super(message);
+    }
+}

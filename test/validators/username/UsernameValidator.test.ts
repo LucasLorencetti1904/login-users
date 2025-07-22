@@ -17,7 +17,7 @@ describe (propertyName + " validator test", () => {
         expect (() => new UsernameValidator("XxL3M4OxX")).not.toThrowError();
     });
 
-    it (`${errorTestDescriptionPrefix} is or empty.`, () => {
+    it (`${errorTestDescriptionPrefix} is empty.`, () => {
         expect (() => new UsernameValidator(""))
             .toThrow(errorMessage.isEmpty);
     });

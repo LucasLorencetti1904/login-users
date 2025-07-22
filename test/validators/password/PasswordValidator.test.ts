@@ -17,7 +17,7 @@ describe (propertyName + " validator test", () => {
         expect (() => new PasswordValidator("PasswordExample1!")).not.toThrowError();
     });
     
-    it (`${errorTestDescriptionPrefix} is or empty.`, () => {
+    it (`${errorTestDescriptionPrefix} is empty.`, () => {
         expect (() => new PasswordValidator(""))
         .toThrow(errorMessage.isEmpty);
     });

@@ -36,4 +36,8 @@ export default class ErrorMessageGenerator {
     public maxLength(maxLength: number): string {
         return `${this.fieldName} must be at most ${maxLength} characters.`;
     }
+
+    public hasInvalid(data: string): string {
+        return `${this.fieldName} ${data} must be valid.`;
+    }
 }

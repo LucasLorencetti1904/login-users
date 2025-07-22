@@ -2,6 +2,7 @@ export type User = {
     username: string,
     firstName: string,
     lastName: string,
+    birthDate: Date,
     email: string,
     password: string
 };
