@@ -1,1 +1,1 @@
-console.log(new Date(2024, 11, 3).getMonth());
+console.log(new Date("").toDateString());

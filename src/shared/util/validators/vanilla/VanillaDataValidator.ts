@@ -20,7 +20,7 @@ export default abstract class VanillaDataValidator<TDataValidationError extends 
 
     private trimIfString(): void {
         if (this.dataIsString()) {
-            (this.data as string).trim()
+            this.data = (this.data as string).trim()
         }
     }
 

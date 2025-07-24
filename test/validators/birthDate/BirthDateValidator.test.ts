@@ -12,13 +12,13 @@ describe (propertyName + " validator test", () => {
     beforeEach(() => {
         vi.clearAllMocks();
     });
-
+    
     it (`passes without error when ${propertyName} is valid.`, () => {
         expect (() => new BirthDateValidator(new Date("2003-02-28"))).not.toThrowError();
     });
 
-    it (`${errorTestDescriptionPrefix} is empty.`, () => {
-        expect (() => new BirthDateValidator(new Date(""))).toThrow(errorMessage.isEmpty);
+    it (`${errorTestDescriptionPrefix} has an invalid format.`, () => {
+        expect (() => new BirthDateValidator(new Date("Febuary 2nd"))).toThrow(errorMessage.hasAnInvalidFormat);
     });
 
     it (`${errorTestDescriptionPrefix} day is invalid.`, () => {
@@ -31,9 +31,5 @@ describe (propertyName + " validator test", () => {
 
     it (`${errorTestDescriptionPrefix} year is invalid.`, () => {
         expect (() => new BirthDateValidator(new Date("4048-02-28"))).toThrow(errorMessage.hasInvalid("year"));
-    });
-
-    it (`${errorTestDescriptionPrefix} has an invalid.`, () => {
-        expect (() => new BirthDateValidator(new Date("Febuary 2nd"))).toThrow(errorMessage.hasAnInvalidFormat);
     });
 });
