@@ -1,6 +1,7 @@
 import ErrorMessageGenerator from "../../../../helpers/ErrorMessageGenerator";
 import { BirthDateValidationError } from "../../../errors/DataValidationError";
 import VanillaDataValidator from "../VanillaDataValidator";
+import quantityOf from "../../../../helpers/quantityOf";
 
 export default class BirthDateValidator extends VanillaDataValidator<BirthDateValidationError> {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("BirthDate");
@@ -8,16 +9,16 @@ export default class BirthDateValidator extends VanillaDataValidator<BirthDateVa
     private readonly MAX_AGE: number = 100;
     private readonly MIN_AGE: number = 0;
 
-    private birthDay: number;
-    private birthMonth: number;
-    private birthYear: number;
-
-    constructor(private birthDate: Date) {
+    private day: number;
+    private month: number;
+    private year: number;
+    
+    constructor(private birthDate: string) {
         super(birthDate);
 
-        this.birthDay = birthDate.getDate();
-        this.birthMonth = birthDate.getMonth() + 1;
-        this.birthYear = birthDate.getFullYear(); 
+        this.day = this.getbirthDay();
+        this.month = this.getbirthMonth();
+        this.year = this.getbirthYear();
 
         this.validate();
     }
@@ -43,29 +44,33 @@ export default class BirthDateValidator extends VanillaDataValidator<BirthDateVa
             this.hasAnInvalidYear(), this.errorMessage.hasInvalid("year")
         );
     }
-
-    private hasAnInvalidDateFormat(): boolean {
-        return this.birthDate.toDateString() == "Invalid Date";
+    
+    private splitDate(): string[] {
+        return this.birthDate.split("-");
+    }
+    
+    private HasAnInvalidDateFormat(): boolean {
+        return new Date(this.birthDate).toDateString() == "Invalid Date"; 
     }
     
     private hasAnInvalidMonth(): boolean {
-        return this.birthMonth > 12 || this.birthMonth < 1;
+        return this.month > 12 || this.month < 1;
     }
     
     private hasAnInvalidDay(): boolean {
         const daysInMonth: number = this.calculateDaysOfMonth();
         
-        return this.birthDay > daysInMonth || this.birthDay < 1;
+        return this.day > daysInMonth || this.day < 1;
     }
     
     private calculateDaysOfMonth(): number {
-        return new Date(this.birthYear, this.birthMonth, 0).getDate();
+        return new Date(this.year, this.month, 0).getDate();
     }
 
     private hasAnInvalidYear(): boolean {
         const currentYear: number = new Date().getFullYear();
         
-        const supposedAge: number = currentYear - this.birthYear;
+        const supposedAge: number = currentYear - this.year;
 
         return supposedAge < this.MIN_AGE || supposedAge > this.MAX_AGE;
     }
