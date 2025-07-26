@@ -7,6 +7,10 @@ export type User = {
     password: string
 };
 
+export type FormattedUser = Omit<User, "birthDate"> & {
+    birthDate: Date;
+}
+
 export type UserModel = User & {
     id: number,
     birthDate: Date,

@@ -1,25 +1,28 @@
 import ErrorMessageGenerator from "../../../../helpers/ErrorMessageGenerator";
 import { BirthDateValidationError } from "../../../errors/DataValidationError";
 import VanillaDataValidator from "../VanillaDataValidator";
-import quantityOf from "../../../../helpers/quantityOf";
 
 export default class BirthDateValidator extends VanillaDataValidator<BirthDateValidationError> {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("BirthDate");
 
+    private readonly DATE_FORMAT: RegExp = /^\d{4}-\d{2}-\d{2}$/;
+
     private readonly MAX_AGE: number = 100;
     private readonly MIN_AGE: number = 0;
-
+    
     private day: number;
     private month: number;
     private year: number;
-    
+
     constructor(private birthDate: string) {
         super(birthDate);
 
-        this.day = this.getbirthDay();
-        this.month = this.getbirthMonth();
-        this.year = this.getbirthYear();
+        const [year, month, day] = this.splitValidDateOrThrowError();
 
+        this.day = Number(day);
+        this.month = Number(month);
+        this.year = Number(year);
+            
         this.validate();
     }
 
@@ -28,10 +31,6 @@ export default class BirthDateValidator extends VanillaDataValidator<BirthDateVa
     }
 
     public validate(): void {
-        this.failsIf (
-            this.hasAnInvalidDateFormat(), this.errorMessage.hasAnInvalidFormat
-        );
-
         this.failsIf (
             this.hasAnInvalidDay(), this.errorMessage.hasInvalid("day")
         );
@@ -45,16 +44,33 @@ export default class BirthDateValidator extends VanillaDataValidator<BirthDateVa
         );
     }
     
-    private splitDate(): string[] {
-        return this.birthDate.split("-");
+    private splitValidDateOrThrowError(): string[] {
+        this.throwErrorIfInvalid();
+        return this.splitDate();
+    }
+
+    private throwErrorIfInvalid(): void {
+        this.failsIf(this.hasAnInvalidDateFormat(), this.errorMessage.hasAnInvalidFormat);
     }
     
-    private HasAnInvalidDateFormat(): boolean {
-        return new Date(this.birthDate).toDateString() == "Invalid Date"; 
+    private hasAnInvalidDateFormat(): boolean {
+        return !this.DATE_FORMAT.test(this.birthDate); 
+    }
+
+    private splitDate(): string[] {
+        return this.birthDate.split("-");
+    }  
+    
+    private hasAnInvalidYear(): boolean {
+        const currentYear: number = new Date().getFullYear();
+        
+        const supposedAge: number = currentYear - this.year;
+        
+        return supposedAge < this.MIN_AGE || supposedAge > this.MAX_AGE;
     }
     
     private hasAnInvalidMonth(): boolean {
-        return this.month > 12 || this.month < 1;
+        return this.month < 1 || this.month > 12;
     }
     
     private hasAnInvalidDay(): boolean {
@@ -65,13 +81,5 @@ export default class BirthDateValidator extends VanillaDataValidator<BirthDateVa
     
     private calculateDaysOfMonth(): number {
         return new Date(this.year, this.month, 0).getDate();
-    }
-
-    private hasAnInvalidYear(): boolean {
-        const currentYear: number = new Date().getFullYear();
-        
-        const supposedAge: number = currentYear - this.year;
-
-        return supposedAge < this.MIN_AGE || supposedAge > this.MAX_AGE;
     }
 }
