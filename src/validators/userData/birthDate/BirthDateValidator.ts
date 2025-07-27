@@ -1,5 +1,5 @@
-import ErrorMessageGenerator from "../../../../helpers/ErrorMessageGenerator";
-import { BirthDateValidationError } from "../../../errors/DataValidationError";
+import ErrorMessageGenerator from "../../../shared/helpers/ErrorMessageGenerator";
+import { BirthDateValidationError } from "../../../shared/util/errors/DataValidationError";
 import VanillaDataValidator from "../VanillaDataValidator";
 
 export default class BirthDateValidator extends VanillaDataValidator<BirthDateValidationError> {

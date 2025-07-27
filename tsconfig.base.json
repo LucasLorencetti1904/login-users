@@ -1,0 +1,39 @@
+{
+    "compilerOptions": {
+        "verbatimModuleSyntax": false,
+
+        "module": "ESNext",
+        "skipLibCheck": true,
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "target": "esnext",
+        
+        "noEmit": true,
+        
+        /* Linting */
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true,
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "erasableSyntaxOnly": false,
+
+        /* Bundler mode */
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "moduleDetection": "force",
+
+        "baseUrl": ".",
+        "paths": {
+        "@shared/errors/*": ["src/shared/errors/*"],
+        "@shared/types/*": ["src/shared/types/*"],
+        "@shared/utils/*": ["src/shared/utils/*"],
+        "@validators/*": ["src/validators/*"],
+        "@models/*": ["src/models/*"],
+        "@DTOs/*": ["src/DTOs/*"],
+        "@mappers/*": ["src/mappers/*"]
+        }
+
+    },
+    
+    "include": ["src", "test", "vite.config.ts"]
+}
