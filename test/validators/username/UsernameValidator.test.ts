@@ -1,6 +1,6 @@
-import ErrorMessageGenerator from "../../../src/shared/helpers/ErrorMessageGenerator";
-import UsernameValidator from "../../../src/shared/util/validators/vanilla/username/UsernameValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
+import UsernameValidator from "@validators/userData/username/UsernameValidator";
+import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
 
 const propertyName: string = "username";
 

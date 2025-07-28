@@ -1,21 +1,18 @@
 import { beforeEach, describe, vi, it } from "vitest";
-import UserController from "../../src/controllers/userController";
-import { UserModel } from "../../src/models/User";
-import MockUserService from "./MockUserService";
+import UserController from "@controllers/userController";
+import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
-import { InternalError, NotFoundError } from "../../src/shared/util/errors/ResponseError";
+import MockUserService from "./MockUserService";
+import { InternalError, NotFoundError } from "@shared/errors/ResponseError";
 
-const deletedUser: UserModel = {
-    id: 1,
+const deletedUser: UserResponseDTO = {
     username: "user_example1",
     firstName: "User",
     lastName: "Example",
-    email: "userexample1@gmail.com",
-    password: "12345",
-    createdAt: new Date("2025-09-03"),
-    updatedAt: new Date("2025-09-05")
+    birthDate: "2005-04-19",
+    email: "userexample1@gmail.com"
 };
 
 let mockRequest: MockRequest;
@@ -39,7 +36,7 @@ describe (`${method} Method`, () => {
     it ("returns a user and status 200 when user is deleted successfully.", async () => {
         mockRequest.paramsIdWillBe("1");
 
-        mockUserService.methodWillBeReturns(method, deletedUser);
+        mockUserService.method(method).willReturn(deletedUser);
 
         await mockServer.initUserControllerMethod(method);
         
@@ -55,7 +52,7 @@ describe (`${method} Method`, () => {
 
         mockRequest.paramsIdWillBe("999");
 
-        mockUserService.methodWillBeThrows(method, notFoundError);
+        mockUserService.method(method).willThrown(notFoundError);
 
         await mockServer.initUserControllerMethod(method);
         
@@ -71,7 +68,7 @@ describe (`${method} Method`, () => {
 
         mockRequest.paramsIdWillBe("1");
 
-        mockUserService.methodWillBeThrows(method, internalServerError);
+        mockUserService.method(method).willThrown(internalServerError);
 
         await mockServer.initUserControllerMethod(method);
 

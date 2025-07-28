@@ -1,14 +1,14 @@
-import ErrorMessageGenerator from "../../../../../helpers/ErrorMessageGenerator";
-import quantityOf from "../../../../../helpers/quantityOf";
-import type { EmailSecondLevelDomain, EmailTopLevelDomain, EmailTopLevelDomainCountryCode } from "../../../../../types/emailDomainTypes";
-import type { Maybe } from "../../../../../types/optionalTypes";
-import { EmailValidationError } from "../../../../errors/DataValidationError";
-import VanillaDataValidator from "../../VanillaDataValidator";
-import EmailDomainCountryCodeValidator from "./EmailDomainCountryCodeValidator";
-import EmailDomainSLDValidator from "./EmailDomainSLDValidator";
-import EmailDomainTLDValidator from "./EmailDomainTLDValidator";
+import UserDataValidator from "@validators/userData/UserDataValidator";
+import EmailDomainCountryCodeValidator from "@validators/userData/email/domain/EmailDomainCountryCodeValidator";
+import EmailDomainSLDValidator from "@validators/userData/email/domain/EmailDomainSLDValidator";
+import EmailDomainTLDValidator from "@validators/userData/email/domain/EmailDomainTLDValidator";
+import type { EmailSecondLevelDomain, EmailTopLevelDomain, EmailTopLevelDomainCountryCode }
+    from "@shared/types/emailDomainTypes";
+import type { Maybe } from "@shared//types/optionalTypes";
+import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import quantityOf from "@shared/utils/quantityOf";
 
-export default class EmailDomainValidator extends VanillaDataValidator<EmailValidationError> {
+export default class EmailDomainValidator extends UserDataValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Email domain");
 
     private static readonly DOT: string = ".";
@@ -23,10 +23,6 @@ export default class EmailDomainValidator extends VanillaDataValidator<EmailVali
 
         this.handleDomainParts(domainParts);
 
-    }
-
-    protected createError(message: string): EmailValidationError {
-        return new EmailValidationError(message);
     }
 
     public validate(): void {
@@ -65,9 +61,7 @@ export default class EmailDomainValidator extends VanillaDataValidator<EmailVali
         }
 
         catch(e: unknown) {
-            this.failsIf (
-                true, (e as EmailValidationError).message
-            );;
+            throw e as Error;
         }
     }
     private handleSLD(SLD: Maybe<EmailSecondLevelDomain>): void {

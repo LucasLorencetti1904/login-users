@@ -1,8 +1,7 @@
-import ErrorMessageGenerator from "../../../shared/helpers/ErrorMessageGenerator";
-import { BirthDateValidationError } from "../../../shared/util/errors/DataValidationError";
-import VanillaDataValidator from "../VanillaDataValidator";
+import UserDataValidator from "@validators/userData/UserDataValidator";
+import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
 
-export default class BirthDateValidator extends VanillaDataValidator<BirthDateValidationError> {
+export default class BirthDateValidator extends UserDataValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("BirthDate");
 
     private readonly DATE_FORMAT: RegExp = /^\d{4}-\d{2}-\d{2}$/;
@@ -24,10 +23,6 @@ export default class BirthDateValidator extends VanillaDataValidator<BirthDateVa
         this.year = Number(year);
             
         this.validate();
-    }
-
-    protected createError(message: string): BirthDateValidationError {
-        return new BirthDateValidationError(message);
     }
 
     public validate(): void {

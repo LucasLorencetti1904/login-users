@@ -1,1 +1,0 @@
-console.log(new Date("2005-04-19").toISOString());

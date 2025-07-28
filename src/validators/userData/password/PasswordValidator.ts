@@ -1,19 +1,13 @@
-import { register } from "module";
-import ErrorMessageGenerator from "../../../../helpers/ErrorMessageGenerator";
-import { PasswordValidationError } from "../../../errors/DataValidationError";
-import VanillaDataValidator from "../VanillaDataValidator";
+import UserDataValidator from "@validators/userData/UserDataValidator";
+import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
 
-export default class PasswordValidator extends VanillaDataValidator<PasswordValidationError> {
+export default class PasswordValidator extends UserDataValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Password");
 
     constructor(private password: string) {
         super(password);
 
         this.validate();
-    }
-
-    protected createError(message: string): PasswordValidationError {
-        return new PasswordValidationError(message);
     }
 
     public validate(): void {

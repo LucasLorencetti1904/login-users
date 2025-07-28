@@ -22,15 +22,15 @@
         "allowImportingTsExtensions": true,
         "moduleDetection": "force",
 
-        "baseUrl": ".",
+        "baseUrl": "./src",
         "paths": {
-        "@shared/errors/*": ["src/shared/errors/*"],
-        "@shared/types/*": ["src/shared/types/*"],
-        "@shared/utils/*": ["src/shared/utils/*"],
-        "@validators/*": ["src/validators/*"],
-        "@models/*": ["src/models/*"],
-        "@DTOs/*": ["src/DTOs/*"],
-        "@mappers/*": ["src/mappers/*"]
+            "@shared/*": ["shared/*"],
+            "@validators/*": ["validators/*"],
+            "@models/*": ["models/*"],
+            "@DTOs/*": ["DTOs/*"],
+            "@mappers/*": ["mappers/*"],
+            "@controllers/*": ["controllers/*"],
+            "@config/*": ["config/*"]
         }
 
     },

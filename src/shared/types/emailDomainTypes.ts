@@ -1,6 +1,6 @@
-import { EMAIL_TOP_LEVEL_DOMAIN } from "../constants/emailDomains";
-import { EMAIL_TOP_LEVEL_DOMAIN_COUNTRY_CODE } from "../constants/emailDomains";
-import { EMAIL_SECOND_LEVEL_DOMAIN } from "../constants/emailDomains";
+import { EMAIL_TOP_LEVEL_DOMAIN } from "@shared/constants/emailDomains";
+import { EMAIL_TOP_LEVEL_DOMAIN_COUNTRY_CODE } from "@shared/constants/emailDomains";
+import { EMAIL_SECOND_LEVEL_DOMAIN } from "@shared/constants/emailDomains";
 
 export type EmailTopLevelDomain = typeof EMAIL_TOP_LEVEL_DOMAIN[number];
 

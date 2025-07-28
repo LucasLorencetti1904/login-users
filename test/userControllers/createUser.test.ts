@@ -1,33 +1,37 @@
-import { User, UserModel } from "../../src/models/User";
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import UserController from "../../src/controllers/userController";
-import MockUserService from "./MockUserService";
+import UserController from "@controllers/userController";
+import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
-import { BadRequestError, ConflictError, InternalError } from "../../src/shared/util/errors/ResponseError";
+import MockUserService from "./MockUserService";
+import { BadRequestError, ConflictError, InternalError } from "@shared/errors/ResponseError";
 
-const userExample: User = {
+const userExample: UserRequestDTO = {
     username: "user_example1",
     firstName: "User",
     lastName: "Example",
+    birthDate: "2005-04-19",
     email: "userexample1@gmail.com",
     password: "12345"
 };
 
-const invalidMockUser: User = {
+const invalidMockUser: UserRequestDTO = {
     username: "User Example",
     firstName: "32121",
     lastName: "*$%!",
+    birthDate: "19/04/2005",
     email: "userexamplegmail.com",
     password: "1"
 };
 
-const returnedUser: UserModel = {
-    id: 1,
-    ...userExample,
-    createdAt: new Date("2025-09-03"),
-    updatedAt: new Date("2025-09-05")
+const returnedUser: UserResponseDTO = {
+    username: "user_example1",
+    firstName: "User",
+    lastName: "Example",
+    birthDate: "2005-04-19",
+    email: "userexample1@gmail.com"
 };
 
 let mockRequest: MockRequest;
@@ -51,7 +55,7 @@ describe (`${method} Method`, () => {
     it ("returns user and status 201 when user is successfully created.", async () => {
         mockRequest.bodyDataWillBe(userExample);
         
-        mockUserService.methodWillBeReturns(method, returnedUser);
+        mockUserService.method(method).willReturn(returnedUser);
 
         await mockServer.initUserControllerMethod(method);
 
@@ -59,7 +63,7 @@ describe (`${method} Method`, () => {
 
         mockResponse.callResponseStatusWith(201);
 
-        mockResponse.callResponseJsonWith({ message: "User created.", data: returnedUser});
+        mockResponse.callResponseJsonWith({ message: "UserRequestDTO created.", data: returnedUser});
     });
 
     it ("throws a exception and status 400 when user data is invalid.", async () => {
@@ -67,7 +71,7 @@ describe (`${method} Method`, () => {
 
         mockRequest.bodyDataWillBe(invalidMockUser);
 
-        mockUserService.methodWillBeThrows(method, badRequestError);
+        mockUserService.method(method).willThrown(badRequestError);
 
         await mockServer.initUserControllerMethod(method);
 
@@ -79,11 +83,11 @@ describe (`${method} Method`, () => {
     });
 
     it ("throws a exception and status 409 when user already exists.", async () => {
-        var conflictError: ConflictError = new ConflictError("User already exists.");
+        var conflictError: ConflictError = new ConflictError("UserRequestDTO already exists.");
 
         mockRequest.bodyDataWillBe(userExample);
 
-        mockUserService.methodWillBeThrows(method, conflictError);
+        mockUserService.method(method).willThrown(conflictError);
 
         await mockServer.initUserControllerMethod(method);
 
@@ -99,7 +103,7 @@ describe (`${method} Method`, () => {
 
         mockRequest.bodyDataWillBe(userExample);
 
-        mockUserService.methodWillBeThrows(method, internalServerError);
+        mockUserService.method(method).willThrown(internalServerError);
 
         await mockServer.initUserControllerMethod(method);
 

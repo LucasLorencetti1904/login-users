@@ -1,8 +1,8 @@
-import { EMAIL_SECOND_LEVEL_DOMAIN } from "../../../../../constants/emailDomains";
-import ErrorMessageGenerator from "../../../../../helpers/ErrorMessageGenerator";
-import type { EmailSecondLevelDomain } from "../../../../../types/emailDomainTypes";
-import type { Maybe } from "../../../../../types/optionalTypes";
-import EmailDomainPartValidator from "./EmailDomainPartValidator";
+import EmailDomainPartValidator from "@validators/userData/email/domain/EmailDomainPartValidator";
+import type { Maybe } from "@shared/types/optionalTypes";
+import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import { EMAIL_SECOND_LEVEL_DOMAIN } from "@shared/constants/emailDomains";
+import type { EmailSecondLevelDomain } from "@shared//types/emailDomainTypes";
 
 export default class EmailDomainSLDValidator extends EmailDomainPartValidator {
     protected errorMessage: ErrorMessageGenerator =

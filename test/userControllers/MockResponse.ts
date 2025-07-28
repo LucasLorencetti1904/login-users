@@ -1,10 +1,10 @@
-import { UserModel } from "../../src/models/User";
 import { expect, vi } from "vitest";
 import { Response } from "express";
+import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 
 type ResponseJson = {
     message: string,
-    data?: UserModel | UserModel[]
+    data?: UserResponseDTO | UserResponseDTO[]
 };
 
 export default class MockResponse implements Partial<Response> {

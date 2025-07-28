@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express";
-import type { UserModel } from "../models/User";
-import { ResponseError } from "../shared/util/errors/ResponseError";
+import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import { ResponseError } from "@shared/errors/ResponseError";
 
 export default class UserController {
     private readonly userService: any;
@@ -11,7 +11,7 @@ export default class UserController {
 
     public async getUser(req: Request, res: Response): Promise<Response> {
         try {
-            const founded: UserModel = await this.userService.getUser(req.params.id);
+            const founded: UserResponseDTO = await this.userService.getUser(req.params.id);
 
             const noUsers: boolean = !founded;
 
@@ -32,7 +32,7 @@ export default class UserController {
 
     public async createUser(req: Request, res: Response): Promise<Response> {
         try {
-            const created: UserModel = await this.userService.createUser(req.body);
+            const created: UserResponseDTO = await this.userService.createUser(req.body);
 
             return res.status(201).json({ message: "User created.", data: created });
         }
@@ -44,7 +44,7 @@ export default class UserController {
 
     public async updateUser(req: Request, res: Response): Promise<Response> {
         try {
-            const updated: UserModel = await this.userService.updateUser(req.params.id, req.body);
+            const updated: UserResponseDTO = await this.userService.updateUser(req.params.id, req.body);
 
             const hasNotChanged: boolean = updated == null;
 
@@ -62,7 +62,7 @@ export default class UserController {
 
     public async deleteUser(req: Request, res: Response): Promise<Response> {
         try {
-            const deleted: UserModel = await this.userService.deleteUser(req.params.id);
+            const deleted: UserResponseDTO = await this.userService.deleteUser(req.params.id);
 
             return res.status(200).json({ message: "User deleted.", data: deleted });
         }
@@ -74,7 +74,8 @@ export default class UserController {
     
     private handleError(res: Response, e: unknown): Response {
         if (e instanceof ResponseError) {
-            return res.status(e.status).json({ message: e.message });
+            return res.status((e as ResponseError).status).
+                json({ message: (e as ResponseError).message });
         }
     
         return res.status(500).json({ message: String(e) });

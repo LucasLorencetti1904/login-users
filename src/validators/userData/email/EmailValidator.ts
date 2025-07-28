@@ -1,11 +1,10 @@
-import ErrorMessageGenerator from "../../../../helpers/ErrorMessageGenerator";
-import quantityOf from "../../../../helpers/quantityOf";
-import { EmailValidationError } from "../../../errors/DataValidationError";
-import VanillaDataValidator from "../VanillaDataValidator";
-import EmailDomainValidator from "./domain/EmailDomainValidator";
-import EmailUserValidator from "./user/EmailUserValidator";
+import UserDataValidator from "@validators/userData/UserDataValidator";
+import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import EmailUserValidator from "@validators/userData/email/user/EmailUserValidator";
+import EmailDomainValidator from "@validators/userData/email/domain/EmailDomainValidator";
+import quantityOf from "@shared/utils/quantityOf";
 
-export default class EmailValidator extends VanillaDataValidator<EmailValidationError> { 
+export default class EmailValidator extends UserDataValidator { 
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Email");
 
     private static readonly SYMBOL: string = "@";
@@ -20,10 +19,6 @@ export default class EmailValidator extends VanillaDataValidator<EmailValidation
         this.handleEmailParts(emailParts)
     }
 
-    protected createError(message: string): EmailValidationError {
-        return new EmailValidationError(message);
-    }
-    
     public validate(): void {
         this.failsIf (
             this.isEmpty(), this.errorMessage.isEmpty
@@ -58,9 +53,7 @@ export default class EmailValidator extends VanillaDataValidator<EmailValidation
         }
 
         catch (e: unknown) {
-            this.failsIf (
-                true, (e as EmailValidationError).message
-            );
+            throw e as Error;
         }
     }
     

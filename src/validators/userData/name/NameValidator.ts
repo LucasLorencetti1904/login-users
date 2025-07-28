@@ -1,18 +1,13 @@
-import ErrorMessageGenerator from "../../../../helpers/ErrorMessageGenerator";
-import { NameValidationError } from "../../../errors/DataValidationError";
-import VanillaDataValidator from "../VanillaDataValidator";
+import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import UserDataValidator from "@validators/userData/UserDataValidator";
 
-export default class NameValidator extends VanillaDataValidator<NameValidationError> {
+export default class NameValidator extends UserDataValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Name");
 
     constructor(private name: string) {
         super(name);
 
         this.validate();
-    }
-
-    protected createError(message: string): NameValidationError {
-        return new NameValidationError(message);
     }
 
     public validate(): void {

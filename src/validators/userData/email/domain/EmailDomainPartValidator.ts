@@ -1,19 +1,14 @@
-import type ErrorMessageGenerator from "../../../../../helpers/ErrorMessageGenerator";
-import type { Maybe } from "../../../../../types/optionalTypes";
-import { EmailValidationError } from "../../../../errors/DataValidationError";
-import VanillaDataValidator from "../../VanillaDataValidator";
+import UserDataValidator from "@validators/userData/UserDataValidator";
+import type { Maybe } from "@shared/types/optionalTypes";
+import type ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
 
-export default abstract class EmailDomainPartValidator extends VanillaDataValidator<EmailValidationError> {
+export default abstract class EmailDomainPartValidator extends UserDataValidator {
     protected abstract errorMessage: ErrorMessageGenerator;
 
     protected abstract isRequired: boolean;
 
     constructor(protected data: Maybe<string>) {
         super(data);
-    }
-
-    protected createError(message: string): EmailValidationError {
-        return new EmailValidationError(message);
     }
 
     public validate(): void {

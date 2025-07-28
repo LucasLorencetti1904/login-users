@@ -1,43 +1,29 @@
-import { User, UserModel } from "../../src/models/User";
 import { beforeEach, describe, vi, it } from "vitest";
-import UserController from "../../src/controllers/userController";
-import MockUserService from "./MockUserService";
+import UserController from "@controllers/userController";
+import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
-import { InternalError, NotFoundError } from "../../src/shared/util/errors/ResponseError";
+import MockUserService from "./MockUserService";
+import { InternalError, NotFoundError } from "@shared/errors/ResponseError";
 
-const userExample1: User = {
+const returnedUser: UserResponseDTO = {
     username: "user_example1",
     firstName: "Example",
     lastName: "One",
+    birthDate: "2005-04-19",
     email: "userexample1@gmail.com",
-    password: "12345"
-};
+}
 
-const userExample2: User = {
+const otherReturnedUser: UserResponseDTO = {
     username: "user_example2",
     firstName: "Example",
     lastName: "Two",
+    birthDate: "2008-02-28",
     email: "userexample2@gmail.com",
-    password: "54321"
 };
 
-const returnedUser: UserModel = {
-    id: 1,
-    ...userExample1,
-    createdAt: new Date("2025-09-03"),
-    updatedAt: new Date("2025-09-04")
-};
-
-const otherReturnedUser: UserModel = {
-    id: 2,
-    ...userExample2,
-    createdAt: new Date("2023-02-19"),
-    updatedAt: new Date("2023-02-21")
-};
-
-const arrayWithAllUsersReturned: UserModel[] = [
+const arrayWithAllUsersReturned: UserResponseDTO[] = [
     returnedUser,
     otherReturnedUser
 ];
@@ -63,7 +49,7 @@ describe (`${method} Method`, () => {
     it ("returns a found user and status 200 when id is provided.", async () => {
         mockRequest.paramsIdWillBe("1");
 
-        mockUserService.methodWillBeReturns(method, returnedUser);
+        mockUserService.method(method).willReturn(returnedUser);
 
         await mockServer.initUserControllerMethod(method);
         
@@ -77,7 +63,7 @@ describe (`${method} Method`, () => {
     it ("returns a array of found users and status 200 when id is not provided.", async () => {
         mockRequest.paramsIdWillBe(undefined);
 
-        mockUserService.methodWillBeReturns(method, arrayWithAllUsersReturned);
+        mockUserService.method(method).willReturn(arrayWithAllUsersReturned);
 
         await mockServer.initUserControllerMethod(method);
         
@@ -91,7 +77,7 @@ describe (`${method} Method`, () => {
     it ("returns status 204 if there are no users.", async () => {
         mockRequest.paramsIdWillBe(undefined);
 
-        mockUserService.methodWillBeReturns(method, null);
+        mockUserService.method(method).willReturn(null);
 
         await mockServer.initUserControllerMethod(method);
 
@@ -107,7 +93,7 @@ describe (`${method} Method`, () => {
 
         mockRequest.paramsIdWillBe("999");
         
-        mockUserService.methodWillBeThrows(method, notFoundError);
+        mockUserService.method(method).willThrown(notFoundError);
 
         await mockServer.initUserControllerMethod(method);
 
@@ -123,7 +109,7 @@ describe (`${method} Method`, () => {
 
         mockRequest.paramsIdWillBe("1");
 
-        mockUserService.methodWillBeThrows(method, internalServerError);
+        mockUserService.method(method).willThrown(internalServerError);
 
         await mockServer.initUserControllerMethod(method);
 

@@ -1,6 +1,6 @@
-import EmailUserValidator from "../../../../src/shared/util/validators/vanilla/email/user/EmailUserValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import ErrorMessageGenerator from "../../../../src/shared/helpers/ErrorMessageGenerator";
+import EmailUserValidator from "@validators/userData/email/user/EmailUserValidator";
+import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
 
 const propertyName: string = "email user";
 

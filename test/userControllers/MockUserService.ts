@@ -1,9 +1,9 @@
 import { vi, expect, Mock } from "vitest";
-import { UserModel } from "../../src/entities/User";
 import MockRequest from "./MockRequest";
+import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 
 type UserServiceMethod = keyof MockUserService;
-type DataFormat = UserModel | UserModel[] | null;
+type DataFormat = UserResponseDTO | UserResponseDTO[] | null;
 
 export default class MockUserService {
     public readonly getUser = vi.fn();
@@ -13,12 +13,15 @@ export default class MockUserService {
 
     public constructor (private readonly req: MockRequest) {}
 
-    public methodWillBeReturns(method: UserServiceMethod, data: DataFormat): void {
-        (this[method] as Mock).mockResolvedValue(data);
-    }
-
-    public methodWillBeThrows(method: UserServiceMethod, error: Error): void {
-        (this[method] as Mock).mockRejectedValue(error);
+    public method(method: UserServiceMethod): any {
+        return {
+            willReturn: (data: DataFormat): void => {
+                (this[method] as Mock).mockResolvedValue(data); 
+            },
+            willThrown: (error: Error): void => {
+                (this[method] as Mock).mockRejectedValue(error);
+            }
+        }
     }
 
     public callCurrentParamsIdWithMethod(method: UserServiceMethod): void {
