@@ -12,6 +12,8 @@ export default class EmailValidator extends UserDataValidator {
     constructor(private email: string) {
         super(email);
 
+        email.toLowerCase();
+
         this.validate();
 
         const emailParts: string[] = this.splitEmainInUserAndDomain();

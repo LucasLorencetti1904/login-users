@@ -1,16 +1,20 @@
+import UserCreateDataDTO from "@DTOs/UserDTO/UserCreateDataDTO";
 import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
-import type Mapper from "@mappers/Mapper";
-import type UserModel from "@models/UserModel";
+import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import ResponseDataMapper, { RequestDataMapper } from "@mappers/Mapper";
+import { User } from "@prisma/client";
 import capitalize from "@shared/utils/capitalize";
 
-export default class UserDataMapper implements Mapper<UserRequestDTO, UserModel> {
-    toModel(DTO: UserRequestDTO): UserModel {
-        return {
-            username: DTO.username.trim(),
-            firstName: capitalize(DTO.firstName.trim()),
-            lastName: capitalize(DTO.lastName.trim()),
-            birthDate: new Date(DTO.birthDate.trim()),
-            email: DTO.email.trim().toLowerCase()
-        }
-    }
+export default class UserDataMapper 
+implements RequestDataMapper<UserRequestDTO, UserCreateDataDTO>,
+ResponseDataMapper<User, UserResponseDTO> {
+   rawToNormalized(rawData: UserRequestDTO): UserCreateDataDTO {
+       return {
+        username: rawData.username.trim(),
+        firstName: capitalize(rawData.firstName.trim()),
+        lastName: capitalize(rawData.lastName.trim()),
+        birthDate: new Date(rawData.birthDate.trim()),
+        email: rawData.email.trim().toLowerCase(),
+       }
+   } 
 }

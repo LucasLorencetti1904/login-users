@@ -1,4 +1,7 @@
-export default interface Mapper<DTOType, ModelType> {
-    toModel(DTO: DTOType): ModelType,
-    toDTO(ModelData: ModelType): DTOType
+export default interface ResponseDataMapper<ModelType, ResponseDataType> {
+    modelToResponse(model: ModelType): ResponseDataType
+}
+
+export interface RequestDataMapper<RawDataType, NormalizedDataType> {
+    rawToNormalized(rawData: RawDataType): NormalizedDataType,
 }
