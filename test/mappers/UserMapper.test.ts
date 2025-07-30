@@ -1,64 +1,60 @@
-import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
-import UserDataMapper from "@mappers/UserDataMapper";
 import { describe, beforeEach, vi, it, expect } from "vitest";
-import bcrypt from "bcryptjs";
-import UserCreateDataDTO from "@DTOs/UserDTO/UserCreateDataDTO";
-import { User } from "@prisma/client";
+import UserDataMapper from "@mappers/UserDataMapper";
+import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
+import { User } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
-const exampleOfBirthDate: string = "2005-19-05";
-
-const rawUserData: UserRequestDTO = {
+const reqUserData: UserRequestDTO = {
     username: "   user_example123",
     firstName: " USER  ",
     lastName: "example",
-    birthDate: ` ${exampleOfBirthDate}   `,
+    birthDate: ` 2005-02-18   `,
     email: " UsErexAmplE@gMail.CoM  ",
     password: "UserExample123!*"
 }
 
-
-const userNormalizedCreateData: UserCreateDataDTO = {
+const formattedUserData: UserFormattedDataDTO = {
     username: "user_example123",
     firstName: "User",
     lastName: "Example",
-    birthDate: new Date(exampleOfBirthDate),
+    birthDate: new Date(reqUserData.birthDate),
     email: "userexample@gmail.com",
-    password: bcrypt.hashSync(rawUserData.password, 10)
+    password: bcrypt.hashSync(reqUserData.password, 10)
 }
-
-
-const createdAtDateExample: string = "2035-04-19";
-const updatedAtDateExample: string = "2035-04-20";
 
 const user: User = {
     id: 1,
-    ...userNormalizedCreateData,
-    createdAt: new Date(createdAtDateExample),
-    updatedAt: new Date(updatedAtDateExample)
+    ...formattedUserData,
+    createdAt: new Date("2035-04-19"),
+    updatedAt: new Date("2035-04-20")
 }
 
-const userFilteredResponseData: UserResponseDTO = {
+const resUserData: UserResponseDTO = {
     id: user.id,
     username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
-    birthDate: exampleOfBirthDate,
+    birthDate: "18/02/2005",
     email: user.email,
-    createdAt: createdAtDateExample,
-    updatedAt: updatedAtDateExample
+    createdAt: "19/04/2035",
+    updatedAt: "20/04/2035"
 }
+
+let mapper: UserDataMapper;
 
 describe ("User Mapper Test", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        mapper = new UserDataMapper()
     });
 
-    it ("returns a formatted user from raw data when the 'rawToModel()' method is used.", () => {
-        expect (UserDataMapper.rawToNormalized(rawUserData)).toEqual(userNormalizedCreateData);
+    it ("returns a formatted user from raw request data when the 'requesToFormatted()' method is used.", () => {
+        expect (mapper.requestToFormatted(reqUserData)).toEqual(formattedUserData);
     });
 
-    it ("returns a user response data from model data when the 'ModelToResponse()' method is used.", () => {
-        expect (UserDataMapper.modelToResponse(user)).toEqual(userFilteredResponseData);
+    it ("returns a user response data from model data when the 'modelToResponse()' method is used.", () => {
+        expect (mapper.modelToResponse(user)).toEqual(resUserData);
     });
 });

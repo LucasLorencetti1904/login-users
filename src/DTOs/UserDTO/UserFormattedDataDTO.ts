@@ -1,4 +1,4 @@
-type UserCreateDataDTO = {
+type UserFormattedDataDTO = {
     username: string,
     firstName: string,
     lastName: string,
@@ -7,4 +7,4 @@ type UserCreateDataDTO = {
     password: string
 }
 
-export default UserCreateDataDTO;
+export default UserFormattedDataDTO;

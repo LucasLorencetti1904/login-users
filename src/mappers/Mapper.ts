@@ -1,7 +1,7 @@
-export default interface ResponseDataMapper<ModelType, ResponseDataType> {
-    modelToResponse(model: ModelType): ResponseDataType
+export interface RequestDataMapper<RequestDataType, NormalizedDataType> {
+    requestToFormatted(rawData: RequestDataType): NormalizedDataType,
 }
 
-export interface RequestDataMapper<RawDataType, NormalizedDataType> {
-    rawToNormalized(rawData: RawDataType): NormalizedDataType,
+export interface ResponseDataMapper<ModelType, ResponseDataType> {
+    modelToResponse(model: ModelType): ResponseDataType
 }
