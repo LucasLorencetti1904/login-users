@@ -1,6 +1,6 @@
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import BirthDateValidator from "@validators/userData/birthDate/BirthDateValidator";
-import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "birthDate";
 

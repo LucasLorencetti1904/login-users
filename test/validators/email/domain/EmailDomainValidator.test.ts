@@ -1,6 +1,6 @@
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import EmailDomainValidator from "@validators/userData/email/domain/EmailDomainValidator";
-import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "email domain";
 

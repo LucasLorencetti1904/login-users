@@ -5,7 +5,7 @@ import EmailDomainTLDValidator from "@validators/userData/email/domain/EmailDoma
 import type { EmailSecondLevelDomain, EmailTopLevelDomain, EmailTopLevelDomainCountryCode }
     from "@shared/types/emailDomainTypes";
 import type { Maybe } from "@shared//types/optionalTypes";
-import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import quantityOf from "@shared/utils/quantityOf";
 
 export default class EmailDomainValidator extends UserDataValidator {

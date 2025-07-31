@@ -1,4 +1,4 @@
-import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import UserDataValidator from "@validators/userData/UserDataValidator";
 
 export default class NameValidator extends UserDataValidator {

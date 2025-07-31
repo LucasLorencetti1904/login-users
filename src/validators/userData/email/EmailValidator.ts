@@ -1,5 +1,5 @@
 import UserDataValidator from "@validators/userData/UserDataValidator";
-import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import EmailUserValidator from "@validators/userData/email/user/EmailUserValidator";
 import EmailDomainValidator from "@validators/userData/email/domain/EmailDomainValidator";
 import quantityOf from "@shared/utils/quantityOf";

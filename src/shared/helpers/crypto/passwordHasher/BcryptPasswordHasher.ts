@@ -1,5 +1,5 @@
+import PasswordHasher from "@shared/helpers/crypto/passwordHasher/PasswordHasher";
 import bcrypt from "bcryptjs";
-import PasswordHasher from "./PasswordHasher";
 
 export default class BcryptPasswordHasher implements PasswordHasher {
     async hash(password: string): Promise<string> {

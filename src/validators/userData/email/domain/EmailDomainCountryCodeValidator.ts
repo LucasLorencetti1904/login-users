@@ -1,6 +1,6 @@
 import EmailDomainPartValidator from "@validators/userData/email/domain/EmailDomainPartValidator";
 import type { Maybe } from "@shared/types/optionalTypes";
-import ErrorMessageGenerator from "@shared/errors/ErrorMessageGenerator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import { EMAIL_TOP_LEVEL_DOMAIN_COUNTRY_CODE } from "@shared/constants/emailDomains";
 import type { EmailTopLevelDomainCountryCode } from "@shared/types/emailDomainTypes";
 
