@@ -2,7 +2,7 @@ import UserDataValidator from "@validators/userData/UserDataValidator";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import EmailUserValidator from "@validators/userData/email/user/EmailUserValidator";
 import EmailDomainValidator from "@validators/userData/email/domain/EmailDomainValidator";
-import quantityOf from "@shared/utils/quantityOf";
+import occurrencesOf from "@shared/utils/occurrencesOf";
 
 export default class EmailValidator extends UserDataValidator { 
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Email");
@@ -39,7 +39,7 @@ export default class EmailValidator extends UserDataValidator {
     }
     
     private getNumberOfSymbols(): number {
-        return quantityOf(EmailValidator.SYMBOL).in(this.email);
+        return occurrencesOf(EmailValidator.SYMBOL, this.email);
     }
 
     private splitEmainInUserAndDomain(): string[] {

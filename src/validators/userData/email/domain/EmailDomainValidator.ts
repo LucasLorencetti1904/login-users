@@ -6,7 +6,7 @@ import type { EmailSecondLevelDomain, EmailTopLevelDomain, EmailTopLevelDomainCo
     from "@shared/types/emailDomainTypes";
 import type { Maybe } from "@shared//types/optionalTypes";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
-import quantityOf from "@shared/utils/quantityOf";
+import ocurrencesOf from "@shared/utils/occurrencesOf";
 
 export default class EmailDomainValidator extends UserDataValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Email domain");
@@ -48,7 +48,7 @@ export default class EmailDomainValidator extends UserDataValidator {
     }
     
         private getNumberOfDots(): number {
-            return quantityOf(EmailDomainValidator.DOT).in(this.domain);
+            return ocurrencesOf(EmailDomainValidator.DOT, this.domain);
         }
     
     private handleDomainParts(domainParts: string[]): void {
