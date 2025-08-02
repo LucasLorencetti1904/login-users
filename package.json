@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "test:current": "vitest ./test/shared/utils/capitalize.test.ts",
+    "test:current": "vitest ./test/mappers/**",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

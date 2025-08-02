@@ -1,18 +1,18 @@
-import ResponseDataMapper from "./ResponseDataMapper";
+import ResponseDataMapper from "@mappers/ResponseDataMapper";
 import { User } from "@prisma/client";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import { format } from "date-fns";
 
-export default class UserResponseDataMapper implements ResponseDataMapper<User, UserResponseDTO> {
-    public modelToResponse(model: User): UserResponseDTO {
-        const { password, ...safetyFields } = model;
-        
+export default class UserResponseDataFormatter implements ResponseDataMapper<User, UserResponseDTO> {
+    public formatModel(model: User): UserResponseDTO {
+        const { password, ...safityFields } = model;
+
         return {
-            ...safetyFields,
+            ...safityFields,
             birthDate: this.formatDateField(model.birthDate),
             createdAt: this.formatDateField(model.createdAt),
             updatedAt: this.formatDateField(model.updatedAt)
-        }
+        };
     };
 
     private formatDateField(dateField: Date): string {

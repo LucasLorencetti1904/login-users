@@ -6,7 +6,7 @@ const capitalizedString: string = "Example";
 describe ("String capitalization Test.", () => {
     beforeEach (() => {
         vi.clearAllMocks();
-    })
+    });
 
     it (`capitalizes lowercase strings.`, () => {
         expect (capitalize("example")).toBe(capitalizedString);

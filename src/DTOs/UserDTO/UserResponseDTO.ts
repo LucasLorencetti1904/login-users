@@ -7,6 +7,6 @@ type UserResponseDTO = {
     email: string,
     createdAt: string,
     updatedAt: string
-}
+};
 
 export default UserResponseDTO;

@@ -1,3 +1,3 @@
 export default interface RequestDataMapper<RequestDataType, NormalizedDataType> {
-    requestToFormatted(rawData: RequestDataType): NormalizedDataType,
+    formatRequest(rawData: RequestDataType): NormalizedDataType;
 }

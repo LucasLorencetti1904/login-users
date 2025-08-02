@@ -5,6 +5,6 @@ type UserFormattedDataDTO = {
     birthDate: Date,
     email: string,
     password: string
-}
+};
 
 export default UserFormattedDataDTO;
