@@ -1,6 +1,6 @@
-import EmailDomainCountryCodeValidator from "../../../../src/shared/util/validators/vanilla/email/domain/EmailDomainCountryCodeValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import ErrorMessageGenerator from "../../../../src/shared/helpers/ErrorMessageGenerator";
+import EmailDomainCountryCodeValidator from "@validators/userData/email/domain/EmailDomainCountryCodeValidator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "email domain country code";
 

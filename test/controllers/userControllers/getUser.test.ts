@@ -1,5 +1,5 @@
 import { beforeEach, describe, vi, it } from "vitest";
-import UserController from "@controllers/userController";
+import UserController from "@controllers/UserControllerImpl";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
@@ -8,19 +8,25 @@ import MockUserService from "./MockUserService";
 import { InternalError, NotFoundError } from "@shared/errors/ResponseError";
 
 const returnedUser: UserResponseDTO = {
+    id: 1,
     username: "user_example1",
     firstName: "Example",
     lastName: "One",
-    birthDate: "2005-04-19",
+    birthDate: "19/04/2005",
     email: "userexample1@gmail.com",
+    createdAt: "03/08/2025",
+    updatedAt: "04/08/2025"
 }
 
 const otherReturnedUser: UserResponseDTO = {
+    id: 2,
     username: "user_example2",
     firstName: "Example",
     lastName: "Two",
-    birthDate: "2008-02-28",
+    birthDate: "28/02/2008",
     email: "userexample2@gmail.com",
+    createdAt: "04/08/2025",
+    updatedAt: "05/08/2025"
 };
 
 const arrayWithAllUsersReturned: UserResponseDTO[] = [
@@ -36,7 +42,7 @@ let mockServer: MockServer;
 
 const method: keyof UserController = "getUser";
 
-describe (`${method} Method`, () => {
+describe (`${method} Controller Method Test`, () => {
     beforeEach(() => {
         vi.clearAllMocks();
         mockRequest = new MockRequest();

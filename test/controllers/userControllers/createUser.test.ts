@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import UserController from "@controllers/userController";
+import UserController from "@controllers/UserControllerImpl";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockServer from "./MockServer";
@@ -27,11 +27,14 @@ const invalidMockUser: UserRequestDTO = {
 };
 
 const returnedUser: UserResponseDTO = {
+    id: 1,
     username: "user_example1",
     firstName: "User",
     lastName: "Example",
-    birthDate: "2005-04-19",
-    email: "userexample1@gmail.com"
+    birthDate: "19/04/2005",
+    email: "userexample1@gmail.com",
+    createdAt: "03/08/2025",
+    updatedAt: "04/08/2025"
 };
 
 let mockRequest: MockRequest;
@@ -42,7 +45,7 @@ let mockServer: MockServer;
 
 const method: keyof UserController = "createUser";
 
-describe (`${method} Method`, () => {
+describe (`${method} Controller Method Test`, () => {
     beforeEach(() => {
         vi.clearAllMocks();
         mockRequest = new MockRequest();
@@ -63,7 +66,7 @@ describe (`${method} Method`, () => {
 
         mockResponse.callResponseStatusWith(201);
 
-        mockResponse.callResponseJsonWith({ message: "UserRequestDTO created.", data: returnedUser});
+        mockResponse.callResponseJsonWith({ message: "User created.", data: returnedUser});
     });
 
     it ("throws a exception and status 400 when user data is invalid.", async () => {

@@ -21,7 +21,7 @@ export default class MockUserService {
             willThrown: (error: Error): void => {
                 (this[method] as Mock).mockRejectedValue(error);
             }
-        }
+        };
     }
 
     public callCurrentParamsIdWithMethod(method: UserServiceMethod): void {

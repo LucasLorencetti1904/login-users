@@ -1,5 +1,5 @@
 import { beforeEach, describe, vi, it } from "vitest";
-import UserController from "@controllers/userController";
+import UserController from "@controllers/UserControllerImpl";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
@@ -8,11 +8,14 @@ import MockUserService from "./MockUserService";
 import { InternalError, NotFoundError } from "@shared/errors/ResponseError";
 
 const deletedUser: UserResponseDTO = {
+    id: 1,
     username: "user_example1",
     firstName: "User",
     lastName: "Example",
-    birthDate: "2005-04-19",
-    email: "userexample1@gmail.com"
+    birthDate: "19/04/2005",
+    email: "userexample1@gmail.com",
+    createdAt: "03/08/2025",
+    updatedAt: "04/08/2025"
 };
 
 let mockRequest: MockRequest;
@@ -23,7 +26,7 @@ let mockServer: MockServer;
 
 const method: keyof UserController = "deleteUser";
 
-describe (`${method} Method`, () => {
+describe (`${method} Controller Method Test`, () => {
     beforeEach(() => {
         vi.clearAllMocks();
         mockRequest = new MockRequest();

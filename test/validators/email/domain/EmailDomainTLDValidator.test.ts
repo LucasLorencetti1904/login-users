@@ -1,6 +1,6 @@
-import EmailDomainTLDValidator from "../../../../src/shared/util/validators/vanilla/email/domain/EmailDomainTLDValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import ErrorMessageGenerator from "../../../../src/shared/helpers/ErrorMessageGenerator";
+import EmailDomainTLDValidator from "@validators/userData/email/domain/EmailDomainTLDValidator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "email top level domain";
 

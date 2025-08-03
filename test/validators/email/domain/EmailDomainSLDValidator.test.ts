@@ -1,6 +1,6 @@
-import EmailDomainSLDValidator from "../../../../src/shared/util/validators/vanilla/email/domain/EmailDomainSLDValidator";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import ErrorMessageGenerator from "../../../../src/shared/helpers/ErrorMessageGenerator";
+import EmailDomainSLDValidator from "@validators/userData/email/domain/EmailDomainSLDValidator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "email second level domain";
 

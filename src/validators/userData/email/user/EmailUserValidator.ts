@@ -1,8 +1,7 @@
-import ErrorMessageGenerator from "../../../../../helpers/ErrorMessageGenerator";
-import { EmailValidationError } from "../../../../errors/DataValidationError";
-import VanillaDataValidator from "../../VanillaDataValidator";
+import UserDataValidator from "@validators/userData/UserDataValidator";
+import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
-export default class EmailUserValidator extends VanillaDataValidator<EmailValidationError> {
+export default class EmailUserValidator extends UserDataValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Email user");
 
     private static readonly CHARACTERS_REGEX = /[(),:;<>[\]\\]/;
@@ -36,10 +35,6 @@ export default class EmailUserValidator extends VanillaDataValidator<EmailValida
         this.failsIf (
             this.isTooLong(), this.errorMessage.maxLength(EmailUserValidator.MAX_LENGTH)
         );
-    }
-
-    protected createError(message: string): EmailValidationError {
-        return new EmailValidationError(message);
     }
 
     private startsWithInvalidCharacter(): boolean {

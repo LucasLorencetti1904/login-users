@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import UserController from "@controllers/userController";
+import UserController from "@controllers/UserControllerImpl";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockUserService from "./MockUserService";
@@ -8,22 +8,25 @@ import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 import { BadRequestError, ConflictError, InternalError, NotFoundError } from "@shared/errors/ResponseError";
 
-const returnedUser: UserResponseDTO = {
+const coreUserData: any = {
     username: "user_example1",
     firstName: "User",
     lastName: "Example",
     birthDate: "2025-04-19",
-    email: "userexample1@gmail.com"
-}
+    email: "userexample1@gmail.com",
+};
 
 const userExample: UserRequestDTO = {
-    ...returnedUser,
+    ...coreUserData,
     password: "12345"
 };
 
 const updatedUser: UserResponseDTO = {
-    ...returnedUser,
-    username: "user_example_updated"
+    id: 1,
+    ...coreUserData,
+    username: "user_example_updated",
+    createdAt: "03/08/2025",
+    updatedAt: "04/08/2025"
 };
 
 const invalidUserExample: UserRequestDTO = {
@@ -39,11 +42,11 @@ let mockRequest: MockRequest;
 let mockResponse: MockResponse;
 let mockUserService: MockUserService;
 let userController: UserController;
-let mockServer: MockServer;   
+let mockServer: MockServer;
 
 const method: keyof UserController = "updateUser";
 
-describe (`${method} Method`, () => {
+describe (`${method} Controller Method Test`, () => {
     beforeEach(() => {
         vi.clearAllMocks();
         mockRequest = new MockRequest();

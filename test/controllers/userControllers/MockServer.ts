@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import UserController from "../../src/controllers/userController";
+import UserController from "@controllers/UserController";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 

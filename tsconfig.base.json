@@ -30,6 +30,7 @@
             "@DTOs/*": ["DTOs/*"],
             "@mappers/*": ["mappers/*"],
             "@controllers/*": ["controllers/*"],
+            "@services/*": ["services/*"],
             "@config/*": ["config/*"]
         }
 
