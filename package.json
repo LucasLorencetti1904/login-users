@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "test:current": "vitest ./test/mappers/**",
+    "test:current": "vitest ./test/services/builders/UserServiceBuilder.test.ts",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

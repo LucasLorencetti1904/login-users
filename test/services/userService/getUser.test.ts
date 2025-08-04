@@ -71,6 +71,8 @@ describe (`${method} Service Method Test.`, () => {
 
         mockUserRepository.callMethod("getUserById").withId("1");
 
+        expect (await userService.getUser("1")).not.toEqual(returnedUserExample);
+
         expect (await userService.getUser("1")).toEqual(formattedResponseUser);
     });
 });

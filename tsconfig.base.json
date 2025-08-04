@@ -31,6 +31,7 @@
             "@mappers/*": ["mappers/*"],
             "@controllers/*": ["controllers/*"],
             "@services/*": ["services/*"],
+            "@repositories/*": ["repositories/*"],
             "@config/*": ["config/*"]
         }
 
