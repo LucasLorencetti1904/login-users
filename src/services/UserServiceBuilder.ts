@@ -38,8 +38,8 @@ export default class UserServiceBuilder implements Builder<UserService> {
         }
 
         return new UserServiceImpl(
-            this.userRequestFormatter,
             this.validator,
+            this.userRequestFormatter,
             this.repository,
             this.userResponseFormatter
         )

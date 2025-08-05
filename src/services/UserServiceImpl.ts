@@ -1,19 +1,22 @@
-import UserResponseDataFormatter from "@mappers/UserResponseDataFormatter";
 import type UserRepository from "@interfaces/repositories/UserRepository";
-import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
 import UserValidator from "@interfaces/validators/UserValidator";
 import UserService from "@interfaces/services/UserService";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
+import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
+import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
+import { User } from "@prisma/client";
 
 export default class UserServiceImpl implements UserService {
     constructor(
-        private requestFormatter: UserRequestDataFormatter,
         private validator: UserValidator,
+        private requestFormatter: RequestDataMapper<UserRequestDTO, UserFormattedDataDTO>,
         private repository: UserRepository,
-        private responseFormatter: UserResponseDataFormatter
+        private responseFormatter: ResponseDataMapper<User, UserResponseDTO>
     ) {}
 
-    public getUser(id?: string): UserResponseDTO | UserResponseDTO[] | null {
+    public getUser(id?: number): UserResponseDTO | UserResponseDTO[] | null {
         
     }
 }

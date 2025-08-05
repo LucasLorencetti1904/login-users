@@ -11,7 +11,7 @@ export default class UserController {
 
     public async getUser(req: Request, res: Response): Promise<Response> {
         try {
-            const founded: UserResponseDTO = await this.userService.getUser(req.params.id);
+            const founded: UserResponseDTO = await this.userService.getUser(Number(req.params.id));
 
             const noUsers: boolean = !founded;
 
@@ -44,7 +44,9 @@ export default class UserController {
 
     public async updateUser(req: Request, res: Response): Promise<Response> {
         try {
-            const updated: UserResponseDTO = await this.userService.updateUser(req.params.id, req.body);
+            const updated: UserResponseDTO = await this.userService.updateUser(
+                Number(req.params.id), req.body
+            );
 
             const hasNotChanged: boolean = updated == null;
 
@@ -62,7 +64,7 @@ export default class UserController {
 
     public async deleteUser(req: Request, res: Response): Promise<Response> {
         try {
-            const deleted: UserResponseDTO = await this.userService.deleteUser(req.params.id);
+            const deleted: UserResponseDTO = await this.userService.deleteUser(Number(req.params.id));
 
             return res.status(200).json({ message: "User deleted.", data: deleted });
         }

@@ -2,9 +2,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserService from "@interfaces/services/UserService";
 import UserServiceImpl from "@services/UserServiceImpl";
-import MockUserRepository from "./MockUserRepository";
+import MockRepository from "./MockRepository";
 import { User } from "@prisma/client";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import MockValidator from "./MockValidator";
+import MockRequestFormatter from "./MockRequestFormatter";
+import MockResponseFormatter from "./MockResponseFormatter";
 
 const validUserExample: UserRequestDTO = {
     username: "user_example123",
@@ -54,7 +57,10 @@ const arrayWithAllReturnedUsers: User[] = [
     otherReturnedUserExample
 ];
 
-let mockUserRepository: MockUserRepository;
+let mockValidator: MockValidator;
+let mockRequestFormatter: MockRequestFormatter;
+let mockRepository: MockRepository;
+let mockResponseFormatter: MockResponseFormatter;
 let userService: UserServiceImpl;
 
 const method: keyof UserService = "getUser";
@@ -62,17 +68,26 @@ const method: keyof UserService = "getUser";
 describe (`${method} Service Method Test.`, () => {
     beforeEach (() => {
         vi.clearAllMocks();
-        mockUserRepository = new MockUserRepository();
-        userService = new UserServiceImpl(mockUserRepository);
+        mockValidator = new MockValidator();
+        mockRequestFormatter = new MockRequestFormatter();
+        mockRepository = new MockRepository();
+        mockResponseFormatter = new MockResponseFormatter();
+        userService = new UserServiceImpl(
+            mockValidator,
+            mockRequestFormatter,
+            mockRepository,
+            mockResponseFormatter
+        );
     });
 
     it ("returns a found user when id is provided.", async () => {
-        mockUserRepository.method("getUserById").willReturn(returnedUserExample);
+        mockRepository.method("getUserById").willReturn(returnedUserExample);
 
-        mockUserRepository.callMethod("getUserById").withId("1");
+        mockValidator.callValidateMethodWith(validUserExample);
+        mockRequestFormatter.callFormatRequestMethodWith(validUserExample);
+        mockRepository.callMethod("getUserById").withId(1);
+        mockResponseFormatter.callFormatModelMethodWith(returnedUserExample);
 
-        expect (await userService.getUser("1")).not.toEqual(returnedUserExample);
-
-        expect (await userService.getUser("1")).toEqual(formattedResponseUser);
+        expect (userService.getUser(1)).toEqual(formattedResponseUser);
     });
 });

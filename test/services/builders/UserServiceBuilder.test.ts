@@ -7,8 +7,8 @@ import UserPrismaRepository from "@repositories/userPrismaRepository";
 import UserServiceBuilder from "@services/UserServiceBuilder";
 
 let builder: UserServiceBuilder;
-let requestFormatter: UserRequestDataFormatter;
 let validator: UserValidator;
+let requestFormatter: UserRequestDataFormatter;
 let repository: UserRepository;
 let responseFormatter: UserResponseDataFormatter;
 
@@ -16,8 +16,8 @@ describe ("User Service Builder Test.", () => {
     beforeEach (() => {
         vi.clearAllMocks();
         builder = new UserServiceBuilder();
-        requestFormatter = new UserRequestDataFormatter();
         validator = new UserValidator();
+        requestFormatter = new UserRequestDataFormatter();
         repository = new UserPrismaRepository();
         responseFormatter = new UserResponseDataFormatter();
     });
@@ -25,14 +25,14 @@ describe ("User Service Builder Test.", () => {
     it ("should assign dependencies when the build method is called.", () => {
         expect (
             builder
-                .withRequestFormatter(requestFormatter)
                 .withValidator(validator)
+                .withRequestFormatter(requestFormatter)
                 .withRepository(repository)
                 .withResponseFormatter(responseFormatter)
                 .build()
         ).toEqual({
-            requestFormatter,
             validator,
+            requestFormatter,
             repository,
             responseFormatter
         });

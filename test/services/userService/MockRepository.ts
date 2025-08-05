@@ -1,13 +1,13 @@
 import { expect, Mock, vi } from "vitest";
 import { User } from "@prisma/client";
 
-type UserRepositoryMethod = keyof MockUserRepository;
+type RepositoryMethod = keyof MockRepository;
 type DataFormat = User | User[] | null;
 
-export default class MockUserRepository {
+export default class MockRepository {
     public getUserById = vi.fn()
 
-    public method(method: UserRepositoryMethod): any {
+    public method(method: RepositoryMethod): any {
         return {
             willReturn: (data: DataFormat): void => {
                 (this[method] as Mock).mockResolvedValue(data); 
@@ -18,7 +18,7 @@ export default class MockUserRepository {
         };
     }
 
-    public callMethod(method: UserRepositoryMethod): any {
+    public callMethod(method: RepositoryMethod): any {
         return {
             withId: (id: string): void => {
                 expect (this[method] as Mock).toHaveBeenCalledExactlyOnceWith(id);

@@ -26,7 +26,7 @@ export default class MockUserService implements UserService {
     }
 
     public callCurrentParamsIdWithMethod(method: UserServiceMethod): void {
-        expect (this[method]).toHaveBeenCalledExactlyOnceWith(this.req.params.id);
+        expect (this[method]).toHaveBeenCalledExactlyOnceWith(Number(this.req.params.id));
     }
 
     public callCurrentBodyDataWithMethod(method: UserServiceMethod): void {
@@ -34,6 +34,9 @@ export default class MockUserService implements UserService {
     }
 
     public callCurrentParamsIdAndBodyDataWithMethod(method: UserServiceMethod): void {
-        expect (this[method]).toHaveBeenCalledExactlyOnceWith(this.req.params.id, this.req.body);
+        expect (this[method]).toHaveBeenCalledExactlyOnceWith(
+            Number(this.req.params.id),
+            this.req.body
+        );
     }
 }
