@@ -1,5 +1,5 @@
-import BcryptPasswordHasher from "@shared/helpers/crypto/passwordHasher/BcryptPasswordHasher";
-import PasswordHasher from "@shared/helpers/crypto/passwordHasher/PasswordHasher";
+import BcryptPasswordHasher from "@adapters/passwordHasher/BcryptPasswordHasher";
+import PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import { describe, beforeEach, vi, it, expect } from "vitest";
 
 const HASHING_SERVICE = BcryptPasswordHasher; 

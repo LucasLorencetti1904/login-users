@@ -1,6 +1,6 @@
 import { describe, beforeEach, vi, test, expect } from "vitest";
 import UserResponseDataFormatter from "@mappers/UserResponseDataFormatter";
-import ResponseDataMapper from "@mappers/ResponseDataMapper";
+import ResponseDataMapper from "interfaces/mappers/ResponseDataMapper";
 import { User } from "@prisma/client";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import { format } from "date-fns";

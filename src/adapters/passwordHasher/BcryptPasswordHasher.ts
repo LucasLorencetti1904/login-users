@@ -1,4 +1,4 @@
-import PasswordHasher from "@shared/helpers/crypto/passwordHasher/PasswordHasher";
+import PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import bcrypt from "bcryptjs";
 
 export default class BcryptPasswordHasher implements PasswordHasher {

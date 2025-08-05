@@ -1,9 +1,8 @@
 import { type Request, type Response } from "express";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
-import { ResponseError } from "@shared/errors/ResponseError";
-import UserController from "@controllers/UserController";
+import ResponseError from "@shared/errors/responseError/ResponseError";
 
-export default class UserControllerImpl implements UserController {
+export default class UserController {
     private readonly userService: any;
 
     public constructor(userService: any) {

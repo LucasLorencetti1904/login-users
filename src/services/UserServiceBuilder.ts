@@ -1,8 +1,8 @@
 import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
 import UserResponseDataFormatter from "@mappers/UserResponseDataFormatter";
-import UserRepository from "@repositories/UserRepository";
-import Builder from "@services/builders/Builder";
-import UserService from "@services/UserService";
+import UserRepository from "@interfaces/repositories/UserRepository";
+import Builder from "@interfaces/builders/Builder";
+import UserService from "@interfaces/services/UserService";
 import UserServiceImpl from "@services/UserServiceImpl";
 import UserValidator from "@validators/userData/UserValidator";
 

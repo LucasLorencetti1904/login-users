@@ -3,7 +3,7 @@ import EmailDomainCountryCodeValidator from "@validators/userData/email/domain/E
 import EmailDomainSLDValidator from "@validators/userData/email/domain/EmailDomainSLDValidator";
 import EmailDomainTLDValidator from "@validators/userData/email/domain/EmailDomainTLDValidator";
 import type { EmailSecondLevelDomain, EmailTopLevelDomain, EmailTopLevelDomainCountryCode }
-    from "@shared/types/emailDomainTypes";
+    from "@shared/constants/email/emailDomainTypes";
 import type { Maybe } from "@shared//types/optionalTypes";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import ocurrencesOf from "@shared/utils/occurrencesOf";

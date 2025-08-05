@@ -5,7 +5,7 @@ import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 import MockUserService from "./MockUserService";
-import { InternalError, NotFoundError } from "@shared/errors/ResponseError";
+import { InternalError, NotFoundError } from "@shared/errors/responseError/ResponseError";
 
 const returnedUser: UserResponseDTO = {
     id: 1,

@@ -24,14 +24,15 @@
 
         "baseUrl": "./src",
         "paths": {
-            "@shared/*": ["shared/*"],
-            "@validators/*": ["validators/*"],
-            "@models/*": ["models/*"],
-            "@DTOs/*": ["DTOs/*"],
-            "@mappers/*": ["mappers/*"],
+            "@interfaces/*": ["interfaces/*"],
             "@controllers/*": ["controllers/*"],
             "@services/*": ["services/*"],
             "@repositories/*": ["repositories/*"],
+            "@shared/*": ["shared/*"],
+            "@validators/*": ["validators/*"],
+            "@DTOs/*": ["DTOs/*"],
+            "@mappers/*": ["mappers/*"],
+            "@adapters/*": ["adapters/*"],
             "@config/*": ["config/*"]
         }
 

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
-import UserService from "@services/UserService";
+import UserService from "@interfaces/services/UserService";
 import UserServiceImpl from "@services/UserServiceImpl";
 import MockUserRepository from "./MockUserRepository";
 import { User } from "@prisma/client";

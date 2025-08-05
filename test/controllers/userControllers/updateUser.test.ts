@@ -6,7 +6,7 @@ import MockUserService from "./MockUserService";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
-import { BadRequestError, ConflictError, InternalError, NotFoundError } from "@shared/errors/ResponseError";
+import { BadRequestError, ConflictError, InternalError, NotFoundError } from "@shared/errors/responseError/ResponseError";
 
 const coreUserData: any = {
     username: "user_example1",

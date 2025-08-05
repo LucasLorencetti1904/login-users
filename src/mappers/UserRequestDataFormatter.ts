@@ -1,4 +1,4 @@
-import RequestDataMapper from "@mappers/RequestDataMapper";
+import RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import capitalize from "@shared/utils/capitalize";

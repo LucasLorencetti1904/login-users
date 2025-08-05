@@ -1,4 +1,4 @@
-import Validator from "@validators/Validator";
+import Validator from "@interfaces/validators/Validator";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UsernameValidator from "@validators/userData/username/UsernameValidator";
 import NameValidator from "@validators/userData/name/NameValidator";

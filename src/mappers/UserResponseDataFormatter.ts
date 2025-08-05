@@ -1,7 +1,7 @@
-import ResponseDataMapper from "@mappers/ResponseDataMapper";
+import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
 import { User } from "@prisma/client";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
-import { format } from "date-fns";
+import ddmmyyyyDateFormatter from "@adapters/dateFormatter/DateFnsFormatter";
 
 export default class UserResponseDataFormatter implements ResponseDataMapper<User, UserResponseDTO> {
     public formatModel(model: User): UserResponseDTO {
@@ -16,6 +16,6 @@ export default class UserResponseDataFormatter implements ResponseDataMapper<Use
     };
 
     private formatDateField(dateField: Date): string {
-        return format(dateField, "dd/MM/yyyy");
+        return ddmmyyyyDateFormatter.formatDate(dateField);
     };
 }

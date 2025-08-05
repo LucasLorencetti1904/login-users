@@ -1,5 +1,5 @@
 import { vi, expect, Mock } from "vitest";
-import UserService from "@services/UserService";
+import UserService from "@interfaces/services/UserService";
 import MockRequest from "./MockRequest";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 

@@ -1,10 +1,10 @@
 import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
-import UserRepository from "@repositories/UserRepository";
+import UserRepository from "@interfaces/repositories/UserRepository";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import UserResponseDataFormatter from "@mappers/UserResponseDataFormatter";
 import UserValidator from "@validators/userData/UserValidator";
 import UserPrismaRepository from "@repositories/userPrismaRepository";
-import UserServiceBuilder from "@services/builders/UserServiceBuilder";
+import UserServiceBuilder from "@services/UserServiceBuilder";
 
 let builder: UserServiceBuilder;
 let requestFormatter: UserRequestDataFormatter;

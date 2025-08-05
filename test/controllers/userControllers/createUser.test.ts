@@ -6,7 +6,7 @@ import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 import MockUserService from "./MockUserService";
-import { BadRequestError, ConflictError, InternalError } from "@shared/errors/ResponseError";
+import { BadRequestError, ConflictError, InternalError } from "@shared/errors/responseError/ResponseError";
 
 const userExample: UserRequestDTO = {
     username: "user_example1",
