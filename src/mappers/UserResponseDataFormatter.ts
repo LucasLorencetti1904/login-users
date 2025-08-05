@@ -1,7 +1,7 @@
 import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
 import { User } from "@prisma/client";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
-import ddmmyyyyDateFormatter from "@adapters/dateFormatter/DateFnsFormatter";
+import formatDateToDDMMYYYY from "@shared/utils/formatDateToDDMMYYYY";
 
 export default class UserResponseDataFormatter implements ResponseDataMapper<User, UserResponseDTO> {
     public formatModel(model: User): UserResponseDTO {
@@ -9,13 +9,9 @@ export default class UserResponseDataFormatter implements ResponseDataMapper<Use
 
         return {
             ...safityFields,
-            birthDate: this.formatDateField(model.birthDate),
-            createdAt: this.formatDateField(model.createdAt),
-            updatedAt: this.formatDateField(model.updatedAt)
+            birthDate: formatDateToDDMMYYYY(model.birthDate),
+            createdAt: formatDateToDDMMYYYY(model.createdAt),
+            updatedAt: formatDateToDDMMYYYY(model.updatedAt)
         };
-    };
-
-    private formatDateField(dateField: Date): string {
-        return ddmmyyyyDateFormatter.formatDate(dateField);
     };
 }

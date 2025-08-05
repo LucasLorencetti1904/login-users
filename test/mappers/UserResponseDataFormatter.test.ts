@@ -1,9 +1,9 @@
 import { describe, beforeEach, vi, test, expect } from "vitest";
 import UserResponseDataFormatter from "@mappers/UserResponseDataFormatter";
-import ResponseDataMapper from "interfaces/mappers/ResponseDataMapper";
+import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
 import { User } from "@prisma/client";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
-import { format } from "date-fns";
+import formatDateToDDMMYYYY from "@shared/utils/formatDateToDDMMYYYY";
 
 const user: User = {
     id: 1,
@@ -39,7 +39,7 @@ describe ("User Mapper Test.", () => {
     test ("The user birthDate must be string and contain the dd/MM/yyyy format.", () => {
         expect (resUserData.createdAt).toBeTypeOf("string");
 
-        expect (resUserData.birthDate).toBe(format(user.birthDate, "dd/MM/yyyy"));
+        expect (resUserData.birthDate).toBe(formatDateToDDMMYYYY(user.birthDate));
     });
     
     test ("The user response object must not be contain the password field.", () => {
@@ -49,12 +49,12 @@ describe ("User Mapper Test.", () => {
     test ("The user createdAt (timestamp) must be string and contain the dd/MM/yyyy format.", () => {
         expect (resUserData.createdAt).toBeTypeOf("string");
 
-        expect (resUserData.createdAt).toBe(format(user.createdAt, "dd/MM/yyyy"));
+        expect (resUserData.createdAt).toBe(formatDateToDDMMYYYY(user.createdAt));
     });
     
     test ("The user updatedAt (timestamp) must be string and contain the dd/MM/yyyy format.", () => {
         expect (resUserData.createdAt).toBeTypeOf("string");
 
-        expect (resUserData.updatedAt).toBe(format(user.updatedAt, "dd/MM/yyyy"));
+        expect (resUserData.updatedAt).toBe(formatDateToDDMMYYYY(user.updatedAt));
     });
 });

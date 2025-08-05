@@ -1,12 +1,14 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import UserController from "@controllers/UserControllerImpl";
+import UserController from "@controllers/UserController";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 import MockUserService from "./MockUserService";
-import { BadRequestError, ConflictError, InternalError } from "@shared/errors/responseError/ResponseError";
+import BadRequestError from "@shared/errors/responseError/BadRequestError";
+import ConflictError from "@shared/errors/responseError/ConflictError";
+import InternalError from "@shared/errors/responseError/InternalError";
 
 const userExample: UserRequestDTO = {
     username: "user_example1",
@@ -41,7 +43,7 @@ let mockRequest: MockRequest;
 let mockResponse: MockResponse;
 let mockUserService: MockUserService;
 let userController: UserController;
-let mockServer: MockServer;   
+let mockServer: MockServer<UserController>;   
 
 const method: keyof UserController = "createUser";
 

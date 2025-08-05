@@ -4,7 +4,7 @@ import UserRepository from "@interfaces/repositories/UserRepository";
 import Builder from "@interfaces/builders/Builder";
 import UserService from "@interfaces/services/UserService";
 import UserServiceImpl from "@services/UserServiceImpl";
-import UserValidator from "@validators/userData/UserValidator";
+import UserValidator from "@validators/userData/UserValidatorImpl";
 
 export default class UserServiceBuilder implements Builder<UserService> {
     private userRequestFormatter!: UserRequestDataFormatter;

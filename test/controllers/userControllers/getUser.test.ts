@@ -1,11 +1,12 @@
 import { beforeEach, describe, vi, it } from "vitest";
-import UserController from "@controllers/UserControllerImpl";
+import UserController from "@controllers/UserController";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 import MockUserService from "./MockUserService";
-import { InternalError, NotFoundError } from "@shared/errors/responseError/ResponseError";
+import NotFoundError from "@shared/errors/responseError/NotFoundError";
+import InternalError from "@shared/errors/responseError/InternalError";
 
 const returnedUser: UserResponseDTO = {
     id: 1,
@@ -38,7 +39,7 @@ let mockRequest: MockRequest;
 let mockResponse: MockResponse;
 let mockUserService: MockUserService;
 let userController: UserController;
-let mockServer: MockServer;
+let mockServer: MockServer<UserController>;
 
 const method: keyof UserController = "getUser";
 

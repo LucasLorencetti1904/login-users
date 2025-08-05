@@ -1,10 +1,7 @@
-import BcryptPasswordHasher from "@adapters/passwordHasher/BcryptPasswordHasher";
-import PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import { describe, beforeEach, vi, it, expect } from "vitest";
+import BcryptPasswordHasher from "@adapters/passwordHasher/BcryptPasswordHasher";
 
-const HASHING_SERVICE = BcryptPasswordHasher; 
-
-let hasher: PasswordHasher;
+let hasher: BcryptPasswordHasher;
 let password: string;
 let hashedPassword: string;
 let passwordsMatch: boolean;
@@ -12,7 +9,7 @@ let passwordsMatch: boolean;
 describe ("Password Hashing test", () => {
     beforeEach (() => {
         vi.clearAllMocks();
-        hasher = new HASHING_SERVICE();
+        hasher = new BcryptPasswordHasher();
     });
     
     it ("returns a hashed password when 'hash()' method is called.", async () => {

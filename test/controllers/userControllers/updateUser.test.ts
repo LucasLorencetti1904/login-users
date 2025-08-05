@@ -1,12 +1,15 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import UserController from "@controllers/UserControllerImpl";
+import UserController from "@controllers/UserController";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockUserService from "./MockUserService";
 import MockServer from "./MockServer";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
-import { BadRequestError, ConflictError, InternalError, NotFoundError } from "@shared/errors/responseError/ResponseError";
+import BadRequestError from "@shared/errors/responseError/BadRequestError";
+import NotFoundError from "@shared/errors/responseError/NotFoundError";
+import ConflictError from "@shared/errors/responseError/ConflictError";
+import InternalError from "@shared/errors/responseError/InternalError";
 
 const coreUserData: any = {
     username: "user_example1",
@@ -42,7 +45,7 @@ let mockRequest: MockRequest;
 let mockResponse: MockResponse;
 let mockUserService: MockUserService;
 let userController: UserController;
-let mockServer: MockServer;
+let mockServer: MockServer<UserController>;
 
 const method: keyof UserController = "updateUser";
 

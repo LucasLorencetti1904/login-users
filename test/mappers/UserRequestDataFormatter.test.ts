@@ -2,7 +2,7 @@ import { describe, beforeEach, vi, test, expect } from "vitest";
 import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
-import RequestDataMapper from "interfaces/mappers/RequestDataMapper";
+import RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import capitalize from "@shared/utils/capitalize";
 
 const reqUserData: UserRequestDTO = {

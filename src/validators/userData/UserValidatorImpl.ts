@@ -1,4 +1,4 @@
-import Validator from "@interfaces/validators/Validator";
+import UserValidator from "@interfaces/validators/UserValidator";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UsernameValidator from "@validators/userData/username/UsernameValidator";
 import NameValidator from "@validators/userData/name/NameValidator";
@@ -7,8 +7,8 @@ import EmailValidator from "@validators/userData/email/EmailValidator";
 import PasswordValidator from "@validators/userData/password/PasswordValidator";
 import handleError from "@shared/utils/handleError";
 
-export default class UserValidator implements Validator<UserRequestDTO> {
-    validate(data: UserRequestDTO): void {
+export default class UserValidatorImpl implements UserValidator {
+    public validate(data: UserRequestDTO): void {
         try {
             new UsernameValidator(data.username);
             new NameValidator(data.firstName);
