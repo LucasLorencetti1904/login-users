@@ -1,11 +1,11 @@
 import { expect, Mock, vi } from "vitest";
 import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
-import { User } from "@prisma/client";
+import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 
 export default class MockResponseFormatter implements ResponseDataMapper<any, any> {
     public formatModel = vi.fn(); 
 
-    public callFormatModelMethodWith(data: User): void {
+    public callFormatModelMethodWith(data: UserModelDTO): void {
         expect (this.formatModel as Mock).toHaveBeenCalledExactlyOnceWith(data);
     }
 }

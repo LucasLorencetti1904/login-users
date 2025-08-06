@@ -1,5 +1,5 @@
-import { User } from "@prisma/client";
+import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 
 export default interface UserRepository {
-    getUserById(id: string): Promise<User | null>;
+    getUserById(id: string): Promise<UserModelDTO | null>;
 }

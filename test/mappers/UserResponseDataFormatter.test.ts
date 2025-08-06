@@ -1,11 +1,11 @@
 import { describe, beforeEach, vi, test, expect } from "vitest";
 import UserResponseDataFormatter from "@mappers/UserResponseDataFormatter";
 import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
-import { User } from "@prisma/client";
+import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import formatDateToDDMMYYYY from "@shared/utils/formatDateToDDMMYYYY";
 
-const user: User = {
+const user: UserModelDTO = {
     id: 1,
     username: "user_example123",
     firstName: "User",
@@ -17,7 +17,7 @@ const user: User = {
     updatedAt: new Date("2035-04-20")
 };
 
-const mapper: ResponseDataMapper<User, UserResponseDTO> = new UserResponseDataFormatter();
+const mapper: ResponseDataMapper<UserModelDTO, UserResponseDTO> = new UserResponseDataFormatter();
 
 const resUserData: UserResponseDTO = mapper.formatModel(user);
 

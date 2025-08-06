@@ -1,8 +1,8 @@
 import { expect, Mock, vi } from "vitest";
-import { User } from "@prisma/client";
+import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 
 type RepositoryMethod = keyof MockRepository;
-type DataFormat = User | User[] | null;
+type DataFormat = UserModelDTO | UserModelDTO[] | null;
 
 export default class MockRepository {
     public getUserById = vi.fn()

@@ -3,7 +3,7 @@ import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserService from "@interfaces/services/UserService";
 import UserServiceImpl from "@services/UserServiceImpl";
 import MockRepository from "./MockRepository";
-import { User } from "@prisma/client";
+import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockValidator from "./MockValidator";
 import MockRequestFormatter from "./MockRequestFormatter";
@@ -27,7 +27,7 @@ const invalidUserExample: UserRequestDTO = {
     password: "12345"
 };
 
-const returnedUserExample: User = {
+const returnedUserExample: UserModelDTO = {
     id: 1,
     ...validUserExample,
     birthDate: new Date("2005-04-19"),
@@ -44,7 +44,7 @@ const formattedResponseUser: UserResponseDTO = {
     updatedAt: "04/08/2025"
 };
 
-const otherReturnedUserExample: User = {
+const otherReturnedUserExample: UserModelDTO = {
     id: 2,
     ...validUserExample,
     birthDate: new Date("2008-02-23"),
@@ -52,7 +52,7 @@ const otherReturnedUserExample: User = {
     updatedAt: new Date("2025-09-27")
 };
 
-const arrayWithAllReturnedUsers: User[] = [
+const arrayWithAllReturnedUsers: UserModelDTO[] = [
     returnedUserExample,
     otherReturnedUserExample
 ];
