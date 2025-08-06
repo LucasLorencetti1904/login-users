@@ -13,12 +13,6 @@ export default class UserController {
         try {
             const founded: UserResponseDTO = await this.userService.getUser(Number(req.params.id));
 
-            const noUsers: boolean = !founded;
-
-            if (noUsers) {
-                return res.status(204).send();
-            }
-
             return res.status(200).json({
                 message: `User${Array.isArray(founded) ? "s" : ""} found.`,
                 data: founded

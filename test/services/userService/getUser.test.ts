@@ -8,6 +8,7 @@ import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockValidator from "./MockValidator";
 import MockRequestFormatter from "./MockRequestFormatter";
 import MockResponseFormatter from "./MockResponseFormatter";
+import BadRequestError from "@shared/errors/responseError/BadRequestError";
 
 const validUserExample: UserRequestDTO = {
     username: "user_example123",
@@ -35,6 +36,17 @@ const returnedUserExample: UserModelDTO = {
     updatedAt: new Date("2025-08-04")
 };
 
+const arrayWithAllReturnedUsers: UserModelDTO[] = [
+    returnedUserExample,
+    {
+        id: 2,
+        ...validUserExample,
+        birthDate: new Date("2008-02-23"),
+        createdAt: new Date("2025-04-19"),
+        updatedAt: new Date("2025-09-27")
+    }
+];
+
 const { password, ...safetyData } = returnedUserExample;
 
 const formattedResponseUser: UserResponseDTO = {
@@ -44,18 +56,19 @@ const formattedResponseUser: UserResponseDTO = {
     updatedAt: "04/08/2025"
 };
 
-const otherReturnedUserExample: UserModelDTO = {
-    id: 2,
-    ...validUserExample,
-    birthDate: new Date("2008-02-23"),
-    createdAt: new Date("2025-04-19"),
-    updatedAt: new Date("2025-09-27")
-};
-
-const arrayWithAllReturnedUsers: UserModelDTO[] = [
-    returnedUserExample,
-    otherReturnedUserExample
-];
+const arrayWithAllFormattedResponseUsers: UserResponseDTO[] = [
+    formattedResponseUser,
+    {
+        id: 2,
+        username: "user_example321",
+        firstName: "Example",
+        lastName: "User",
+        email: "userexample2@gmail.com",
+        birthDate: "2008-02-23",
+        createdAt: "2025-04-19",
+        updatedAt: "2025-09-27"
+    }
+]
 
 let mockValidator: MockValidator;
 let mockRequestFormatter: MockRequestFormatter;
@@ -83,11 +96,33 @@ describe (`${method} Service Method Test.`, () => {
     it ("returns a found user when id is provided.", async () => {
         mockRepository.method("getUserById").willReturn(returnedUserExample);
 
-        mockValidator.callValidateMethodWith(validUserExample);
-        mockRequestFormatter.callFormatRequestMethodWith(validUserExample);
+        mockValidator.doNotCall();
+        mockRequestFormatter.doNotCall();
         mockRepository.callMethod("getUserById").withId(1);
-        mockResponseFormatter.callFormatModelMethodWith(returnedUserExample);
+        mockResponseFormatter.callWith(returnedUserExample);
 
-        expect (userService.getUser(1)).toEqual(formattedResponseUser);
+        await expect (userService.getUser(1)).resolves.toEqual(formattedResponseUser);
+    });
+
+    it ("returns an array of users when id is not provided.", async () => {
+        mockRepository.method("getAllUsers").willReturn(arrayWithAllReturnedUsers);
+
+        mockValidator.doNotCall();
+        mockRequestFormatter.doNotCall();
+        mockRepository.callMethod("getUserById").withId(1);
+        mockResponseFormatter.callWith(returnedUserExample);
+
+        await expect (userService.getUser(1)).resolves.toEqual(arrayWithAllFormattedResponseUsers);
+    });
+
+    it ("throws a Not Found Error when user is not found.", async () => {
+        mockRepository.method("getUserById").willReturn(null);
+
+        mockValidator.doNotCall();
+        mockRequestFormatter.doNotCall();
+        mockRepository.callMethod("getUserById").withId(101);
+        mockResponseFormatter.doNotCall();
+
+        await expect (userService.getUser(101)).rejects.toThrow("User is not found.");
     });
 });

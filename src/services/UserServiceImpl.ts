@@ -8,6 +8,7 @@ import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 
+
 export default class UserServiceImpl implements UserService {
     constructor(
         private validator: UserValidator,
@@ -16,7 +17,7 @@ export default class UserServiceImpl implements UserService {
         private responseFormatter: ResponseDataMapper<UserModelDTO, UserResponseDTO>
     ) {}
 
-    public getUser(id?: number): UserResponseDTO | UserResponseDTO[] | null {
-        
+    public async getUser(id?: number): Promise<UserResponseDTO | UserResponseDTO[]> {
+
     }
 }

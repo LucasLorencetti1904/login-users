@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "test:current": "vitest ./test/shared/utils/formatDateToDDMMYYYY.test.ts",
+    "test:current": "vitest ./test/services/userService/getUser.test.ts",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

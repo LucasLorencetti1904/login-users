@@ -5,7 +5,11 @@ import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 export default class MockResponseFormatter implements ResponseDataMapper<any, any> {
     public formatModel = vi.fn(); 
 
-    public callFormatModelMethodWith(data: UserModelDTO): void {
+    public callWith(data: UserModelDTO): void {
         expect (this.formatModel as Mock).toHaveBeenCalledExactlyOnceWith(data);
+    }
+
+    public doNotCall(): void {
+        expect (this.formatModel as Mock).not.toHaveBeenCalled();
     }
 }

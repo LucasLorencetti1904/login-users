@@ -5,7 +5,11 @@ import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 export default class MockRequestFormatter implements RequestDataMapper<any, any> {
       public formatRequest = vi.fn();
 
-    public callFormatRequestMethodWith(data: UserRequestDTO): void {
+    public callWith(data: UserRequestDTO): void {
         expect (this.formatRequest as Mock).toHaveBeenCalledExactlyOnceWith(data);
+    }
+
+    public doNotCall(): void {
+        expect (this.formatRequest as Mock).not.toHaveBeenCalled();
     }
 }

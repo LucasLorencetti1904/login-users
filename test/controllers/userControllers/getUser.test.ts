@@ -81,20 +81,6 @@ describe (`${method} Controller Method Test`, () => {
         mockResponse.callResponseJsonWith({ message: "Users found.", data: arrayWithAllUsersReturned });
     });
 
-    it ("returns status 204 if there are no users.", async () => {
-        mockRequest.paramsIdWillBe(undefined);
-
-        mockUserService.method(method).willReturn(null);
-
-        await mockServer.initUserControllerMethod(method);
-
-        mockUserService.callCurrentParamsIdWithMethod(method);
-
-        mockResponse.callResponseStatusWith(204);
-
-        mockResponse.callResponseEmpty();
-    });
-
     it ("throws a exception and status 404 when user is not found.", async () => {
         var notFoundError: NotFoundError = new NotFoundError("User not found.");
 

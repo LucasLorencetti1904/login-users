@@ -5,7 +5,11 @@ import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 export default class MockValidator implements UserValidator {
     public validate = vi.fn();
 
-    public callValidateMethodWith(data: UserRequestDTO): void {
+    public callWith(data: UserRequestDTO): void {
         expect (this.validate as Mock).toHaveBeenCalledExactlyOnceWith(data);
+    }
+
+    public doNotCall(): void {
+        expect (this.validate as Mock).not.toHaveBeenCalled();
     }
 }
