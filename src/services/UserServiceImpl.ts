@@ -7,6 +7,8 @@ import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
 import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 import UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import NotFoundError from "@shared/errors/responseError/NotFoundError";
+import OneOrMany from "@shared/types/OneOrMany";
 
 
 export default class UserServiceImpl implements UserService {
@@ -17,7 +19,37 @@ export default class UserServiceImpl implements UserService {
         private responseFormatter: ResponseDataMapper<UserModelDTO, UserResponseDTO>
     ) {}
 
-    public async getUser(id?: number): Promise<UserResponseDTO | UserResponseDTO[]> {
+    public async getUser(id?: number): Promise<OneOrMany<UserResponseDTO>> {    
+        const result: OneOrMany<UserModelDTO> | null = id
+                ? await this.searchOneUser(id)
+                : await this.searchAllUsers();
 
+        if (!result) {
+            throw new NotFoundError("User not found.");
+        }
+
+        return this.handleModelToResponse(result);
+    }
+
+    private async searchOneUser(id: number): Promise<UserModelDTO | null> {
+        return await this.repository.getUserById(id);
+    }
+
+    private async searchAllUsers(): Promise<UserModelDTO[]> {
+        return await this.repository.getAllUsers();
+    }
+
+    private handleModelToResponse(model: OneOrMany<UserModelDTO>): OneOrMany<UserResponseDTO> {
+        if (Array.isArray(model)) {
+            return this.formatModelArray(model);
+        }
+
+        return this.responseFormatter.formatModel(model);
+    }
+
+    private formatModelArray(arr: UserModelDTO[]): UserResponseDTO[] {
+        return arr.map((user) => {
+            return this.responseFormatter.formatModel(user);
+        });
     }
 }

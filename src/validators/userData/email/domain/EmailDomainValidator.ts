@@ -4,7 +4,7 @@ import EmailDomainSLDValidator from "@validators/userData/email/domain/EmailDoma
 import EmailDomainTLDValidator from "@validators/userData/email/domain/EmailDomainTLDValidator";
 import type { EmailSecondLevelDomain, EmailTopLevelDomain, EmailTopLevelDomainCountryCode }
     from "@shared/constants/email/emailDomainTypes";
-import type { Maybe } from "@shared//types/optionalTypes";
+import type { Maybe } from "@shared/types/optionalTypes";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import ocurrencesOf from "@shared/utils/occurrencesOf";
 
