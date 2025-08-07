@@ -1,0 +1,17 @@
+flowchart TD
+    get[GetUser Method]
+    id[UserID]
+    query[(Repository)]
+    found[FoundedUser]
+    user[UserModelDTO]
+    nfError([NotFoundError])
+    resMap(UserResponseFormatter)
+    resDTO[UserResponseDTO]
+
+    get -- Called With --> id
+    id -- Read Query --> query
+    query -- Returns --> found
+    found -- Is Defined --> user
+    found -- Is Null --> nfError
+    user -- Formatting --> resMap
+    resMap -- Returns --> resDTO

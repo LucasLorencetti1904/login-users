@@ -1,0 +1,30 @@
+flowchart TD
+    create[CreateUser Method]
+    req[UserRequestDTO]
+    val(Validator)
+    reqMap(RequestFormatter)
+    brError([BadRequestError])
+    formReq[FormattedRequest]
+    readQuery[("(read)
+    repository")]
+    existent[ExistentUser]
+    cfError([ConflicError])
+    writeQuery[("(write)
+    repository")]
+    created[CreatedUser]
+    resMap(UserResponseFormatter)
+    resDTO[UserResponseDTO]
+
+    create -- Called With --> req
+    req -- Validation --> val
+    val -- Is Valid --> reqMap
+    val -- Is Invalid --> brError
+    reqMap -- Returns --> formReq
+    formReq -- Read Query --> readQuery
+    readQuery -- Returns --> existent
+    existent -- Is Null --> formReq
+    existent -- Is Defined --> cfError
+    formReq -- Write Query --> writeQuery
+    writeQuery -- Create --> created
+    created -- Format To Response Data --> resMap
+    resMap -- Returns --> resDTO
