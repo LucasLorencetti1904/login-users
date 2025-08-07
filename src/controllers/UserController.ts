@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import ResponseError from "@shared/errors/responseError/ResponseError";
 
 export default class UserController {

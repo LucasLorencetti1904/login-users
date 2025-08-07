@@ -1,5 +1,5 @@
 import { Request } from "express";
-import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
 
 export default class MockRequest implements Partial<Request> {
     public params: Partial<{ id?: string }> = {};

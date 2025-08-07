@@ -1,35 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
-import UserService from "@interfaces/services/UserService";
-import UserServiceImpl from "@services/UserServiceImpl";
-import MockRepository from "./MockRepository";
-import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockValidator from "./MockValidator";
 import MockRequestFormatter from "./MockRequestFormatter";
+import MockHasher from "./MockHasher";
+import MockRepository from "./MockRepository";
 import MockResponseFormatter from "./MockResponseFormatter";
-
-const validUserExample: UserRequestDTO = {
-    username: "user_example123",
-    firstName: "User",
-    lastName: "Example",
-    birthDate: "2005-04-19",
-    email: "userexample@gmail.com",
-    password: "UserExample123!*"
-};
-
-const invalidUserExample: UserRequestDTO = {
-    username: "user example 123",
-    firstName: "Us er",
-    lastName: "Ex3mpl3",
-    birthDate: "19/04/2005",
-    email: "user example @random.com",
-    password: "12345"
-};
+import UserServiceImpl from "@services/UserServiceImpl";
 
 const returnedUserExample: UserModelDTO = {
     id: 1,
-    ...validUserExample,
+    username: "user_example123",
+    firstName: "User",
+    lastName: "Example",
+    email: "userexample@gmail.com",
+    password: "$2b$10$hwex3g34xz9vplX0BdBvBevG0MzVJjYeJZV3pqv7uSYBHZ5ozH1Am",
     birthDate: new Date("2005-04-19"),
     createdAt: new Date("2025-08-03"),
     updatedAt: new Date("2025-08-04")
@@ -39,7 +24,11 @@ const arrayWithAllReturnedUsers: UserModelDTO[] = [
     returnedUserExample,
     {
         id: 2,
-        ...validUserExample,
+        username: "user_example123",
+        firstName: "User",
+        lastName: "Example",
+        email: "userexample@gmail.com",
+        password: "$2b$10$6X5yI28RtFG9S98cv2RMmOjljc8AjUNcc3NlV9gM8pMx8CnAfTe9G",
         birthDate: new Date("2008-02-23"),
         createdAt: new Date("2025-04-19"),
         updatedAt: new Date("2025-09-27")
@@ -71,22 +60,25 @@ const arrayWithAllFormattedResponseUsers: UserResponseDTO[] = [
 
 let mockValidator: MockValidator;
 let mockRequestFormatter: MockRequestFormatter;
+let mockHasher: MockHasher;
 let mockRepository: MockRepository;
 let mockResponseFormatter: MockResponseFormatter;
 let userService: UserServiceImpl;
 
-const method: keyof UserService = "getUser";
+const method: keyof UserServiceImpl = "getUser";
 
 describe (`${method} Service Method Test.`, () => {
     beforeEach (() => {
         vi.clearAllMocks();
         mockValidator = new MockValidator();
         mockRequestFormatter = new MockRequestFormatter();
+        mockHasher = new MockHasher();
         mockRepository = new MockRepository();
         mockResponseFormatter = new MockResponseFormatter();
         userService = new UserServiceImpl(
             mockValidator,
             mockRequestFormatter,
+            mockHasher,
             mockRepository,
             mockResponseFormatter
         );
@@ -100,7 +92,7 @@ describe (`${method} Service Method Test.`, () => {
 
         mockValidator.doNotCall();
         mockRequestFormatter.doNotCall();
-        mockRepository.callMethod("getUserById").withId(1);
+        mockRepository.callMethod("getUserById").with(1);
         mockResponseFormatter.callWith(returnedUserExample);
 
     });
@@ -125,7 +117,7 @@ describe (`${method} Service Method Test.`, () => {
         
         mockValidator.doNotCall();
         mockRequestFormatter.doNotCall();
-        mockRepository.callMethod("getUserById").withId(101);
+        mockRepository.callMethod("getUserById").with(101);
         mockResponseFormatter.doNotCall();
     });
 });

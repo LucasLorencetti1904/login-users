@@ -1,10 +1,11 @@
 import { vi, expect, Mock } from "vitest";
-import UserService from "@interfaces/services/UserService";
+import type OneOrMany from "@shared/types/OneOrMany";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type UserService from "@interfaces/services/UserService";
 import MockRequest from "./MockRequest";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 
 type UserServiceMethod = keyof MockUserService;
-type DataFormat = UserResponseDTO | UserResponseDTO[] | null;
+type DataFormat = OneOrMany<UserResponseDTO> | null;
 
 export default class MockUserService implements UserService {
     public readonly getUser = vi.fn();

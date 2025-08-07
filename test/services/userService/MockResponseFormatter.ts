@@ -1,7 +1,7 @@
 import { expect, Mock, vi } from "vitest";
-import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
-import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
+import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 
 export default class MockResponseFormatter implements ResponseDataMapper<any, any> {
     public formatModel = vi.fn(); 

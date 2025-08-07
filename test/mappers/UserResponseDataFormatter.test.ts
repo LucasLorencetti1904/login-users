@@ -1,8 +1,8 @@
 import { describe, beforeEach, vi, test, expect } from "vitest";
+import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import UserResponseDataFormatter from "@mappers/UserResponseDataFormatter";
-import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
-import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import formatDateToDDMMYYYY from "@shared/utils/formatDateToDDMMYYYY";
 
 const user: UserModelDTO = {

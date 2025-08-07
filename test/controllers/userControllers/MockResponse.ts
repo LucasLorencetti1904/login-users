@@ -1,6 +1,6 @@
 import { expect, vi } from "vitest";
 import { Response } from "express";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 
 type ResponseJson = {
     message: string,

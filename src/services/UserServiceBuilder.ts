@@ -1,33 +1,44 @@
-import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
-import UserResponseDataFormatter from "@mappers/UserResponseDataFormatter";
-import UserRepository from "@interfaces/repositories/UserRepository";
-import Builder from "@interfaces/builders/Builder";
-import UserService from "@interfaces/services/UserService";
+import type Builder from "@interfaces/builders/Builder";
+import type UserService from "@interfaces/services/UserService";
+import type UserValidator from "@validators/userData/UserValidatorImpl";
+import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
+import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
+import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
+import type UserRepository from "@interfaces/repositories/UserRepository";
+import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
 import UserServiceImpl from "@services/UserServiceImpl";
-import UserValidator from "@validators/userData/UserValidatorImpl";
 
 export default class UserServiceBuilder implements Builder<UserService> {
-    private userRequestFormatter!: UserRequestDataFormatter;
     private validator!: UserValidator;
+    private userRequestFormatter!: RequestDataMapper<UserRequestDTO, UserFormattedDataDTO>;
+    private hasher!: PasswordHasher;
     private repository!: UserRepository;
-    private userResponseFormatter!: UserResponseDataFormatter;
-
-    public withRequestFormatter(formatter: UserRequestDataFormatter): this {
-        this.userRequestFormatter = formatter;
-        return this;
-    }
-
+    private userResponseFormatter!: ResponseDataMapper<UserModelDTO, UserResponseDTO>;
+    
     public withValidator(validator: UserValidator): this {
         this.validator = validator;
         return this;
     }
 
+    public withRequestFormatter(formatter: RequestDataMapper<UserRequestDTO, UserFormattedDataDTO>): this {
+        this.userRequestFormatter = formatter;
+        return this;
+    }
+
+    public withHasher(hasher: PasswordHasher): this {
+        this.hasher = hasher;
+        return this;
+    }
+    
     public withRepository(repo: UserRepository): this {
         this.repository = repo;
         return this;
     }
 
-    public withResponseFormatter(formatter: UserResponseDataFormatter): this {
+    public withResponseFormatter(formatter: ResponseDataMapper<UserModelDTO, UserResponseDTO>): this {
         this.userResponseFormatter = formatter;
         return this;
     }
@@ -40,12 +51,13 @@ export default class UserServiceBuilder implements Builder<UserService> {
         return new UserServiceImpl(
             this.validator,
             this.userRequestFormatter,
+            this.hasher,
             this.repository,
             this.userResponseFormatter
         )
     }
 
     private isMissingProperties(): boolean {
-        return Object.values(this).some((property) => property === undefined);
+        return Object.values(this).some((value) => value === undefined);
     }
 }

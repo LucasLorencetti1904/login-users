@@ -1,6 +1,6 @@
-import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
-import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
+import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import formatDateToDDMMYYYY from "@shared/utils/formatDateToDDMMYYYY";
 
 export default class UserResponseDataFormatter implements ResponseDataMapper<UserModelDTO, UserResponseDTO> {

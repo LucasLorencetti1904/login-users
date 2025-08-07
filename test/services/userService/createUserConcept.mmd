@@ -1,21 +1,38 @@
 flowchart TD
-    create[CreateUser Method]
-    req[UserRequestDTO]
+    classDef input fill:#007bff,color:#fff
+    classDef output fill:#23e837,color:#fff
+    classDef error fill:#e31919,color:#fff
+
+    classDef dependence stroke:#eeff00
+
+    req([Body Request])
     val(Validator)
-    reqMap(RequestFormatter)
-    brError([BadRequestError])
-    formReq[FormattedRequest]
+    reqMap(Request Formatter)
+    brError([Bad Request Error])
+    formReq[Formatted Request]
     readQuery[("(read)
     repository")]
-    existent[ExistentUser]
-    cfError([ConflicError])
+    existent[Existent User]
+    cfError([Conflic Error])
+    hash(Password Hasher)
     writeQuery[("(write)
     repository")]
-    created[CreatedUser]
-    resMap(UserResponseFormatter)
-    resDTO[UserResponseDTO]
+    created[Created User]
+    resMap(Response Formatter)
+    resDTO([Formatted Response])
 
-    create -- Called With --> req
+    class req input
+    class resDTO output
+    class brError error
+    class cfError error
+
+    class val dependence
+    class reqMap dependence
+    class readQuery dependence
+    class hash dependence
+    class writeQuery dependence
+    class resMap dependence
+
     req -- Validation --> val
     val -- Is Valid --> reqMap
     val -- Is Invalid --> brError
@@ -24,7 +41,8 @@ flowchart TD
     readQuery -- Returns --> existent
     existent -- Is Null --> formReq
     existent -- Is Defined --> cfError
-    formReq -- Write Query --> writeQuery
+    formReq -- Password Hashing --> hash
+    hash -- Write Query --> writeQuery
     writeQuery -- Create --> created
     created -- Format To Response Data --> resMap
     resMap -- Returns --> resDTO

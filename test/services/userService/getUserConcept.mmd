@@ -1,17 +1,26 @@
 flowchart TD
-    get[GetUser Method]
-    id[UserID]
-    query[(Repository)]
-    found[FoundedUser]
-    user[UserModelDTO]
-    nfError([NotFoundError])
-    resMap(UserResponseFormatter)
-    resDTO[UserResponseDTO]
+    classDef input fill:#007bff,color:#fff
+    classDef output fill:#23e837,color:#fff
+    classDef error fill:#e31919,color:#fff
 
-    get -- Called With --> id
+    classDef dependence stroke:#eeff00
+
+    id([Params ID])
+    query[(Repository)]
+    found[Founded User]
+    nfError([Not Found Error])
+    resMap(Response Formatter)
+    resDTO([Formatted Response])
+
+    class id input
+    class resDTO output
+    class nfError error
+
+    class query dependence
+    class resMap dependence
+
     id -- Read Query --> query
     query -- Returns --> found
-    found -- Is Defined --> user
+    found -- Is Defined --> resMap
     found -- Is Null --> nfError
-    user -- Formatting --> resMap
     resMap -- Returns --> resDTO

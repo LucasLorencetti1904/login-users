@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import UserController from "@controllers/UserController";
-import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
-import MockUserService from "./MockUserService";
-import MockServer from "./MockServer";
+import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
+import MockUserService from "./MockUserService";
+import UserController from "@controllers/UserController";
+import MockServer from "./MockServer";
 import BadRequestError from "@shared/errors/responseError/BadRequestError";
 import NotFoundError from "@shared/errors/responseError/NotFoundError";
 import ConflictError from "@shared/errors/responseError/ConflictError";

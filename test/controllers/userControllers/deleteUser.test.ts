@@ -1,10 +1,10 @@
 import { beforeEach, describe, vi, it } from "vitest";
-import UserController from "@controllers/UserController";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
-import MockServer from "./MockServer";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
 import MockUserService from "./MockUserService";
+import UserController from "@controllers/UserController";
+import MockServer from "./MockServer";
 import NotFoundError from "@shared/errors/responseError/NotFoundError";
 import InternalError from "@shared/errors/responseError/InternalError";
 

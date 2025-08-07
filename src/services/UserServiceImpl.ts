@@ -1,20 +1,22 @@
+import type UserService from "@interfaces/services/UserService";
+import type UserValidator from "@interfaces/validators/UserValidator";
+import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
+import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
+import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
-import UserValidator from "@interfaces/validators/UserValidator";
-import UserService from "@interfaces/services/UserService";
-import UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
-import RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
-import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
-import UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
-import UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
+import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type OneOrMany from "@shared/types/OneOrMany";
 import NotFoundError from "@shared/errors/responseError/NotFoundError";
-import OneOrMany from "@shared/types/OneOrMany";
 
 
 export default class UserServiceImpl implements UserService {
     constructor(
         private validator: UserValidator,
         private requestFormatter: RequestDataMapper<UserRequestDTO, UserFormattedDataDTO>,
+        private hasher: PasswordHasher,
         private repository: UserRepository,
         private responseFormatter: ResponseDataMapper<UserModelDTO, UserResponseDTO>
     ) {}
@@ -51,5 +53,9 @@ export default class UserServiceImpl implements UserService {
         return arr.map((user) => {
             return this.responseFormatter.formatModel(user);
         });
+    }
+
+    createUser(requestData: UserRequestDTO): Promise<UserResponseDTO> {
+        
     }
 }
