@@ -1,6 +1,6 @@
 import { expect, Mock, vi } from "vitest";
 import type UserValidator from "@interfaces/validators/UserValidator";
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 
 export default class MockValidator implements UserValidator {
     public validate = vi.fn();
@@ -11,7 +11,7 @@ export default class MockValidator implements UserValidator {
         });
     }
 
-    public callWith(data: UserRequestDTO): void {
+    public callWith(data: UserCreateRequestDTO): void {
         expect (this.validate as Mock).toHaveBeenCalledExactlyOnceWith(data);
     }
 

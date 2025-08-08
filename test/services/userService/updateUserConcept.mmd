@@ -1,0 +1,62 @@
+flowchart TD
+    classDef input fill:#007bff,color:#fff
+    classDef output fill:#23e837,color:#fff
+    classDef error fill:#e31919,color:#fff
+
+    classDef dependence stroke:#eeff00
+
+    id([Params ID])
+    req([Body Request])
+    val(Validator
+    )
+    reqMap(Request Formatter)
+    brError([Bad Request Error])
+    formReq[Formatted Request]
+    readQueryUsername[("(Read Username)
+    Repository")]
+    readQueryEmail[("(Read Email)
+    Repository")]
+    existentUsername[Existent User With
+    This Username]
+    existentEmail[Existent User With
+    This Email]
+    cfErrorUsername([Conflict Error])
+    cfErrorEmail([Conflict Error])
+    hash(Password Hasher)
+    writeQuery[("(Write Data)
+    Repository")]
+    created[Created User]
+    resMap(Response Formatter)
+    resDTO([Formatted Response])
+
+    class req input
+    class resDTO output
+    class brError error
+    class cfErrorUsername error
+    class cfErrorEmail error
+
+    class val dependence
+    class reqMap dependence
+    class readQueryUsername dependence
+    class readQueryEmail dependence
+    class hash dependence
+    class writeQuery dependence
+    class resMap dependence
+
+    req -- Validation --> val
+    val -- Is Valid --> reqMap
+    val -- Is Invalid --> brError
+    reqMap -- Returns --> formReq
+    formReq -- Username Checking Query --> readQueryUsername
+    readQueryUsername -- Returns --> existentUsername
+    existentUsername -- Is Not Null --> cfErrorUsername
+    existentUsername -- Is Null --> formReq
+    formReq -- Email Checking Query --> readQueryEmail
+    readQueryEmail -- Returns --> existentEmail
+    existentEmail -- Is Not Null --> cfErrorEmail
+    existentEmail -- Is Null --> formReq
+    formReq -- Password Hashing --> hash
+    hash -- Insert Data --> writeQuery
+    writeQuery -- Creates --> created
+    created -- Format To Response Data --> resMap
+    resMap -- Returns --> resDTO

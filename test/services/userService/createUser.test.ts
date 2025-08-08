@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
@@ -12,7 +12,7 @@ import MockResponseFormatter from "./MockResponseFormatter";
 import ConflictError from "@shared/errors/responseError/ConflictError";
 import BadRequestError from "@shared/errors/responseError/BadRequestError";
 
-const validUser: UserRequestDTO = {
+const validUser: UserCreateRequestDTO = {
     username: "    user_example123   ",
     firstName: "   USER ",
     lastName: "example     ",
@@ -21,7 +21,7 @@ const validUser: UserRequestDTO = {
     password: " UserExample123!*  "
 };
 
-const invalidUser: UserRequestDTO = {
+const invalidUser: UserCreateRequestDTO = {
     username: "  user example 123",
     firstName: "    Us er",
     lastName: "Ex3mpl3    ",

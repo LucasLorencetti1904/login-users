@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockRequest from "./MockRequest";
 import MockResponse from "./MockResponse";
@@ -19,7 +19,7 @@ const coreUserData: any = {
     email: "userexample1@gmail.com",
 };
 
-const userExample: UserRequestDTO = {
+const userExample: UserCreateRequestDTO = {
     ...coreUserData,
     password: "12345"
 };
@@ -32,7 +32,7 @@ const updatedUser: UserResponseDTO = {
     updatedAt: "04/08/2025"
 };
 
-const invalidUserExample: UserRequestDTO = {
+const invalidUserExample: UserCreateRequestDTO = {
     username: "User Example",
     firstName: "32121",
     lastName: "*$%!",

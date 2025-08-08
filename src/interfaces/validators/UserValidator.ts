@@ -1,5 +1,5 @@
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 
 export default interface UserValidator {
-    validate(data: UserRequestDTO): void;
+    validate(data: UserCreateRequestDTO): void;
 }

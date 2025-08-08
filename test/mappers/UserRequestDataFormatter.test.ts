@@ -1,11 +1,11 @@
 import { describe, beforeEach, vi, test, expect } from "vitest";
 import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import capitalize from "@shared/utils/capitalize";
 
-const reqUserData: UserRequestDTO = {
+const reqUserData: UserCreateRequestDTO = {
     username: "   user_example123",
     firstName: " USER  ",
     lastName: "example ",
@@ -14,7 +14,7 @@ const reqUserData: UserRequestDTO = {
     password: "  UserExample123!* "
 };
 
-const mapper: RequestDataMapper<UserRequestDTO, UserFormattedDataDTO> = new UserRequestDataFormatter();
+const mapper: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO> = new UserRequestDataFormatter();
 
 const formattedUserData: UserFormattedDataDTO = mapper.formatRequest(reqUserData);
 

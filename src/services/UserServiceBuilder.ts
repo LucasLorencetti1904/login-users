@@ -1,8 +1,8 @@
 import type Builder from "@interfaces/builders/Builder";
 import type UserService from "@interfaces/services/UserService";
-import type UserValidator from "@validators/userData/UserValidatorImpl";
+import type UserValidator from "@validators/userData/CreateUserDataValidator";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
@@ -13,7 +13,7 @@ import UserServiceImpl from "@services/UserServiceImpl";
 
 export default class UserServiceBuilder implements Builder<UserService> {
     private validator!: UserValidator;
-    private userRequestFormatter!: RequestDataMapper<UserRequestDTO, UserFormattedDataDTO>;
+    private userRequestFormatter!: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO>;
     private hasher!: PasswordHasher;
     private repository!: UserRepository;
     private userResponseFormatter!: ResponseDataMapper<UserModelDTO, UserResponseDTO>;
@@ -23,7 +23,7 @@ export default class UserServiceBuilder implements Builder<UserService> {
         return this;
     }
 
-    public withRequestFormatter(formatter: RequestDataMapper<UserRequestDTO, UserFormattedDataDTO>): this {
+    public withRequestFormatter(formatter: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO>): this {
         this.userRequestFormatter = formatter;
         return this;
     }

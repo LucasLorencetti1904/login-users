@@ -1,10 +1,10 @@
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import capitalize from "@shared/utils/capitalize";
 
-export default class UserRequestDataFormatter implements RequestDataMapper<UserRequestDTO, UserFormattedDataDTO> {
-    public formatRequest(request: UserRequestDTO): UserFormattedDataDTO {
+export default class UserRequestDataFormatter implements RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO> {
+    public formatRequest(request: UserCreateRequestDTO): UserFormattedDataDTO {
         return {
             username: request.username.trim(),
             firstName: this.capitalizeAndTrim(request.firstName),

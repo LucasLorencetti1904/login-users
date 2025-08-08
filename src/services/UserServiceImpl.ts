@@ -1,7 +1,7 @@
 import type UserService from "@interfaces/services/UserService";
 import type UserValidator from "@interfaces/validators/UserValidator";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
@@ -19,7 +19,7 @@ import InternalError from "@shared/errors/responseError/InternalError";
 export default class UserServiceImpl implements UserService {
     constructor(
         private validator: UserValidator,
-        private requestFormatter: RequestDataMapper<UserRequestDTO, UserFormattedDataDTO>,
+        private requestFormatter: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO>,
         private hasher: PasswordHasher,
         private repository: UserRepository,
         private responseFormatter: ResponseDataMapper<UserModelDTO, UserResponseDTO>
@@ -59,7 +59,7 @@ export default class UserServiceImpl implements UserService {
         });
     }
 
-    public async createUser(requestData: UserRequestDTO): Promise<UserResponseDTO> {
+    public async createUser(requestData: UserCreateRequestDTO): Promise<UserResponseDTO> {
         try {
             this.handleValidation(requestData);
 
@@ -86,7 +86,7 @@ export default class UserServiceImpl implements UserService {
         }
     }
 
-    private handleValidation(data: UserRequestDTO): void {
+    private handleValidation(data: UserCreateRequestDTO): void {
         try {
             this.validator.validate(data);
         }

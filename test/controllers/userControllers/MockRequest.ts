@@ -1,5 +1,5 @@
 import { Request } from "express";
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 
 export default class MockRequest implements Partial<Request> {
     public params: Partial<{ id?: string }> = {};
@@ -9,7 +9,7 @@ export default class MockRequest implements Partial<Request> {
         this.params.id = value;
     }
 
-    public bodyDataWillBe(value: UserRequestDTO): void {
+    public bodyDataWillBe(value: UserCreateRequestDTO): void {
         this.body = value;
     }
 }
