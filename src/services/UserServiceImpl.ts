@@ -10,6 +10,10 @@ import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import type OneOrMany from "@shared/types/OneOrMany";
 import NotFoundError from "@shared/errors/responseError/NotFoundError";
+import handleError from "@shared/utils/handleError";
+import BadRequestError from "@shared/errors/responseError/BadRequestError";
+import ConflictError from "@shared/errors/responseError/ConflictError";
+import InternalError from "@shared/errors/responseError/InternalError";
 
 
 export default class UserServiceImpl implements UserService {
@@ -55,7 +59,66 @@ export default class UserServiceImpl implements UserService {
         });
     }
 
-    createUser(requestData: UserRequestDTO): Promise<UserResponseDTO> {
-        
+    public async createUser(requestData: UserRequestDTO): Promise<UserResponseDTO> {
+        try {
+            this.handleValidation(requestData);
+
+            const formattedData: UserFormattedDataDTO = this.requestFormatter.formatRequest(requestData);
+
+            await this.searchUsername(formattedData.username);
+
+            await this.searchEmail(formattedData.email);
+
+            const hashedPassword: string = await this.hasher.hash(formattedData.password);
+
+            const formattedDataWithHashedPassword = {
+                ...formattedData,
+                password: hashedPassword
+            };
+
+            const createdUser: UserModelDTO = await this.insert(formattedDataWithHashedPassword);
+
+            return this.responseFormatter.formatModel(createdUser);
+        }
+
+        catch(e: unknown) {
+            throw e as Error;
+        }
+    }
+
+    private handleValidation(data: UserRequestDTO): void {
+        try {
+            this.validator.validate(data);
+        }
+
+        catch(e: unknown) {
+            handleError(e, BadRequestError);
+        }
+    }
+
+    private async searchUsername(username: string): Promise<void> {
+        const existentUser: UserModelDTO = await this.repository.getUserByUsername(username);
+
+        if (existentUser != null) {
+            throw new ConflictError("Username already registered.");
+        }
+    }
+
+    private async searchEmail(email: string): Promise<void> {
+        const existentUser: UserModelDTO = await this.repository.getUserByEmail(email);
+
+        if (existentUser != null) {
+            throw new ConflictError("Email already registered.");
+        }
+    }
+
+    private async insert(data: UserFormattedDataDTO): Promise<UserModelDTO> {
+        try {
+            return await this.repository.createUser(data);
+        }
+
+        catch(e: unknown) {
+            handleError(e, InternalError);
+        }
     }
 }

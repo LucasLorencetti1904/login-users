@@ -21,6 +21,6 @@ flowchart TD
 
     id -- Read Query --> query
     query -- Returns --> found
-    found -- Is Defined --> resMap
+    found -- Is Not Null --> resMap
     found -- Is Null --> nfError
     resMap -- Returns --> resDTO

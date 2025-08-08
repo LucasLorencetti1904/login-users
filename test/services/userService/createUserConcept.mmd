@@ -10,13 +10,19 @@ flowchart TD
     reqMap(Request Formatter)
     brError([Bad Request Error])
     formReq[Formatted Request]
-    readQuery[("(read)
-    repository")]
-    existent[Existent User]
-    cfError([Conflic Error])
+    readQueryUsername[("(Read Username)
+    Repository")]
+    readQueryEmail[("(Read Email)
+    Repository")]
+    existentUsername[Existent User With
+    This Username]
+    existentEmail[Existent User With
+    This Email]
+    cfErrorUsername([Conflict Error])
+    cfErrorEmail([Conflict Error])
     hash(Password Hasher)
-    writeQuery[("(write)
-    repository")]
+    writeQuery[("(Write Data)
+    Repository")]
     created[Created User]
     resMap(Response Formatter)
     resDTO([Formatted Response])
@@ -24,11 +30,13 @@ flowchart TD
     class req input
     class resDTO output
     class brError error
-    class cfError error
+    class cfErrorUsername error
+    class cfErrorEmail error
 
     class val dependence
     class reqMap dependence
-    class readQuery dependence
+    class readQueryUsername dependence
+    class readQueryEmail dependence
     class hash dependence
     class writeQuery dependence
     class resMap dependence
@@ -37,12 +45,16 @@ flowchart TD
     val -- Is Valid --> reqMap
     val -- Is Invalid --> brError
     reqMap -- Returns --> formReq
-    formReq -- Read Query --> readQuery
-    readQuery -- Returns --> existent
-    existent -- Is Null --> formReq
-    existent -- Is Defined --> cfError
+    formReq -- Username Checking Query --> readQueryUsername
+    readQueryUsername -- Returns --> existentUsername
+    existentUsername -- Is Not Null --> cfErrorUsername
+    existentUsername -- Is Null --> formReq
+    formReq -- Email Checking Query --> readQueryEmail
+    readQueryEmail -- Returns --> existentEmail
+    existentEmail -- Is Not Null --> cfErrorEmail
+    existentEmail -- Is Null --> formReq
     formReq -- Password Hashing --> hash
-    hash -- Write Query --> writeQuery
-    writeQuery -- Create --> created
+    hash -- Insert Data --> writeQuery
+    writeQuery -- Creates --> created
     created -- Format To Response Data --> resMap
     resMap -- Returns --> resDTO

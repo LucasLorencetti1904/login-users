@@ -13,7 +13,7 @@ export default class MockHasher implements PasswordHasher {
         };
     }
 
-    public callHashMethodWithPassword(password: string): any {
+    public callHashMethodWithPassword(password: string): void {
         expect (this.hash as Mock).toHaveBeenCalledExactlyOnceWith(password);
     }
 

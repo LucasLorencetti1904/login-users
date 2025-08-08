@@ -1,5 +1,5 @@
-import occurrencesOf from "@shared/utils/occurrencesOf";
 import { describe, beforeEach, vi, it, expect } from "vitest";
+import occurrencesOf from "@shared/utils/occurrencesOf";
 
 describe ("String specific char counter Test.", () => {
     beforeEach (() => {

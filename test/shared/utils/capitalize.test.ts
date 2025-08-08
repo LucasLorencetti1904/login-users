@@ -1,5 +1,5 @@
-import capitalize from "@shared/utils/capitalize";
 import { describe, beforeEach, vi, it, expect } from "vitest";
+import capitalize from "@shared/utils/capitalize";
 
 const capitalizedString: string = "Example";
 
