@@ -3,9 +3,9 @@ export default function formatDateToDDMMYYYY(date: Date): string {
         return "Invalid Date";
     }
 
-    const day: string = String(date.getDate()).padStart(2, "0");
-    const month: string = String(date.getMonth() + 1).padStart(2, "0");
-    const year: string = String(date.getFullYear());
+    const day: string = String(date.getUTCDate()).padStart(2, "0");
+    const month: string = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const year: string = String(date.getUTCFullYear());
 
     return day + "/" + month + "/" + year;
 }

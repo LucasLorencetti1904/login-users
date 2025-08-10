@@ -30,11 +30,11 @@ export default class UserServiceImpl implements UserService {
                 ? await this.searchOneUser(id)
                 : await this.searchAllUsers();
 
-        if (!result) {
+        if (this.isNullOrEmptyArray(result)) {
             throw new NotFoundError("User not found.");
         }
 
-        return this.handleModelToResponse(result);
+        return this.handleModelToResponse(result as OneOrMany<UserModelDTO>);
     }
 
     private async searchOneUser(id: number): Promise<UserModelDTO | null> {
@@ -43,6 +43,13 @@ export default class UserServiceImpl implements UserService {
 
     private async searchAllUsers(): Promise<UserModelDTO[]> {
         return await this.repository.getAllUsers();
+    }
+
+    private isNullOrEmptyArray(data: OneOrMany<UserModelDTO> | null) {
+        const isNull: boolean = data === null;
+        const isEmptyArray: boolean = Array.isArray(data) && data.length < 1;
+
+        return isNull || isEmptyArray;
     }
 
     private handleModelToResponse(model: OneOrMany<UserModelDTO>): OneOrMany<UserResponseDTO> {

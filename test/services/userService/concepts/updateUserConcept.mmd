@@ -1,0 +1,69 @@
+flowchart TD
+    classDef input fill:#007bff,color:#fff
+    classDef output fill:#23e837,color:#fff
+    classDef error fill:#e31919,color:#fff
+
+    classDef dependence stroke:#007bff
+    classDef decision stroke:#eeff00
+
+    id([User Params ID])
+    readById[("Read Query By Id
+    Repository")]
+    null1([Is Null?])
+    nfError([Not Found Error])
+    req([User Body Request])
+    val(Validator)
+    inval([Is Invalid?])
+    reqMap(User Request Formatter)
+    brError([Bad Request Error])
+    formReq[Formatted User Request]
+    readQueryUsername[("(Read Username)
+    Repository")]
+    username[Username]
+    existentUsername[Existent User With
+    This Username]
+    null2([Is Null?])
+    cfError([Conflict Error])
+    writeQuery[("(Write Data)
+    Repository")]
+    created[Updated User]
+    resMap(Response Formatter)
+    resDTO([Formatted User Response])
+
+    class id input
+    class req input
+    class resDTO output
+    class nfError error
+    class brError error
+    class cfError error
+
+    class inval decision
+    class null1 decision
+    class null2 decision
+
+    class readById dependence
+    class val dependence
+    class reqMap dependence
+    class readQueryUsername dependence
+    class writeQuery dependence
+    class resMap dependence
+
+    id -- Read By Id --> readById
+    readById --> null1
+    null1 -- Yes --> nfError
+    null1 -- No --> req
+    req -- Validation --> val
+    val --> inval
+    inval -- No --> reqMap
+    inval -- Yes --> brError
+    reqMap -- Returns --> formReq
+    formReq -- Pick Username --> username
+    username -- Username Checking Query --> readQueryUsername
+    readQueryUsername -- Returns --> existentUsername
+    existentUsername --> null2
+    null2 -- No --> cfError
+    null2 -- Yes --> formReq
+    formReq -- Insert Data --> writeQuery
+    writeQuery -- Creates --> created
+    created -- Format To Response Data --> resMap
+    resMap -- Returns --> resDTO

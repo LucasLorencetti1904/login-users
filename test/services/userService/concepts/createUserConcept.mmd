@@ -1,0 +1,80 @@
+flowchart TD
+    classDef input fill:#007bff,color:#fff
+    classDef output fill:#23e837,color:#fff
+    classDef error fill:#e31919,color:#fff
+
+    classDef dependence stroke:#007bff
+    classDef decision stroke:#eeff00
+
+    req([User Body Request])
+    val(Validator)
+    inval([Is Invalid?])
+    reqMap(User Request Formatter)
+    brError([Bad Request Error])
+    formReq[Formatted User Request]
+    readQueryUsername[("(Read Username)
+    Repository")]
+    readQueryEmail[("(Read Email)
+    Repository")]
+    username[Username]
+    existentUsername[Existent User With
+    This Username]
+    null1([Is Null?])
+    email[Email]
+    existentEmail[Existent User With
+    This Email]
+    null2([Is Null?])
+    cfErrorUsername([Conflict Error])
+    cfErrorEmail([Conflict Error])
+    password[Password]
+    hash(Password Hasher)
+    hashed["User Data With
+    Hashed Password"]
+    writeQuery[("(Write Data)
+    Repository")]
+    created[Created User]
+    resMap(Response Formatter)
+    resDTO([Formatted User Response])
+
+    class req input
+    class resDTO output
+    class brError error
+    class cfErrorUsername error
+    class cfErrorEmail error
+
+    class inval decision
+    class null1 decision
+    class null2 decision
+
+    class val dependence
+    class reqMap dependence
+    class readQueryUsername dependence
+    class readQueryEmail dependence
+    class hash dependence
+    class writeQuery dependence
+    class resMap dependence
+
+    req -- Validation --> val
+    val --> inval
+    inval -- No --> reqMap
+    inval -- Yes --> brError
+    reqMap -- Returns --> formReq
+    formReq -- Pick Username --> username
+    username -- Username Checking Query --> readQueryUsername
+    readQueryUsername -- Returns --> existentUsername
+    existentUsername --> null1
+    null1 -- No --> cfErrorUsername
+    null1 -- Yes --> formReq
+    formReq -- Pick Email --> email
+    email -- Email Checking Query --> readQueryEmail
+    readQueryEmail -- Returns --> existentEmail
+    existentEmail --> null2
+    null2 -- No --> cfErrorEmail
+    null2 -- Yes --> formReq
+    formReq -- Pick Password --> password
+    password -- Password Hashing --> hash
+    hash -- Add Hashed Password To Data --> hashed
+    hashed -- Insert Data --> writeQuery
+    writeQuery -- Creates --> created
+    created -- Format To Response Data --> resMap
+    resMap -- Returns --> resDTO

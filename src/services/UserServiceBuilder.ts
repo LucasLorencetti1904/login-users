@@ -1,6 +1,6 @@
 import type Builder from "@interfaces/builders/Builder";
 import type UserService from "@interfaces/services/UserService";
-import type UserValidator from "@validators/userData/CreateUserDataValidator";
+import type UserValidator from "@interfaces/validators/UserValidator";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";

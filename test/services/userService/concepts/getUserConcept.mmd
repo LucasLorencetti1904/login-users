@@ -1,0 +1,43 @@
+flowchart TD
+    classDef input fill:#007bff,color:#fff
+    classDef output fill:#23e837,color:#fff
+    classDef error fill:#e31919,color:#fff
+
+    classDef dependence stroke:#007bff
+    classDef decision stroke:#eeff00
+
+    id([Optional User Params ID])
+    undefined([Is Undefined?])
+    queryById[("(Read By ID)
+    Repository")]
+    queryAll[("(Read All)
+    Repository")]
+    found1[Founded User]
+    found2[Founded Users]
+    null([Is Null?])
+    nfError([Not Found Error])
+    resMap(Response Formatter)
+    resDTO([Formatted User Response])
+
+    class id input
+    class resDTO output
+    class nfError error
+
+    class undefined decision
+    class null decision
+
+    class queryById dependence
+    class queryAll dependence
+    class resMap1 dependence
+    class resMap2 dependence
+
+    id --> undefined
+    undefined -- No --> queryById
+    undefined -- Yes --> queryAll
+    queryById -- Returns --> found1
+    found1 --> null
+    queryAll -- Returns --> found2
+    found2 --> null
+    null -- No --> resMap
+    null -- Yes --> nfError
+    resMap -- Returns --> resDTO
