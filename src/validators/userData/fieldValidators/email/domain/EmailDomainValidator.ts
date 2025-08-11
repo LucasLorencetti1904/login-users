@@ -1,4 +1,4 @@
-import UserDataValidator from "@validators/userData/fieldValidators/UserDataValidator";
+import UserFieldValidator from "@validators/userData/fieldValidators/UserFieldValidator";
 import EmailDomainCountryCodeValidator from "@validators/userData/fieldValidators/email/domain/EmailDomainCountryCodeValidator";
 import EmailDomainSLDValidator from "@validators/userData/fieldValidators/email/domain/EmailDomainSLDValidator";
 import EmailDomainTLDValidator from "@validators/userData/fieldValidators/email/domain/EmailDomainTLDValidator";
@@ -8,7 +8,7 @@ import type { Maybe } from "@shared/types/optionalTypes";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import ocurrencesOf from "@shared/utils/occurrencesOf";
 
-export default class EmailDomainValidator extends UserDataValidator {
+export default class EmailDomainValidator extends UserFieldValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Email domain");
 
     private static readonly DOT: string = ".";

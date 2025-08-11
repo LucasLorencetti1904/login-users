@@ -1,7 +1,7 @@
-import UserDataValidator from "@validators/userData/fieldValidators/UserDataValidator";
+import UserFieldValidator from "@validators/userData/fieldValidators/UserFieldValidator";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
-export default class BirthDateValidator extends UserDataValidator {
+export default class BirthDateValidator extends UserFieldValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("BirthDate");
 
     private readonly DATE_FORMAT: RegExp = /^\d{4}-\d{2}-\d{2}$/;

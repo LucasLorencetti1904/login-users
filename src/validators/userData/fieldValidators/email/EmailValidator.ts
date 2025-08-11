@@ -1,10 +1,10 @@
-import UserDataValidator from "@validators/userData/fieldValidators/UserDataValidator";
+import UserFieldValidator from "@validators/userData/fieldValidators/UserFieldValidator";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import EmailUserValidator from "@validators/userData/fieldValidators/email/user/EmailUserValidator";
 import EmailDomainValidator from "@validators/userData/fieldValidators/email/domain/EmailDomainValidator";
 import occurrencesOf from "@shared/utils/occurrencesOf";
 
-export default class EmailValidator extends UserDataValidator { 
+export default class EmailValidator extends UserFieldValidator { 
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Email");
 
     private static readonly SYMBOL: string = "@";

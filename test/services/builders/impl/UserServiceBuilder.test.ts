@@ -18,11 +18,17 @@ let mockHasher: MockHasher;
 let mockRepository: MockRepository;
 let mockResponseFormatter: MockResponseFormatter;
 
+const password: string = "123456789";
+class MockPasswordValidator {}
+const fieldsAndValidators: [any, any][] = [
+    [password, new MockPasswordValidator()]
+]; 
+
 describe ("User Service Builder Test.", () => {
     beforeEach (() => {
         vi.clearAllMocks();
         builder = new UserServiceBuilder();
-        mockValidator = new MockValidator();
+        mockValidator = new MockValidator(fieldsAndValidators);
         mockRequestFormatter = new MockRequestFormatter();
         mockHasher = new MockHasher();
         mockRepository = new MockRepository();

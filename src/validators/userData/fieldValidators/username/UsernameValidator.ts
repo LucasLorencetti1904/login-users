@@ -1,7 +1,7 @@
-import UserDataValidator from "@validators/userData/fieldValidators/UserDataValidator";
+import UserFieldValidator from "@validators/userData/fieldValidators/UserFieldValidator";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
-export default class UsernameValidator extends UserDataValidator {
+export default class UsernameValidator extends UserFieldValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Username");
 
     constructor(private username: string) {

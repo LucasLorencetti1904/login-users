@@ -1,4 +1,4 @@
-import UserDataValidator from "@validators/userData/fieldValidators/UserDataValidator";
+import UserDataValidator from "@validators/userData/fieldValidators/UserFieldValidator";
 import type { Maybe } from "@shared/types/optionalTypes";
 import type ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 

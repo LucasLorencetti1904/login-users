@@ -1,7 +1,8 @@
 import type { Maybe } from "@shared/types/optionalTypes";
 import type ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
+import UserValidator from "@interfaces/validators/UserValidator";
 
-export default abstract class UserDataValidator {
+export default abstract class UserFieldValidator implements UserValidator {
     constructor(protected data: Maybe<string>) {
         this.data?.trim();
     }

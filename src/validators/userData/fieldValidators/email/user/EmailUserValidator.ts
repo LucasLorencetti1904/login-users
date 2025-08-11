@@ -1,7 +1,7 @@
-import UserDataValidator from "@validators/userData/fieldValidators/UserDataValidator";
+import UserFieldValidator from "@validators/userData/fieldValidators/UserFieldValidator";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
-export default class EmailUserValidator extends UserDataValidator {
+export default class EmailUserValidator extends UserFieldValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Email user");
 
     private static readonly CHARACTERS_REGEX = /[(),:;<>[\]\\]/;

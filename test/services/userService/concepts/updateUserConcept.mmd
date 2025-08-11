@@ -7,8 +7,9 @@ flowchart TD
     classDef decision stroke:#eeff00
 
     id([User Params ID])
-    readById[("Read Query By Id
+    readById[("(Read By Id)
     Repository")]
+    found[Founded User]
     null1([Is Null?])
     nfError([Not Found Error])
     req([User Body Request])
@@ -49,9 +50,10 @@ flowchart TD
     class resMap dependence
 
     id -- Read By Id --> readById
-    readById --> null1
+    readById --> found
+    found --> null1
     null1 -- Yes --> nfError
-    null1 -- No --> req
+    null1 -- No --> writeQuery
     req -- Validation --> val
     val --> inval
     inval -- No --> reqMap
@@ -63,7 +65,7 @@ flowchart TD
     existentUsername --> null2
     null2 -- No --> cfError
     null2 -- Yes --> formReq
-    formReq -- Insert Data --> writeQuery
+    formReq -- Update Data --> writeQuery
     writeQuery -- Creates --> created
     created -- Format To Response Data --> resMap
     resMap -- Returns --> resDTO
