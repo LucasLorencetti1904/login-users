@@ -1,5 +1,8 @@
-import UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
-
-type UserUpdateRequestDTO = Partial<UserRequestDTO>;
+type UserUpdateRequestDTO = {
+    username?: string,
+    firstName?: string,
+    lastName?: string,
+    birthDate?: string
+};
 
 export default UserUpdateRequestDTO;

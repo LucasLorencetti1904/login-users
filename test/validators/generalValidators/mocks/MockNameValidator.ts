@@ -1,16 +1,24 @@
-import { Mock, vi } from "vitest";
-import UserFieldValidator from "@validators/userData/fieldValidators/UserFieldValidator";
-import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
+import { expect, Mock, vi } from "vitest";
 
-export default class MockNameValidator extends UserFieldValidator {
-    protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("test");
+const MockNameValidator = vi.fn().mockImplementation((_field: any) => {}) as unknown as Mock & {
+    new (field: any): any;
+    wasNotCalled: () => void;
+    willPass: () => void;
+    willFail: () => void;
+};
 
-    protected failsIf: Mock = vi.fn();
-    public validate: Mock = vi.fn();
-
-    public willFail(): void {
-        this.validate.mockImplementation(() => {
-            throw new Error();
-        });
-    }
+MockNameValidator.wasNotCalled = () => {
+    expect (MockNameValidator).not.toHaveBeenCalled();
 }
+
+MockNameValidator.willPass = () => {
+    MockNameValidator.mockImplementation(() => {});
+};
+
+MockNameValidator.willFail = () => {
+    MockNameValidator.mockImplementation(() => {
+        throw new Error();
+    });
+};
+
+export default MockNameValidator;

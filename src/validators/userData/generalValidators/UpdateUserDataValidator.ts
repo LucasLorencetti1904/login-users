@@ -23,7 +23,13 @@ export default class UpdateUserDataValidator implements UserValidator {
 
     private verifyEach(f: FieldsAndValidators): void {
         f.forEach(([field, Validator]) => {
-            new Validator(field);;
+            this.verifyIfDefined(field, Validator);
         });
     };
+
+    private verifyIfDefined(field: any, Validator: ValidatorClass): void {
+        if (field != null && field != undefined) {
+            new Validator(field);
+        }
+    }
 }
