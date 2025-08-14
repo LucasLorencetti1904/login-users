@@ -4,7 +4,7 @@ import UpdateUserDataValidator from "@validators/userData/generalValidators/Upda
 import MockUsernameValidator from "../mocks/MockUsernameValidator";
 import MockNameValidator from "../mocks/MockNameValidator";
 import MockBirthDateValidator from "../mocks/MockBirthDateValidator";
-import UserFieldValidator from "@validators/userData/fieldValidators/UserFieldValidator";
+import UserFieldValidator from "@validators/fieldValidators/user/abstract/UserFieldValidator";
 
 let userDTO: UserUpdateRequestDTO;
 

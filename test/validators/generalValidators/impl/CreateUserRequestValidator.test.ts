@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
-import CreateUserDataValidator from "@validators/userData/generalValidators/CreateUserDataValidator";
+import CreateUserDataValidator from "@validators/generalValidators/UserRequestValidator";
 import MockUsernameValidator from "../mocks/MockUsernameValidator";
 import MockNameValidator from "../mocks/MockNameValidator";
 import MockBirthDateValidator from "../mocks/MockBirthDateValidator";
 import MockEmailValidator from "../mocks/MockEmailValidator";
 import MockPasswordValidator from "../mocks/MockPasswordValidator";
-import UserFieldValidator from "@validators/userData/fieldValidators/UserFieldValidator";
+import UserFieldValidator from "@validators/fieldValidators/user/abstract/UserFieldValidator";
 
 let userDTO: UserCreateRequestDTO;
 

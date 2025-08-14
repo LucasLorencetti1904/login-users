@@ -17,7 +17,7 @@ const returnedUser: UserResponseDTO = {
     email: "userexample1@gmail.com",
     createdAt: "03/08/2025",
     updatedAt: "04/08/2025"
-}
+};
 
 const otherReturnedUser: UserResponseDTO = {
     id: 2,

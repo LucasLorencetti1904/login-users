@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { type Request } from "express";
 import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 
 export default class MockRequest implements Partial<Request> {

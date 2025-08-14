@@ -1,24 +1,24 @@
 import type Builder from "@interfaces/builders/Builder";
-import type UserService from "@interfaces/services/UserService";
-import type UserValidator from "@interfaces/validators/UserValidator";
+import type Validator from "@interfaces/validators/Validator";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
-import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
 import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
+import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type UserService from "@interfaces/services/UserService";
 import UserServiceImpl from "@services/UserServiceImpl";
 
-export default class UserServiceBuilder implements Builder<UserService> {
-    private validator!: UserValidator;
+export default class UserServiceBuilder implements Builder {
+    private validator!: Validator;
     private userRequestFormatter!: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO>;
     private hasher!: PasswordHasher;
     private repository!: UserRepository;
     private userResponseFormatter!: ResponseDataMapper<UserModelDTO, UserResponseDTO>;
     
-    public withValidator(validator: UserValidator): this {
+    public withValidator(validator: Validator): this {
         this.validator = validator;
         return this;
     }

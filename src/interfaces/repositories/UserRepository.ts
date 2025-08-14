@@ -1,5 +1,5 @@
-import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 
 export default interface UserRepository {
     getUserById(id: number): Promise<UserModelDTO | null>;

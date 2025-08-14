@@ -1,5 +1,5 @@
 import type UserService from "@interfaces/services/UserService";
-import type UserValidator from "@interfaces/validators/UserValidator";
+import type Validator from "@interfaces/validators/Validator";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
@@ -18,7 +18,7 @@ import InternalError from "@shared/errors/responseError/InternalError";
 
 export default class UserServiceImpl implements UserService {
     constructor(
-        private validator: UserValidator,
+        private validator: Validator,
         private requestFormatter: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO>,
         private hasher: PasswordHasher,
         private repository: UserRepository,

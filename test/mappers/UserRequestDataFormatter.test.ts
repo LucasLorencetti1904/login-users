@@ -1,8 +1,8 @@
 import { describe, beforeEach, vi, test, expect } from "vitest";
-import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
-import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
+import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
+import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
 import capitalize from "@shared/utils/capitalize";
 
 const reqUserData: UserCreateRequestDTO = {

@@ -33,7 +33,7 @@ describe ("Password Hashing test", () => {
         password = "PasswordExample12345!*";
         hashedPassword = await hasher.hash(password);
 
-        passwordsMatch = await hasher.compare("WrongPasswordExample123!*", hashedPassword)
+        passwordsMatch = await hasher.compare("WrongPasswordExample123!*", hashedPassword);
 
         expect (passwordsMatch).toEqual(false);
     });

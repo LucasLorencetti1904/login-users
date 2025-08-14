@@ -1,7 +1,7 @@
 import { expect, Mock, vi } from "vitest";
 import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
-import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 
 export default class MockResponseFormatter implements ResponseDataMapper<any, any> {
     public formatModel = vi.fn(); 
@@ -14,7 +14,7 @@ export default class MockResponseFormatter implements ResponseDataMapper<any, an
 
             willReturnSequence: (data: UserResponseDTO[]): void => {
                 data.map((eachData) => {
-                    return (this[method] as Mock).mockReturnValueOnce(eachData)
+                    return (this[method] as Mock).mockReturnValueOnce(eachData);
                 });
             }
         };

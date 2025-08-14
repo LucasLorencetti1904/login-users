@@ -1,6 +1,6 @@
-import ENV from "@config/env";
-import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import bcrypt from "bcryptjs";
+import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
+import ENV from "@config/env";
 
 export default class BcryptPasswordHasher implements PasswordHasher {
     async hash(password: string): Promise<string> {

@@ -150,7 +150,7 @@ describe (`${method} Controller Method Test`, () => {
 
         mockRequest.paramsIdWillBe("1");
 
-        mockRequest.bodyDataWillBe(userExample)
+        mockRequest.bodyDataWillBe(userExample);
 
         mockUserService.method(method).willThrown(internalServerError);
 
