@@ -1,6 +1,6 @@
 import { expect, Mock, vi } from "vitest";
 import type UserValidator from "@interfaces/validators/Validator";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
 
 export default class MockValidator implements UserValidator {
     public validate = vi.fn();

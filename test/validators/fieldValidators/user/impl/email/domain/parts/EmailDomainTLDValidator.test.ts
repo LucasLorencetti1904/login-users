@@ -1,5 +1,5 @@
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import EmailDomainTLDValidator from "@validators/fieldValidators/user/impl/email/domain/parts/EmailDomainTLDHandler";
+import EmailDomainTLDValidator from "@validators/fieldValidators/impl/user/impl/email/domain/parts/EmailDomainTLDHandler";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "email top level domain";

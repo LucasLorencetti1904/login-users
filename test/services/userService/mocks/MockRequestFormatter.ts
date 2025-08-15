@@ -1,7 +1,7 @@
 import { expect, Mock, vi } from "vitest";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
 
 export default class MockRequestFormatter implements RequestDataMapper<any, any> {
     public formatRequest = vi.fn();

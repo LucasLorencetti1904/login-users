@@ -24,7 +24,7 @@ describe ("Username Validator Builder Test", () => {
     it ("returns a UsernameValidator when all dependecies is received.", () => {
         result = (
             builder
-                .addFieldName("username")
+                .defineFieldName("username")
                 .build()
         );
 

@@ -1,5 +1,5 @@
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import EmailDomainSLDValidator from "@validators/fieldValidators/user/impl/email/domain/parts/EmailDomainSLDHandler";
+import EmailDomainSLDValidator from "@validators/fieldValidators/impl/user/impl/email/domain/parts/EmailDomainSLDHandler";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "email second level domain";

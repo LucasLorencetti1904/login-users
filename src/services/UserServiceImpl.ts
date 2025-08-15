@@ -1,7 +1,7 @@
 import type UserService from "@interfaces/services/UserService";
 import type Validator from "@interfaces/validators/Validator";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";

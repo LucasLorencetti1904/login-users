@@ -1,5 +1,5 @@
 import { describe, beforeEach, vi, test, expect } from "vitest";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/UserCreateRequestDTO";
+import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
 import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
 import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";

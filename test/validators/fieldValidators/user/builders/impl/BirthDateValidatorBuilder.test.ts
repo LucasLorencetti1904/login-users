@@ -24,7 +24,7 @@ describe ("Birth Date Validator Builder Test", () => {
     it ("returns a BirthDateValidator when all dependecies is received.", () => {
         result = (
             builder
-                .addFieldName("birthDate")
+                .defineFieldName("birthDate")
                 .build()
         );
 

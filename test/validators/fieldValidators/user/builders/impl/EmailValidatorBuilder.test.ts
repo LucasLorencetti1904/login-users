@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import EmailValidatorBuilder from "@validators/fieldValidators/user/builders/impl/EmailValidatorBuilder";
+import EmailValidatorBuilder from "@validators/fieldValidators/impl/user/builders/EmailValidatorBuilder";
 import MockEmailUserPartHandler from "../mocks/MockEmailUserPartHandler";
 import MockEmailDomainPartHandler from "../mocks/MockEmailDomainPartHandler";
 
@@ -34,7 +34,7 @@ describe ("Email Validator Builder Test", () => {
     it ("throws error when domain handler dependence is missing.", () => {
         result = () => (
             builder
-                .addFieldName("email")
+                .defineFieldName("email")
                 .withUserPartHandler(userHandler)
                 .build()
         );
@@ -45,7 +45,7 @@ describe ("Email Validator Builder Test", () => {
     it ("throws error when user handler dependence is missing.", () => {
         result = () => (
             builder
-                .addFieldName("email")
+                .defineFieldName("email")
                 .withDomainPartHandler(domainHandler)
                 .build()
         );
@@ -56,7 +56,7 @@ describe ("Email Validator Builder Test", () => {
     it ("returns a EmailValidator when all dependecies is received.", () => {
         result = (
             builder
-                .addFieldName("email")
+                .defineFieldName("email")
                 .withUserPartHandler(userHandler)
                 .withDomainPartHandler(domainHandler)
                 .build()

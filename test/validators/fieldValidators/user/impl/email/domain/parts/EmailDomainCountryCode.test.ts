@@ -1,5 +1,5 @@
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import EmailDomainCountryCodeValidator from "@validators/fieldValidators/user/impl/email/domain/parts/EmailDomainCountryCodeHandler";
+import EmailDomainCountryCodeValidator from "@validators/fieldValidators/impl/user/impl/email/domain/parts/EmailDomainCountryCodeHandler";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "email domain country code";

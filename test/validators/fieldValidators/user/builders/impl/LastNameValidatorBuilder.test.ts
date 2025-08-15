@@ -24,7 +24,7 @@ describe ("Last Name Validator Builder Test", () => {
     it ("returns a LastNameValidator when all dependecies is received.", () => {
         result = (
             builder
-                .addFieldName("lastName")
+                .defineFieldName("lastName")
                 .build()
         );
 

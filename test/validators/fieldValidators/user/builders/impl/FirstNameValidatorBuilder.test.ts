@@ -24,7 +24,7 @@ describe ("First Name Validator Builder Test", () => {
     it ("returns a FistNameValidator when all dependecies is received.", () => {
         result = (
             builder
-                .addFieldName("firstName")
+                .defineFieldName("firstName")
                 .build()
         );
 

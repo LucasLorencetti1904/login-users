@@ -1,5 +1,5 @@
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import FirstNameValidator from "@validators/fieldValidators/user/impl/name/FirstNameValidator";
+import FirstNameValidator from "@validators/fieldValidators/impl/user/impl/name/FirstNameValidator";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "First name";

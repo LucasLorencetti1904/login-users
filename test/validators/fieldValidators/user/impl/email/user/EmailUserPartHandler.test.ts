@@ -1,5 +1,5 @@
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import EmailUserPartHandler from "@validators/fieldValidators/user/impl/email/user/EmailUserPartHandler";
+import EmailUserPartHandler from "@validators/fieldValidators/impl/user/impl/email/user/EmailUserPartHandler";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 const propertyName: string = "email user";

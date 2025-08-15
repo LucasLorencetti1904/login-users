@@ -1,5 +1,5 @@
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import EmailValidator from "@validators/fieldValidators/user/impl/email/base/EmailValidator";
+import EmailValidator from "@validators/fieldValidators/impl/user/impl/email/EmailValidator";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import MockEmailUserPartHandler from "../mocks/MockEmailUserPartHandler";
 import MockEmailDomainPartHandler from "../mocks/MockEmailDomainPartHandler";

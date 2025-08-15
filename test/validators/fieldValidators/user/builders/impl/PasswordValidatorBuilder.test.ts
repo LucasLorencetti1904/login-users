@@ -24,7 +24,7 @@ describe ("Password Validator Builder Test", () => {
     it ("returns a PasswordValidator when all dependecies is received.", () => {
         result = (
             builder
-                .addFieldName("password")
+                .defineFieldName("password")
                 .build()
         );
 
