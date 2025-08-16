@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type UserUpdateRequestDTO from "@DTOs/UserDTO/UpdateUserRequestDTO";
-import MockUsernameValidator from "../mocks/MockUsernameValidator";
-import MockFirstNameValidator from "../mocks/MockFirstNameValidator";
-import MockLastNameValidator from "../mocks/MockLastNameValidator";
-import MockBirthDateValidator from "../mocks/MockBirthDateValidator";
-import MockEmailValidator from "../mocks/MockEmailValidator";
-import MockPasswordValidator from "../mocks/MockPasswordValidator";
+import MockUsernameValidator from "./mocks/MockUsernameValidator";
+import MockFirstNameValidator from "./mocks/MockFirstNameValidator";
+import MockLastNameValidator from "./mocks/MockLastNameValidator";
+import MockBirthDateValidator from "./mocks/MockBirthDateValidator";
+import MockEmailValidator from "./mocks/MockEmailValidator";
+import MockPasswordValidator from "./mocks/MockPasswordValidator";
 import UpdateUserRequestValidator from "@validators/dataValidators/UpdateUserRequestValidator";
 
 let userDTO: UserUpdateRequestDTO;
