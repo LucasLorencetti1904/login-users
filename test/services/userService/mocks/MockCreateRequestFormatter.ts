@@ -1,20 +1,20 @@
 import { expect, Mock, vi } from "vitest";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
+import type CreateUserParsedDTO from "@DTOs/UserDTO/CreateUserParsedDTO";
+import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
 
-export default class MockRequestFormatter implements RequestDataMapper<any, any> {
+export default class MockCreateRequestFormatter implements RequestDataMapper<any, any> {
     public formatRequest = vi.fn();
 
-    public method(method: keyof MockRequestFormatter): any {
+    public method(method: keyof MockCreateRequestFormatter): any {
         return {
-            willReturn: (data: UserFormattedDataDTO): void => {
+            willReturn: (data: CreateUserParsedDTO): void => {
                 (this[method] as Mock).mockReturnValue(data); 
             }
         };
     }
 
-    public callWith(data: UserCreateRequestDTO): void {
+    public callWith(data: CreateUserRequestDTO): void {
         expect (this.formatRequest as Mock).toHaveBeenCalledExactlyOnceWith(data);
     }
 

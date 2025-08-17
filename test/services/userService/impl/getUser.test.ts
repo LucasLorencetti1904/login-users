@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
 import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
-import MockValidator from "../mocks/MockValidator";
-import MockRequestFormatter from "../mocks/MockRequestFormatter";
+import MockCreateUserValidator from "../mocks/MockCreateUserValidator";
+import MockUpdateUserValidator from "../mocks/MockUpdateUserValidator";
+import MockCreateRequestFormatter from "../mocks/MockCreateRequestFormatter";
+import MockUpdateRequestFormatter from "../mocks/MockUpdateRequestFormatter";
 import MockHasher from "../mocks/MockHasher";
 import MockRepository from "../mocks/MockRepository";
 import MockResponseFormatter from "../mocks/MockResponseFormatter";
@@ -58,8 +60,10 @@ const arrayWithAllFormattedResponseUsers: UserResponseDTO[] = [
     }
 ];
 
-let mockValidator: MockValidator;
-let mockRequestFormatter: MockRequestFormatter;
+let mockCreateUserValidator: MockCreateUserValidator;
+let mockUpdateUserValidator: MockUpdateUserValidator;
+let mockCreateRequestFormatter: MockCreateRequestFormatter;
+let mockUpdateRequestFormatter: MockUpdateRequestFormatter;
 let mockHasher: MockHasher;
 let mockRepository: MockRepository;
 let mockResponseFormatter: MockResponseFormatter;
@@ -70,14 +74,18 @@ const method: keyof UserServiceImpl = "getUser";
 describe (`${method} Service Method Test.`, () => {
     beforeEach (() => {
         vi.clearAllMocks();
-        mockValidator = new MockValidator();
-        mockRequestFormatter = new MockRequestFormatter();
+        mockCreateUserValidator = new MockCreateUserValidator();
+        mockUpdateUserValidator = new MockUpdateUserValidator();
+        mockCreateRequestFormatter = new MockCreateRequestFormatter();
+        mockUpdateRequestFormatter = new MockUpdateRequestFormatter();
         mockHasher = new MockHasher();
         mockRepository = new MockRepository();
         mockResponseFormatter = new MockResponseFormatter();
         userService = new UserServiceImpl(
-            mockValidator,
-            mockRequestFormatter,
+            mockCreateUserValidator,
+            mockUpdateUserValidator,
+            mockCreateRequestFormatter,
+            mockUpdateRequestFormatter,
             mockHasher,
             mockRepository,
             mockResponseFormatter
@@ -90,8 +98,6 @@ describe (`${method} Service Method Test.`, () => {
         
         await expect (userService.getUser(1)).resolves.toEqual(formattedResponseUser);
 
-        mockValidator.doNotCall();
-        mockRequestFormatter.doNotCall();
         mockRepository.callMethod("getUserById").with(1);
         mockResponseFormatter.callWith(returnedUserExample);
 
@@ -103,8 +109,6 @@ describe (`${method} Service Method Test.`, () => {
 
         await expect (userService.getUser()).resolves.toEqual(arrayWithAllFormattedResponseUsers);
 
-        mockValidator.doNotCall();
-        mockRequestFormatter.doNotCall();
         mockRepository.callMethod("getAllUsers").withoutArgument();
         mockResponseFormatter.callWith(arrayWithAllReturnedUsers[0]);
         mockResponseFormatter.callWith(arrayWithAllReturnedUsers[1]);
@@ -115,8 +119,6 @@ describe (`${method} Service Method Test.`, () => {
 
         await expect (userService.getUser(101)).rejects.toThrow("User not found.");
         
-        mockValidator.doNotCall();
-        mockRequestFormatter.doNotCall();
         mockRepository.callMethod("getUserById").with(101);
         mockResponseFormatter.doNotCall();
     });

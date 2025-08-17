@@ -1,8 +1,7 @@
 import { expect, Mock, vi } from "vitest";
 import type UserValidator from "@interfaces/validators/Validator";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
 
-export default class MockValidator implements UserValidator {
+export default abstract class MockUserValidator implements UserValidator {
     public validate = vi.fn();
 
     public willFail(): void {
@@ -11,9 +10,7 @@ export default class MockValidator implements UserValidator {
         });
     }
 
-    public callWith(data: UserCreateRequestDTO): void {
-        expect (this.validate as Mock).toHaveBeenCalledExactlyOnceWith(data);
-    }
+    public abstract callWith(data: unknown): void
 
     public doNotCall(): void {
         expect (this.validate as Mock).not.toHaveBeenCalled();

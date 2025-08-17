@@ -1,11 +1,11 @@
 import { describe, beforeEach, vi, test, expect } from "vitest";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
+import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
-import UserRequestDataFormatter from "@mappers/UserRequestDataFormatter";
+import type CreateUserParsedDTO from "@DTOs/UserDTO/CreateUserParsedDTO";
+import UserRequestDataFormatter from "@mappers/CreateUserRequestDataFormatter";
 import capitalize from "@shared/utils/capitalize";
 
-const reqUserData: UserCreateRequestDTO = {
+const reqUserData: CreateUserRequestDTO = {
     username: "   user_example123",
     firstName: " USER  ",
     lastName: "example ",
@@ -14,9 +14,9 @@ const reqUserData: UserCreateRequestDTO = {
     password: "  UserExample123!* "
 };
 
-const mapper: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO> = new UserRequestDataFormatter();
+const mapper: RequestDataMapper<CreateUserRequestDTO, CreateUserParsedDTO> = new UserRequestDataFormatter();
 
-const formattedUserData: UserFormattedDataDTO = mapper.formatRequest(reqUserData);
+const formattedUserData: CreateUserParsedDTO = mapper.formatRequest(reqUserData);
 
 
 function isTrimmed(str: string): boolean {

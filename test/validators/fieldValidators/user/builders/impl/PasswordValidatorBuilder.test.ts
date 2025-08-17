@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import PasswordValidatorBuilder from "@validators/fieldValidators/user/builders/impl/PasswordValidatorBuilder";
+import PasswordValidatorBuilder from "@validators/fieldValidators/impl/user/builders/PasswordValidatorBuilder";
 
 let builder: PasswordValidatorBuilder;
 

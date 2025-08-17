@@ -1,3 +1,3 @@
-export default interface ResponseDataMapper<ModelType, ResponseDataType> {
-    formatModel(model: ModelType): ResponseDataType;
+export default interface ResponseDataMapper<Model, Response> {
+    formatModel(model: Model): Response;
 }

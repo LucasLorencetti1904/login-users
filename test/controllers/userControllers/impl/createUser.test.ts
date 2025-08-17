@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
+import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
 import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockRequest from "../mocks/MockRequest";
 import MockResponse from "../mocks/MockResponse";
@@ -10,7 +10,7 @@ import BadRequestError from "@shared/errors/responseError/BadRequestError";
 import ConflictError from "@shared/errors/responseError/ConflictError";
 import InternalError from "@shared/errors/responseError/InternalError";
 
-const userExample: UserCreateRequestDTO = {
+const userExample: CreateUserRequestDTO = {
     username: "user_example1",
     firstName: "User",
     lastName: "Example",
@@ -19,7 +19,7 @@ const userExample: UserCreateRequestDTO = {
     password: "12345"
 };
 
-const invalidMockUser: UserCreateRequestDTO = {
+const invalidMockUser: CreateUserRequestDTO = {
     username: "User Example",
     firstName: "32121",
     lastName: "*$%!",
@@ -88,7 +88,7 @@ describe (`${method} Controller Method Test`, () => {
     });
 
     it ("throws a exception and status 409 when user already exists.", async () => {
-        var conflictError: ConflictError = new ConflictError("UserCreateRequestDTO already exists.");
+        var conflictError: ConflictError = new ConflictError("CreateUserRequestDTO already exists.");
 
         mockRequest.bodyDataWillBe(userExample);
 

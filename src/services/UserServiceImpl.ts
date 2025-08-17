@@ -1,8 +1,10 @@
 import type UserService from "@interfaces/services/UserService";
 import type Validator from "@interfaces/validators/Validator";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
-import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
+import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
+import type CreateUserParsedDTO from "@DTOs/UserDTO/CreateUserParsedDTO";
+import type UpdateUserRequestDTO from "@DTOs/UserDTO/UpdateUserRequestDTO";
+import type UpdateUserParsedDTO from "@DTOs/UserDTO/UpdateUserParsedDTO";
 import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
 import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
@@ -18,8 +20,10 @@ import InternalError from "@shared/errors/responseError/InternalError";
 
 export default class UserServiceImpl implements UserService {
     constructor(
-        private validator: Validator,
-        private requestFormatter: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO>,
+        private createRequestValidator: Validator,
+        private updateRequestValidator: Validator,
+        private createUserRequestFormatter: RequestDataMapper<CreateUserRequestDTO, CreateUserParsedDTO>,
+        private updateUserRequestFormatter: RequestDataMapper<UpdateUserRequestDTO, UpdateUserParsedDTO>,
         private hasher: PasswordHasher,
         private repository: UserRepository,
         private responseFormatter: ResponseDataMapper<UserModelDTO, UserResponseDTO>
@@ -66,11 +70,11 @@ export default class UserServiceImpl implements UserService {
         });
     }
 
-    public async createUser(requestData: UserCreateRequestDTO): Promise<UserResponseDTO> {
+    public async createUser(requestData: CreateUserRequestDTO): Promise<UserResponseDTO> {
         try {
-            this.handleValidation(requestData);
+            this.handleCreateDataValidation(requestData);
 
-            const formattedData: UserFormattedDataDTO = this.requestFormatter.formatRequest(requestData);
+            const formattedData: CreateUserParsedDTO = this.createUserRequestFormatter.formatRequest(requestData);
 
             await this.searchUsername(formattedData.username);
 
@@ -93,9 +97,9 @@ export default class UserServiceImpl implements UserService {
         }
     }
 
-    private handleValidation(data: UserCreateRequestDTO): void {
+    private handleCreateDataValidation(data: CreateUserRequestDTO): void {
         try {
-            this.validator.validate(data);
+            this.createRequestValidator.validate(data);
         }
 
         catch(e: unknown) {
@@ -119,7 +123,7 @@ export default class UserServiceImpl implements UserService {
         }
     }
 
-    private async insert(data: UserFormattedDataDTO): Promise<UserModelDTO> {
+    private async insert(data: CreateUserParsedDTO): Promise<UserModelDTO> {
         try {
             return await this.repository.createUser(data);
         }

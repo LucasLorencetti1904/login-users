@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
+import type UpdateUserRequestDTO from "@DTOs/UserDTO/UpdateUserRequestDTO";
 import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
 import MockRequest from "../mocks/MockRequest";
 import MockResponse from "../mocks/MockResponse";
@@ -11,28 +11,23 @@ import NotFoundError from "@shared/errors/responseError/NotFoundError";
 import ConflictError from "@shared/errors/responseError/ConflictError";
 import InternalError from "@shared/errors/responseError/InternalError";
 
-const coreUserData: any = {
-    username: "user_example1",
-    firstName: "User",
-    lastName: "Example",
-    birthDate: "2025-04-19",
-    email: "userexample1@gmail.com",
-};
 
-const userExample: UserCreateRequestDTO = {
-    ...coreUserData,
-    password: "12345"
+const userExample: UpdateUserRequestDTO = {
+    username: "user_example_updated",
+    firstName: "Updated"
 };
 
 const updatedUser: UserResponseDTO = {
     id: 1,
-    ...coreUserData,
-    username: "user_example_updated",
+    ...(userExample as Required<typeof userExample>),
+    lastName: "Example",
+    birthDate: "2025-04-19",
+    email: "userexample1@gmail.com",
     createdAt: "03/08/2025",
     updatedAt: "04/08/2025"
 };
 
-const invalidUserExample: UserCreateRequestDTO = {
+const invalidUserExample: UpdateUserRequestDTO = {
     username: "User Example",
     firstName: "32121",
     lastName: "*$%!",

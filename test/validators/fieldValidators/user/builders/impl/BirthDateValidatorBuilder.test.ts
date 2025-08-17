@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import BirthDateValidatorBuilder from "@validators/fieldValidators/user/builders/impl/BirthDateValidatorBuilder";
+import BirthDateValidatorBuilder from "@validators/fieldValidators/impl/user/builders/BirthDateValidatorBuilder";
 
 let builder: BirthDateValidatorBuilder;
 

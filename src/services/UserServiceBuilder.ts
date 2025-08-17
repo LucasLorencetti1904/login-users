@@ -1,8 +1,10 @@
 import type Builder from "@interfaces/builders/Builder";
-import type Validator from "@interfaces/validators/Validator";
+import UserRequestValidator from "@validators/dataValidators/UserRequestValidator";
 import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type UserCreateRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
-import type UserFormattedDataDTO from "@DTOs/UserDTO/UserFormattedDataDTO";
+import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
+import type CreateUserParsedDTO from "@DTOs/UserDTO/CreateUserParsedDTO";
+import type UpdateUserRequestDTO from "@DTOs/UserDTO/UpdateUserRequestDTO";
+import type UpdateUserParsedDTO from "@DTOs/UserDTO/UpdateUserParsedDTO";
 import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
 import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
@@ -12,19 +14,31 @@ import type UserService from "@interfaces/services/UserService";
 import UserServiceImpl from "@services/UserServiceImpl";
 
 export default class UserServiceBuilder implements Builder {
-    private validator!: Validator;
-    private userRequestFormatter!: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO>;
+    private createUserDataValidator!: UserRequestValidator;
+    private updateUserDataValidator!: UserRequestValidator;
+    private createUserRequestFormatter!: RequestDataMapper<CreateUserRequestDTO, CreateUserParsedDTO>;
+    private updateUserRequestFormatter!: RequestDataMapper<UpdateUserRequestDTO, UpdateUserParsedDTO>;
     private hasher!: PasswordHasher;
     private repository!: UserRepository;
     private userResponseFormatter!: ResponseDataMapper<UserModelDTO, UserResponseDTO>;
     
-    public withValidator(validator: Validator): this {
-        this.validator = validator;
+    public withCreateUserDataValidator(validator: UserRequestValidator): this {
+        this.createUserDataValidator = validator;
         return this;
     }
 
-    public withRequestFormatter(formatter: RequestDataMapper<UserCreateRequestDTO, UserFormattedDataDTO>): this {
-        this.userRequestFormatter = formatter;
+    public withUpdateUserDataValidator(validator: UserRequestValidator): this {
+        this.updateUserDataValidator = validator;
+        return this;
+    }
+
+    public withCreateDataRequestFormatter(formatter: RequestDataMapper<CreateUserRequestDTO, CreateUserParsedDTO>): this {
+        this.createUserRequestFormatter = formatter;
+        return this;
+    }
+
+    public withUpdateDataRequestFormatter(formatter: RequestDataMapper<UpdateUserRequestDTO, UpdateUserParsedDTO>): this {
+        this.updateUserRequestFormatter = formatter;
         return this;
     }
 
@@ -49,12 +63,14 @@ export default class UserServiceBuilder implements Builder {
         }
 
         return new UserServiceImpl(
-            this.validator,
-            this.userRequestFormatter,
+            this.createUserDataValidator,
+            this.updateUserDataValidator,
+            this.createUserRequestFormatter,
+            this.updateUserRequestFormatter,
             this.hasher,
             this.repository,
             this.userResponseFormatter
-        )
+        );
     }
 
     private isMissingProperties(): boolean {
