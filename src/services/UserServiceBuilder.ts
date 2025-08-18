@@ -1,5 +1,5 @@
 import type Builder from "@interfaces/builders/Builder";
-import UserRequestValidator from "@validators/dataValidators/UserRequestValidator";
+import Validator from "@interfaces/validators/Validator";
 import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
 import type UserService from "@interfaces/services/UserService";
@@ -7,19 +7,19 @@ import UserServiceImpl from "@services/UserServiceImpl";
 import UserDataMapper from "@interfaces/mappers/UserDataMapper";
 
 export default class UserServiceBuilder implements Builder {
-    private createUserDataValidator!: UserRequestValidator;
-    private updateUserDataValidator!: UserRequestValidator;
+    private createDataValidator!: Validator;
+    private updateDataValidator!: Validator;
     private formatter!: UserDataMapper;
     private hasher!: PasswordHasher;
     private repository!: UserRepository;
     
-    public withCreateUserDataValidator(validator: UserRequestValidator): this {
-        this.createUserDataValidator = validator;
+    public withCreateDataValidator(validator: Validator): this {
+        this.createDataValidator = validator;
         return this;
     }
 
-    public withUpdateUserDataValidator(validator: UserRequestValidator): this {
-        this.updateUserDataValidator = validator;
+    public withUpdateDataValidator(validator: Validator): this {
+        this.updateDataValidator = validator;
         return this;
     }
 
@@ -44,8 +44,8 @@ export default class UserServiceBuilder implements Builder {
         }
 
         return new UserServiceImpl(
-            this.createUserDataValidator,
-            this.updateUserDataValidator,
+            this.createDataValidator,
+            this.updateDataValidator,
             this.formatter,
             this.hasher,
             this.repository,
