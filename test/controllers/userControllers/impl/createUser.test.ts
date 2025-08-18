@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, vi, it } from "vitest";
-import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
-import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type { CreateUserRequestDTO } from "@DTOs/UserDTO/CreateUserDTO";
+import type { UserResponseDTO } from "@DTOs/UserDTO/UserOutputDTO";
 import MockRequest from "../mocks/MockRequest";
 import MockResponse from "../mocks/MockResponse";
 import MockUserService from "../mocks/MockUserService";

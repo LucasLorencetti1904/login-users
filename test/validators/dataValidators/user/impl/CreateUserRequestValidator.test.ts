@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
+import  type { CreateUserRequestDTO } from "@DTOs/UserDTO/CreateUserDTO";
 import CreateUserRequestValidator from "@validators/dataValidators/CreateUserRequestValidator";
 import MockUsernameValidator from "./mocks/MockUsernameValidator";
 import MockFirstNameValidator from "./mocks/MockFirstNameValidator";

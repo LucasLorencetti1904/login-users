@@ -1,14 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type { UserModelDTO, UserResponseDTO } from "@DTOs/UserDTO/UserOutputDTO";
 import MockCreateUserValidator from "../mocks/MockCreateUserValidator";
 import MockUpdateUserValidator from "../mocks/MockUpdateUserValidator";
-import MockCreateRequestFormatter from "../mocks/MockCreateRequestFormatter";
-import MockUpdateRequestFormatter from "../mocks/MockUpdateRequestFormatter";
 import MockHasher from "../mocks/MockHasher";
 import MockRepository from "../mocks/MockRepository";
-import MockResponseFormatter from "../mocks/MockResponseFormatter";
 import UserServiceImpl from "@services/UserServiceImpl";
+import MockUserDataFormatter from "../mocks/MockDataFormatter";
 
 const returnedUserExample: UserModelDTO = {
     id: 1,
@@ -62,11 +59,9 @@ const arrayWithAllFormattedResponseUsers: UserResponseDTO[] = [
 
 let mockCreateUserValidator: MockCreateUserValidator;
 let mockUpdateUserValidator: MockUpdateUserValidator;
-let mockCreateRequestFormatter: MockCreateRequestFormatter;
-let mockUpdateRequestFormatter: MockUpdateRequestFormatter;
+let mockFormatter: MockUserDataFormatter;
 let mockHasher: MockHasher;
 let mockRepository: MockRepository;
-let mockResponseFormatter: MockResponseFormatter;
 let userService: UserServiceImpl;
 
 const method: keyof UserServiceImpl = "getUser";
@@ -76,42 +71,38 @@ describe (`${method} Service Method Test.`, () => {
         vi.clearAllMocks();
         mockCreateUserValidator = new MockCreateUserValidator();
         mockUpdateUserValidator = new MockUpdateUserValidator();
-        mockCreateRequestFormatter = new MockCreateRequestFormatter();
-        mockUpdateRequestFormatter = new MockUpdateRequestFormatter();
+        mockFormatter = new MockUserDataFormatter();
         mockHasher = new MockHasher();
         mockRepository = new MockRepository();
-        mockResponseFormatter = new MockResponseFormatter();
         userService = new UserServiceImpl(
             mockCreateUserValidator,
             mockUpdateUserValidator,
-            mockCreateRequestFormatter,
-            mockUpdateRequestFormatter,
+            mockFormatter,
             mockHasher,
             mockRepository,
-            mockResponseFormatter
         );
     });
 
     it ("returns a found user when id is provided.", async () => {
         mockRepository.method("getUserById").willReturn(returnedUserExample);
-        mockResponseFormatter.method("formatModel").willReturn(formattedResponseUser);
+        mockFormatter.method("formatResponse").willReturn(formattedResponseUser);
         
         await expect (userService.getUser(1)).resolves.toEqual(formattedResponseUser);
 
         mockRepository.callMethod("getUserById").with(1);
-        mockResponseFormatter.callWith(returnedUserExample);
+        mockFormatter.callMethod("formatResponse").with(returnedUserExample);
 
     });
 
     it ("returns an array of all users when id is not provided.", async () => {
         mockRepository.method("getAllUsers").willReturn(arrayWithAllReturnedUsers);
-        mockResponseFormatter.method("formatModel").willReturnSequence(arrayWithAllFormattedResponseUsers);
+        mockFormatter.method("formatResponse").willReturnSequence(arrayWithAllFormattedResponseUsers);
 
         await expect (userService.getUser()).resolves.toEqual(arrayWithAllFormattedResponseUsers);
 
         mockRepository.callMethod("getAllUsers").withoutArgument();
-        mockResponseFormatter.callWith(arrayWithAllReturnedUsers[0]);
-        mockResponseFormatter.callWith(arrayWithAllReturnedUsers[1]);
+        mockFormatter.callMethod("formatResponse").with(arrayWithAllReturnedUsers[0]);
+        mockFormatter.callMethod("formatResponse").with(arrayWithAllReturnedUsers[1]);
     });
 
     it ("throws a Not Found Error when user is not found.", async () => {
@@ -120,6 +111,6 @@ describe (`${method} Service Method Test.`, () => {
         await expect (userService.getUser(101)).rejects.toThrow("User not found.");
         
         mockRepository.callMethod("getUserById").with(101);
-        mockResponseFormatter.doNotCall();
+        mockFormatter.doNotCallMethod("formatResponse");
     });
 });

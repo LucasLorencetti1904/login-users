@@ -1,18 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
-import type CreateUserParsedDTO from "@DTOs/UserDTO/CreateUserParsedDTO";
-import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type { CreateUserRequestDTO, CreateUserParsedDTO } from "@DTOs/UserDTO/CreateUserDTO";
+import type { UserModelDTO, UserResponseDTO } from "@DTOs/UserDTO/UserOutputDTO";
 import UserServiceImpl from "@services/UserServiceImpl";
 import MockCreateUserValidator from "../mocks/MockCreateUserValidator";
 import MockUpdateUserValidator from "../mocks/MockUpdateUserValidator";
-import MockCreateRequestFormatter from "../mocks/MockCreateRequestFormatter";
-import MockUpdateRequestFormatter from "../mocks/MockUpdateRequestFormatter";
 import MockHasher from "../mocks/MockHasher";
 import MockRepository from "../mocks/MockRepository";
-import MockResponseFormatter from "../mocks/MockResponseFormatter";
 import ConflictError from "@shared/errors/responseError/ConflictError";
 import BadRequestError from "@shared/errors/responseError/BadRequestError";
+import MockUserDataFormatter from "../mocks/MockDataFormatter";
 
 const validUser: CreateUserRequestDTO = {
     username: "    user_example123   ",
@@ -67,11 +63,9 @@ const formattedResponseUser: UserResponseDTO = {
 
 let mockCreateUserValidator: MockCreateUserValidator;
 let mockUpdateUserValidator: MockUpdateUserValidator;
-let mockCreateRequestFormatter: MockCreateRequestFormatter;
-let mockUpdateRequestFormatter: MockUpdateRequestFormatter;
+let mockFormatter: MockUserDataFormatter;
 let mockHasher: MockHasher;
 let mockRepository: MockRepository;
-let mockResponseFormatter: MockResponseFormatter;
 let userService: UserServiceImpl;
 
 const method: keyof UserServiceImpl = "createUser";
@@ -81,43 +75,38 @@ describe (`${method} Service Method Test.`, () => {
         vi.clearAllMocks();
         mockCreateUserValidator = new MockCreateUserValidator();
         mockUpdateUserValidator = new MockUpdateUserValidator();
-        mockCreateRequestFormatter = new MockCreateRequestFormatter();
-        mockUpdateRequestFormatter = new MockUpdateRequestFormatter();
+        mockFormatter = new MockUserDataFormatter();
         mockHasher = new MockHasher();
         mockRepository = new MockRepository();
-        mockResponseFormatter = new MockResponseFormatter();
         userService = new UserServiceImpl(
             mockCreateUserValidator,
             mockUpdateUserValidator,
-            mockCreateRequestFormatter,
-            mockUpdateRequestFormatter,
+            mockFormatter,
             mockHasher,
             mockRepository,
-            mockResponseFormatter
         );
     });
 
     it ("returns a created user when request data is valid and user does not yet exists.", async () => {
-        mockCreateRequestFormatter.method("formatRequest").willReturn(formattedUserData);
+        mockFormatter.method("formatCreateRequest").willReturn(formattedUserData);
         mockRepository.method("getUserByUsername").willReturn(null);
         mockRepository.method("getUserByEmail").willReturn(null);
         mockHasher.method("hash").willReturn(formattedUserDataWithHashedPassword.password);
         mockRepository.method("createUser").willReturn(creatededUser);
-        mockResponseFormatter.method("formatModel").willReturn(formattedResponseUser);
-
+        mockFormatter.method("formatResponse").willReturn(formattedResponseUser)
         await expect (userService.createUser(validUser)).resolves.toEqual(formattedResponseUser);
 
         mockCreateUserValidator.callWith(validUser);
-        mockCreateRequestFormatter.callWith(validUser);
+        mockFormatter.callMethod("formatCreateRequest").with(validUser);
         mockRepository.callMethod("getUserByUsername").with(formattedUserData.username);
         mockRepository.callMethod("getUserByEmail").with(formattedUserData.email);
         mockHasher.callHashMethodWithPassword(formattedUserData.password);
         mockRepository.callMethod("createUser").with(formattedUserDataWithHashedPassword);
-        mockResponseFormatter.callWith(creatededUser);
+        mockFormatter.callMethod("formatResponse").with(creatededUser);
     });
 
     it ("throws a conflict error when user username already exists.", async () => {
-        mockCreateRequestFormatter.method("formatRequest").willReturn(formattedUserData);
+        mockFormatter.method("formatCreateRequest").willReturn(formattedUserData);
         mockRepository.method("getUserByUsername").willReturn(alreadyExistentUser);
         
         await expect (userService.createUser(validUser)).rejects.toThrowError(
@@ -130,11 +119,11 @@ describe (`${method} Service Method Test.`, () => {
         mockRepository.doNotCallMethod("getUserByEmail");
         mockHasher.doNotCallHashMethod();
         mockRepository.doNotCallMethod("createUser");
-        mockResponseFormatter.doNotCall();
+        mockFormatter.doNotCallMethod("formatResponse");
     });
 
     it ("throws a conflict error when user email already exists.", async () => {
-        mockCreateRequestFormatter.method("formatRequest").willReturn(formattedUserData);
+        mockFormatter.method("formatCreateRequest").willReturn(formattedUserData);
         mockRepository.method("getUserByUsername").willReturn(null);
         mockRepository.method("getUserByEmail").willReturn(alreadyExistentUser);
         
@@ -143,12 +132,12 @@ describe (`${method} Service Method Test.`, () => {
         );
 
         mockCreateUserValidator.callWith(validUser);
-        mockCreateRequestFormatter.callWith(validUser);
+        mockFormatter.callMethod("formatCreateRequest").with(validUser);
         mockRepository.callMethod("getUserByUsername").with(formattedUserData.username);
         mockRepository.callMethod("getUserByEmail").with(formattedUserData.email);
         mockHasher.doNotCallHashMethod();
         mockRepository.doNotCallMethod("createUser");
-        mockResponseFormatter.doNotCall();
+        mockFormatter.doNotCallMethod("formatResponse");
     });
 
     it ("throws a bad request error when user data is invalid.", async () => {
@@ -157,11 +146,11 @@ describe (`${method} Service Method Test.`, () => {
         await expect (userService.createUser(invalidUser)).rejects.toBeInstanceOf(BadRequestError)
 
         mockCreateUserValidator.callWith(invalidUser);
-        mockCreateRequestFormatter.doNotCall();
+        mockFormatter.doNotCallMethod("formatCreateRequest");
         mockRepository.doNotCallMethod("getUserByUsername");
         mockRepository.doNotCallMethod("getUserByEmail");
         mockHasher.doNotCallHashMethod();
         mockRepository.doNotCallMethod("createUser");
-        mockResponseFormatter.doNotCall();
+        mockFormatter.doNotCallMethod("formatResponse");
     });
 });

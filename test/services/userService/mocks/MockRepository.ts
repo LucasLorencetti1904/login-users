@@ -1,6 +1,6 @@
 import { expect, Mock, vi } from "vitest";
 import type UserRepository from "@interfaces/repositories/UserRepository";
-import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
+import type { UserModelDTO } from "@DTOs/UserDTO/UserOutputDTO";
 import type OneOrMany from "@shared/types/OneOrMany";
 
 export default class MockRepository implements UserRepository {

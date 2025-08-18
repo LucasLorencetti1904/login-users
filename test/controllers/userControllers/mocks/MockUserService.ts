@@ -1,6 +1,6 @@
 import { vi, expect, Mock } from "vitest";
 import type OneOrMany from "@shared/types/OneOrMany";
-import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type { UserResponseDTO } from "@DTOs/UserDTO/UserOutputDTO";
 import type UserService from "@interfaces/services/UserService";
 import MockRequest from "./MockRequest";
 

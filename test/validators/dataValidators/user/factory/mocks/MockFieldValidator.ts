@@ -1,6 +1,6 @@
+import { Mock, vi } from "vitest";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 import UserFieldValidator from "@validators/fieldValidators/impl/user/impl/UserFieldValidator";
-import { Mock, vi } from "vitest";
 
 export default abstract class MockFieldValidator extends UserFieldValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("mock");

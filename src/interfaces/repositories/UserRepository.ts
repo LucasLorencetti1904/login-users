@@ -1,5 +1,5 @@
-import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import type UserFormattedDataDTO from "@DTOs/UserDTO/CreateUserParsedDTO";
+import type { UserModelDTO } from "@DTOs/UserDTO/UserOutputDTO";
+import { CreateUserParsedDTO } from "@DTOs/UserDTO/CreateUserDTO";
 
 export default interface UserRepository {
     getUserById(id: number): Promise<UserModelDTO | null>;
@@ -7,5 +7,5 @@ export default interface UserRepository {
     getUserByEmail(email: string): Promise<UserModelDTO>;
     getAllUsers(): Promise<UserModelDTO[]>;
 
-    createUser(data: UserFormattedDataDTO): Promise<UserModelDTO>;
+    createUser(data: CreateUserParsedDTO): Promise<UserModelDTO>;
 }

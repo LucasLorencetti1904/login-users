@@ -1,5 +1,5 @@
 import UserRequestValidator from "@validators/dataValidators/UserRequestValidator";
-import type UpdateUserRequestDTO from "@DTOs/UserDTO/UpdateUserRequestDTO";
+import type { UpdateUserRequestDTO } from "@DTOs/UserDTO/UpdateUserDTO";
 import { Maybe } from "@shared/types/optionalTypes";
 
 export default class UpdateUserRequestValidator extends UserRequestValidator {

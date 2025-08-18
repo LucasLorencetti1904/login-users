@@ -1,32 +1,25 @@
 import type UserService from "@interfaces/services/UserService";
 import type Validator from "@interfaces/validators/Validator";
-import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
-import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
-import type CreateUserParsedDTO from "@DTOs/UserDTO/CreateUserParsedDTO";
-import type UpdateUserRequestDTO from "@DTOs/UserDTO/UpdateUserRequestDTO";
-import type UpdateUserParsedDTO from "@DTOs/UserDTO/UpdateUserParsedDTO";
+import type { CreateUserRequestDTO, CreateUserParsedDTO } from "@DTOs/UserDTO/CreateUserDTO";
 import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
-import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
-import type UserModelDTO from "@DTOs/UserDTO/UserModelDTO";
-import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import type { UserResponseDTO, UserModelDTO } from "@DTOs/UserDTO/UserOutputDTO";
 import type OneOrMany from "@shared/types/OneOrMany";
 import NotFoundError from "@shared/errors/responseError/NotFoundError";
 import handleError from "@shared/utils/handleError";
 import BadRequestError from "@shared/errors/responseError/BadRequestError";
 import ConflictError from "@shared/errors/responseError/ConflictError";
 import InternalError from "@shared/errors/responseError/InternalError";
+import UserDataMapper from "@interfaces/mappers/UserDataMapper";
 
 
 export default class UserServiceImpl implements UserService {
     constructor(
         private createRequestValidator: Validator,
         private updateRequestValidator: Validator,
-        private createUserRequestFormatter: RequestDataMapper<CreateUserRequestDTO, CreateUserParsedDTO>,
-        private updateUserRequestFormatter: RequestDataMapper<UpdateUserRequestDTO, UpdateUserParsedDTO>,
+        private formatter: UserDataMapper,
         private hasher: PasswordHasher,
         private repository: UserRepository,
-        private responseFormatter: ResponseDataMapper<UserModelDTO, UserResponseDTO>
     ) {}
 
     public async getUser(id?: number): Promise<OneOrMany<UserResponseDTO>> {    
@@ -61,12 +54,12 @@ export default class UserServiceImpl implements UserService {
             return this.formatModelArray(model);
         }
 
-        return this.responseFormatter.formatModel(model);
+        return this.formatter.formatResponse(model);
     }
 
     private formatModelArray(arr: UserModelDTO[]): UserResponseDTO[] {
         return arr.map((user) => {
-            return this.responseFormatter.formatModel(user);
+            return this.formatter.formatResponse(user);
         });
     }
 
@@ -74,7 +67,7 @@ export default class UserServiceImpl implements UserService {
         try {
             this.handleCreateDataValidation(requestData);
 
-            const formattedData: CreateUserParsedDTO = this.createUserRequestFormatter.formatRequest(requestData);
+            const formattedData: CreateUserParsedDTO = this.formatter.formatCreateRequest(requestData);
 
             await this.searchUsername(formattedData.username);
 
@@ -89,7 +82,7 @@ export default class UserServiceImpl implements UserService {
 
             const createdUser: UserModelDTO = await this.insert(formattedDataWithHashedPassword);
 
-            return this.responseFormatter.formatModel(createdUser);
+            return this.formatter.formatResponse(createdUser);
         }
 
         catch(e: unknown) {

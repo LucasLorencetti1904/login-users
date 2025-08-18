@@ -1,5 +1,5 @@
 import UserRequestValidator from "@validators/dataValidators/UserRequestValidator";
-import type CreateUserRequestDTO from "@DTOs/UserDTO/CreateUserRequestDTO";
+import type { CreateUserRequestDTO } from "@DTOs/UserDTO/CreateUserDTO";
 
 export default class CreateUserRequestValidator extends UserRequestValidator {
     protected verifyEachDataField(data: CreateUserRequestDTO): void {

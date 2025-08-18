@@ -1,4 +1,4 @@
-import type UserRequestDTO from "@DTOs/UserDTO/UserRequestDTO";
+import type { UserRequestDTO } from "@DTOs/UserDTO/UserInputDTO";
 import type Builder from "@interfaces/builders/Builder";
 import type FieldValidator from "@interfaces/validators/FieldValidator";
 

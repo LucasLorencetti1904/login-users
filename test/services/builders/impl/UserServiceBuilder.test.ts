@@ -6,17 +6,17 @@ import MockHasher from "../mocks/MockHasher";
 import MockRepository from "../mocks/MockRepository";
 import MockResponseFormatter from "../mocks/MockResponseFormatter";
 import type UserValidator from "@interfaces/validators/Validator";
-import type RequestDataMapper from "@interfaces/mappers/RequestDataMapper";
+import type RequestDataMapper from "@interfaces/mappers/UserDataMapper";
 import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
-import type ResponseDataMapper from "@interfaces/mappers/ResponseDataMapper";
+import type ResponseDataMapper from "@interfaces/mappers/UserResponseDataMapper";
+import UserDataMapper from "@interfaces/mappers/UserDataMapper";
 
 let builder: UserServiceBuilder;
 let mockValidator: MockValidator;
-let mockRequestFormatter: MockRequestFormatter;
+let mockFormatter: MockRequestFormatter;
 let mockHasher: MockHasher;
 let mockRepository: MockRepository;
-let mockResponseFormatter: MockResponseFormatter;
 
 const password: string = "123456789";
 class MockPasswordValidator {}
@@ -29,34 +29,31 @@ describe ("User Service Builder Test.", () => {
         vi.clearAllMocks();
         builder = new UserServiceBuilder();
         mockValidator = new MockValidator(fieldsAndValidators);
-        mockRequestFormatter = new MockRequestFormatter();
+        mockFormatter = new MockRequestFormatter();
         mockHasher = new MockHasher();
         mockRepository = new MockRepository();
-        mockResponseFormatter = new MockResponseFormatter();
     });
 
     it ("should assign dependencies when the build method is called.", () => {
         expect (
             builder
                 .withValidator(mockValidator as UserValidator)
-                .withRequestFormatter(mockRequestFormatter as RequestDataMapper<any, any>)
+                .withDataFormatter(mockFormatter as UserDataMapper)
                 .withHasher(mockHasher as PasswordHasher)
                 .withRepository(mockRepository as UserRepository)
-                .withResponseFormatter(mockResponseFormatter as ResponseDataMapper<any, any>)
                 .build()
         ).toEqual({
             validator: mockValidator,
-            requestFormatter: mockRequestFormatter,
+            formatter: mockFormatter,
             hasher: mockHasher,
             repository: mockRepository,
-            responseFormatter: mockResponseFormatter
         });
     });
 
     it ("should throw error when some dependency is missing.", () => {
         expect (
             () => builder
-                .withRequestFormatter(mockRequestFormatter as RequestDataMapper<any, any>)
+                .withDataFormatter(mockFormatter as UserDataMapper)
                 .build()
         ).toThrow("Missing dependencies.");
     });

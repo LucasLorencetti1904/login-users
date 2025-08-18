@@ -1,10 +1,11 @@
 import { expect, vi } from "vitest";
-import { type Response } from "express";
-import type UserResponseDTO from "@DTOs/UserDTO/UserResponseDTO";
+import OneOrMany from "@shared/types/OneOrMany";
+import type { Response } from "express";
+import type { UserResponseDTO } from "@DTOs/UserDTO/UserOutputDTO";
 
 type ResponseJson = {
     message: string,
-    data?: UserResponseDTO | UserResponseDTO[]
+    data?: OneOrMany<UserResponseDTO>
 };
 
 export default class MockResponse implements Partial<Response> {
