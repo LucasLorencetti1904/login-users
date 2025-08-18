@@ -6,9 +6,10 @@ import type PasswordHasher from "@interfaces/adapters/PasswordHasher";
 import type UserRepository from "@interfaces/repositories/UserRepository";
 import {
     MockCreateUserValidator,
-    MockHasher, MockRepository,
     MockUpdateUserValidator,
-    MockUserDataFormatter
+    MockUserDataFormatter,
+    MockHasher,
+    MockRepository
 } from "../mocks/UserServiceBuilderMocks";
 import type UserService from "@interfaces/services/UserService";
 

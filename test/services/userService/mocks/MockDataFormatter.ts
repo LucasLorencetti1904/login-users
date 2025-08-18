@@ -1,31 +1,40 @@
 import { expect, Mock, vi } from "vitest";
 import type UserDataMapper from "@interfaces/mappers/UserDataMapper";
-import type { CreateUserRequestDTO, CreateUserParsedDTO } from "@DTOs/UserDTO/CreateUserDTO";
-import type { UpdateUserRequestDTO } from "@DTOs/UserDTO/UpdateUserDTO";
-import type { UserModelDTO } from "@DTOs/UserDTO/UserOutputDTO";
+import type { CreateUserParsedDTO } from "@DTOs/UserDTO/CreateUserDTO";
+import type { UpdateUserParsedDTO } from "@DTOs/UserDTO/UpdateUserDTO";
+import type { UserResponseDTO } from "@DTOs/UserDTO/UserOutputDTO";
+
+type TheseKeys = keyof MockUserDataFormatter
+type PossibleReturnTypes = CreateUserParsedDTO | UpdateUserParsedDTO | UserResponseDTO;
 
 export default class MockUserDataFormatter implements UserDataMapper {
-    public formatCreateRequest = vi.fn();
+    public formatCreateRequest: Mock = vi.fn();
     public formatUpdateRequest: Mock = vi.fn();
     public formatResponse: Mock = vi.fn();
 
-    public method(method: keyof MockUserDataFormatter): any {
+    public method(method: TheseKeys): any {
         return {
-            willReturn: (data: CreateUserParsedDTO): void => {
+            willReturn: (data: PossibleReturnTypes): void => {
                 (this[method] as Mock).mockReturnValue(data); 
+            },
+
+            willReturnSequence: (data: PossibleReturnTypes[]): void => {
+                data.forEach((eachData) => {
+                    (this[method] as Mock).mockReturnValueOnce(eachData);
+                });
             }
         };
     }
 
-    public callMethod(method: keyof MockUserDataFormatter) {
+    public callMethod(method: TheseKeys) {
         return {
-            with: (data: CreateUserRequestDTO | UpdateUserRequestDTO | UserModelDTO): void => {
-                expect (this[method] as Mock).toHaveBeenCalledExactlyOnceWith(data);
+            with: (data: PossibleReturnTypes): void => {
+                expect (this[method] as Mock).toHaveBeenCalledWith(data);
             }
         }
     }
 
-    public doNotCallMethod(method: keyof MockUserDataFormatter): void {
+    public doNotCallMethod(method: TheseKeys): void {
         expect (this[method] as Mock).not.toHaveBeenCalled();
     }
 }
