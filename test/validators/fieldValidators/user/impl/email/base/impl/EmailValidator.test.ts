@@ -23,7 +23,15 @@ describe (propertyName + " validator test", () => {
         userHandler = new MockEmailUserPartHandler();
         domainHandler = new MockEmailDomainPartHandler();
 
-        validator = new EmailValidator("email", userHandler, domainHandler);
+        validator = EmailValidator.initWithFieldNameAndEmailPartValidators (
+            "email",
+            userHandler,
+            domainHandler
+        );
+    });
+
+    it (`returns a 'EmailValidator' instance when factory method is called.`, () => {
+        expect (validator).toBeInstanceOf(EmailValidator);
     });
     
     it (`passes without error when ${propertyName} is valid.`, () => {

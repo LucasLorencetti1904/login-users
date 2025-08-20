@@ -15,6 +15,10 @@ export default class BirthDateValidator extends UserFieldValidator {
     private readonly MAX_AGE: number = 100;
     private readonly MIN_AGE: number = 0;
 
+    public static initWithFieldName(fieldName: string): BirthDateValidator {
+        return new BirthDateValidator(fieldName);
+    }
+
     public validate(birthDate: string): void {
         let birthDateParts = this.splitValidDateOrThrowError(birthDate);
     

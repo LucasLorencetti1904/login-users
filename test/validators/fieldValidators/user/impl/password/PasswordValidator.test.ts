@@ -14,8 +14,13 @@ describe (propertyName + " validator test", () => {
     beforeEach(() => {
         vi.clearAllMocks();
 
-        validator = new PasswordValidator("password");
+        validator = PasswordValidator.initWithFieldName("password");
     });
+
+    it (`returns a 'PasswordValidator' instance when factory method is called.`, () => {
+        expect (validator).toBeInstanceOf(PasswordValidator);
+    });
+
     
     it (`passes without error when ${propertyName} is valid.`, () => {
         expect (() => validator.validate("PasswordExample1!")).not.toThrowError();

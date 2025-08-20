@@ -14,7 +14,11 @@ describe (propertyName + " validator test", () => {
     beforeEach(() => {
         vi.clearAllMocks();
 
-        validator = new FirstNameValidator("firstName");
+        validator = FirstNameValidator.initWithFieldName("firstName");
+    });
+
+    it (`returns a 'FirstNameValidator' instance when factory method is called.`, () => {
+        expect (validator).toBeInstanceOf(FirstNameValidator);
     });
     
     it (`${errorTestDescriptionPrefix} is valid.`, () => {

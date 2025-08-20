@@ -2,7 +2,7 @@ import type FieldValidator from "@interfaces/validators/FieldValidator";
 import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 
 export default abstract class UserFieldValidator implements FieldValidator {
-    constructor(public fieldName: string) {}
+    protected constructor(public fieldName: string) {}
 
     protected abstract errorMessage: ErrorMessageGenerator;
 
@@ -15,5 +15,5 @@ export default abstract class UserFieldValidator implements FieldValidator {
     protected failsIf(condition: boolean, message: string): void {
         if (condition)
             throw new Error(message);
-    }
+    } 
 }

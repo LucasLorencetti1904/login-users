@@ -14,8 +14,13 @@ describe (propertyName + " validator test", () => {
     beforeEach(() => {
         vi.clearAllMocks();
 
-        validator = new UsernameValidator("username");
+        validator = UsernameValidator.initWithFieldName("username");
     });
+
+    it (`returns a 'UsernameValidator' instance when factory method is called.`, () => {
+        expect (validator).toBeInstanceOf(UsernameValidator);
+    });
+
     
     it (`passes without error when ${propertyName} is valid.`, () => {
         expect (() => validator.validate("XxL3M4OxX")).not.toThrowError();

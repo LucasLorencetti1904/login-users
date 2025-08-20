@@ -4,6 +4,10 @@ import ErrorMessageGenerator from "@shared/helpers/ErrorMessageGenerator";
 export default class PasswordValidator extends UserFieldValidator {
     protected errorMessage: ErrorMessageGenerator = ErrorMessageGenerator.initWithDataName("Password");
 
+    public static initWithFieldName(fieldName: string): PasswordValidator {
+        return new PasswordValidator(fieldName);
+    }
+
     public validate(password: string): void {
         password = this.handleStringField(password);
 

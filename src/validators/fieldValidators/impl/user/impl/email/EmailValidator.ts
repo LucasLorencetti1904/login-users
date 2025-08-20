@@ -16,6 +16,14 @@ export default class EmailValidator extends UserFieldValidator {
         super(fieldName);
     }
 
+    public static initWithFieldNameAndEmailPartValidators(
+        fieldName: string,
+        userHandler: EmailPartHandler,
+        domainHandler: EmailPartHandler,
+    ): EmailValidator {
+        return new EmailValidator(fieldName, userHandler, domainHandler);
+    }
+
     public validate(email: string): void {
         email = this.handleStringField(email);
 

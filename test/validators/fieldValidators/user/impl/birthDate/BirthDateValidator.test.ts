@@ -14,7 +14,11 @@ describe (propertyName + " validator test", () => {
     beforeEach(() => {
         vi.clearAllMocks();
 
-        validator = new BirthDateValidator("birthDate");
+        validator = BirthDateValidator.initWithFieldName("birthDate");
+    });
+
+    it (`returns a 'BirthDateValidator' instance when factory method is called.`, () => {
+        expect (validator).toBeInstanceOf(BirthDateValidator);
     });
     
     it (`passes without error when ${propertyName} is valid.`, () => {

@@ -1,11 +1,18 @@
 import { expect, Mock, vi } from "vitest";
 import type UserDataMapper from "@interfaces/mappers/UserDataMapper";
-import type { CreateUserParsedDTO } from "@DTOs/UserDTO/CreateUserDTO";
-import type { UpdateUserParsedDTO } from "@DTOs/UserDTO/UpdateUserDTO";
+import type { CreateUserRequestDTO, CreateUserParsedDTO } from "@DTOs/UserDTO/CreateUserDTO";
+import type { UpdateUserRequestDTO, UpdateUserParsedDTO } from "@DTOs/UserDTO/UpdateUserDTO";
 import type { UserResponseDTO } from "@DTOs/UserDTO/UserOutputDTO";
 
 type TheseKeys = keyof MockUserDataFormatter
-type PossibleReturnTypes = CreateUserParsedDTO | UpdateUserParsedDTO | UserResponseDTO;
+
+type PossibleReturnTypes = (
+    | CreateUserRequestDTO
+    | CreateUserParsedDTO
+    | UpdateUserRequestDTO
+    | UpdateUserParsedDTO
+    | UserResponseDTO
+);
 
 export default class MockUserDataFormatter implements UserDataMapper {
     public formatCreateRequest: Mock = vi.fn();
